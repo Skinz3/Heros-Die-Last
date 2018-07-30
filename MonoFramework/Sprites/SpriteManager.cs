@@ -30,7 +30,7 @@ namespace MonoFramework.Sprites
             {
                 Directory.CreateDirectory(fullPath);
             }
-            foreach (var file in Directory.GetFiles(fullPath))
+            foreach (var file in Directory.GetFiles(fullPath))  
             {
                 if (SPRITE_EXTENSIONS.Contains(Path.GetExtension(file)))
                     Sprites.Add(Path.GetFileNameWithoutExtension(file), new Sprite(file));

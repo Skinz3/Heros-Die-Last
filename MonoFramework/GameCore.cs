@@ -32,7 +32,7 @@ namespace MonoFramework
         {
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            SpriteManager.Initialize(@"\Content");
+            SpriteManager.Initialize(@"/Content");
             GraphicsDeviceManager.PreferredBackBufferWidth = 1000;  // largeur de la fenêtre
             GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
             this.IsMouseVisible = true;
