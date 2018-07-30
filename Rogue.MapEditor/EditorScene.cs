@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rogue.MapEditor
@@ -45,8 +46,9 @@ namespace Rogue.MapEditor
         public EditorScene()
         {
 
-
         }
+
+
 
         public override void Dispose()
         {
@@ -55,28 +57,7 @@ namespace Rogue.MapEditor
 
         public override void OnUpdate(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.O))
-            {
-                System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-                dialog.ShowDialog();
 
-                LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
-                MapTemplate template = new MapTemplate();
-                template.Deserialize(reader);
-                Map.Load(template);
-
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.P))
-            {
-                System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
-                dialog.ShowDialog();
-
-                var template = Map.Export();
-
-                LittleEndianWriter writer = new LittleEndianWriter();
-                template.Serialize(writer);
-                File.WriteAllBytes(dialog.FileName, writer.Data);
-            }
 
             CameraInputManager.Update();
         }
@@ -88,6 +69,46 @@ namespace Rogue.MapEditor
             {
                 DisplayGrid = !DisplayGrid;
                 Map.ToogleDrawRectangles(DisplayGrid);
+            }
+            if (obj == Keys.O)
+            {
+                var thread = new Thread(new ThreadStart(new Action(() =>
+                  {
+                      System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+                      dialog.ShowDialog();
+
+                      if (dialog.FileName != string.Empty)
+                      {
+                          LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
+                          MapTemplate template = new MapTemplate();
+                          template.Deserialize(reader);
+                          Map.Load(template);
+                      }
+
+                  })));
+
+                thread.SetApartmentState(ApartmentState.STA);
+
+                thread.Start();
+
+            }
+            if (obj == Keys.P)
+            {
+                var thread = new Thread(new ThreadStart(new Action(() =>
+                {
+                    System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
+                    dialog.ShowDialog();
+
+                    var template = Map.Export();
+
+                    LittleEndianWriter writer = new LittleEndianWriter();
+                    template.Serialize(writer);
+                    File.WriteAllBytes(dialog.FileName, writer.Data);
+                })));
+                thread.SetApartmentState(ApartmentState.STA);
+
+                thread.Start();
+
             }
         }
 
