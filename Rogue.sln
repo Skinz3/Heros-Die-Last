@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue", "Rogue\Rogue.csproj", "{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoFramework", "MonoFramework\MonoFramework.csproj", "{45584C6D-311E-4BB4-B5B8-88A1423F90CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteNetLib", "LiteNetLib\LiteNetLib.csproj", "{B0A014E4-0392-4E35-AA42-8FB5A40417E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.MapEditor", "Rogue.MapEditor\Rogue.MapEditor.csproj", "{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.Server", "Rogue.Server\Rogue.Server.csproj", "{A6583598-6032-477E-A9F9-B2A1B6226458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.Protocol", "Rogue.Protocol\Rogue.Protocol.csproj", "{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45584C6D-311E-4BB4-B5B8-88A1423F90CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45584C6D-311E-4BB4-B5B8-88A1423F90CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45584C6D-311E-4BB4-B5B8-88A1423F90CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45584C6D-311E-4BB4-B5B8-88A1423F90CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6583598-6032-477E-A9F9-B2A1B6226458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6583598-6032-477E-A9F9-B2A1B6226458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6583598-6032-477E-A9F9-B2A1B6226458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6583598-6032-477E-A9F9-B2A1B6226458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E7E65E5-2C1B-47A3-9CB9-419A1DDAE9DD}
+	EndGlobalSection
+EndGlobal
