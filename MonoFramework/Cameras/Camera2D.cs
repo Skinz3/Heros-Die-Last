@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MonoFramework.Scenes;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,8 @@ namespace MonoFramework.Cameras
 
         public float Rotation
         {
-            get; set;
+            get;
+            set;
         }
 
         public Vector2 Position;
@@ -45,6 +47,29 @@ namespace MonoFramework.Cameras
             _zoom = 1.0f;
             Rotation = 0.0f;
             Position = Vector2.Zero;
+        }
+        public void HandleInput()
+        {
+            var state = Keyboard.GetState();
+
+            float speed = 5f;
+
+            if (state.IsKeyDown(Keys.D))
+            {
+                Camera2D.MainCamera.Position.X += speed;
+            }
+            if (state.IsKeyDown(Keys.Q))
+            {
+                Camera2D.MainCamera.Position.X -= speed;
+            }
+            if (state.IsKeyDown(Keys.Z))
+            {
+                Camera2D.MainCamera.Position.Y -= speed;
+            }
+            if (state.IsKeyDown(Keys.S))
+            {
+                Camera2D.MainCamera.Position.Y += speed;
+            }
         }
         public Matrix GetTransformation()
         {

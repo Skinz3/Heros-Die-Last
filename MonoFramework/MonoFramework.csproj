@@ -54,7 +54,6 @@
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />
-    <Compile Include="Input\CameraInputManager.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="IO\LittleEndianReader.cs" />
     <Compile Include="IO\LittleEndianWriter.cs" />

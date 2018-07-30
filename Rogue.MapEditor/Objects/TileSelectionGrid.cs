@@ -81,7 +81,8 @@ namespace Rogue.MapEditor.Objects
                         Sprites[i].Load();
                     
                     // check if the cell sprite is used in map, if not, dispose it
-                    Cells[i - SpriteIndex].FillOverSprites = true;
+                    Cells[i - SpriteIndex].FillOverSprites = false;
+                    Cells[i - SpriteIndex].FillColor = Color.White;
                     Cells[i - SpriteIndex].AddSprite(Sprites[i], LayerEnum.FIRST);
 
                 }
@@ -109,11 +110,10 @@ namespace Rogue.MapEditor.Objects
         private void TileSelectionGrid_OnMouseEnter(GCell obj)
         {
             obj.FillColor = Color.Red;
-            obj.FillColor.A = 50;
         }
         private void TileSelectionGrid_OnMouseLeave(GCell obj)
         {
-            obj.FillColor = Color.Transparent;
+            obj.FillColor = Color.White;
         }
         public override void OnUpdate(GameTime time)
         {

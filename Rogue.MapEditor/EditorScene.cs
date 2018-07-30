@@ -37,11 +37,8 @@ namespace Rogue.MapEditor
             private set;
         } = true;
 
-        private CameraInputManager CameraInputManager
-        {
-            get;
-            set;
-        }
+        public override bool HandleCameraInput => true;
+
 
         public EditorScene()
         {
@@ -55,14 +52,6 @@ namespace Rogue.MapEditor
 
         }
 
-        public override void OnUpdate(GameTime gameTime)
-        {
-
-
-            CameraInputManager.Update();
-        }
-
-
         private void InputManager_OnKeyPressed(Keys obj)
         {
             if (obj == Keys.F)
@@ -72,25 +61,16 @@ namespace Rogue.MapEditor
             }
             if (obj == Keys.O)
             {
-                var thread = new Thread(new ThreadStart(new Action(() =>
-                  {
-                      System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-                      dialog.ShowDialog();
-
-                      if (dialog.FileName != string.Empty)
-                      {
-                          LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
-                          MapTemplate template = new MapTemplate();
-                          template.Deserialize(reader);
-                          Map.Load(template);
-                      }
-
-                  })));
-
-                thread.SetApartmentState(ApartmentState.STA);
-
-                thread.Start();
-
+                System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+                dialog.ShowDialog();
+                dialog.Dispose();
+                if (dialog.FileName != string.Empty)
+                {
+                    LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
+                    MapTemplate template = new MapTemplate();
+                    template.Deserialize(reader);
+                    Map.Load(template);
+                }
             }
             if (obj == Keys.P)
             {
@@ -115,7 +95,6 @@ namespace Rogue.MapEditor
         public override void OnInitialize()
         {
             InputManager.OnKeyPressed += InputManager_OnKeyPressed;
-            CameraInputManager = new CameraInputManager(10f);
 
             TileSelectionGrid = new TileSelectionGrid(new Vector2(100, 640), new Point(15, 3), 50, Color.Black, 1f);
             AddObject(TileSelectionGrid, LayerEnum.UI);
@@ -141,5 +120,6 @@ namespace Rogue.MapEditor
         {
 
         }
+
     }
 }

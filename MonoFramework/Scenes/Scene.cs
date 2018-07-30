@@ -32,6 +32,10 @@ namespace MonoFramework.Scenes
             private set;
         }
 
+        public abstract bool HandleCameraInput
+        {
+            get;
+        }
 
         public Scene()
         {
@@ -71,11 +75,6 @@ namespace MonoFramework.Scenes
         /// Lorsque les élements on été ajoutés & initialisés
         /// </summary>
         public abstract void OnInitializeComplete();
-        /// <summary>
-        /// Lorsqu'on a update les objets
-        /// </summary>
-        /// <param name="time"></param>
-        public abstract void OnUpdate(GameTime time);
 
         public void AddObject(GameObject gameObject, LayerEnum layer)
         {
@@ -98,6 +97,9 @@ namespace MonoFramework.Scenes
 
         public void Update(GameTime gameTime)
         {
+            if (HandleCameraInput)
+                Camera.HandleInput();
+
             foreach (var list in GameObjects.Values)
             {
                 foreach (var gameObject in list)
@@ -110,7 +112,6 @@ namespace MonoFramework.Scenes
             {
                 gameObject.Update(gameTime);
             }
-            OnUpdate(gameTime);
         }
 
         public void Draw(GameTime gameTime)
@@ -134,7 +135,7 @@ namespace MonoFramework.Scenes
             }
             Debug.SpriteBatch.End();
 
-            Debug.SpriteBatch.Begin();
+            Debug.SpriteBatch.Begin();  
 
             foreach (var gameObject in UIGameObjects)
             {

@@ -14,7 +14,6 @@ namespace MonoFramework.Objects.Abstract
         {
             this.Color = color;
         }
-
         protected Texture2D Texture
         {
             get;
