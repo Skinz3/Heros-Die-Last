@@ -45,7 +45,7 @@ namespace MonoFramework.Objects
 
         public override void OnDraw(GameTime time)
         {
-            Debug.SpriteBatch.DrawString(SpriteFont, Text, Position, Color, 0f, new Vector2(), Scale, SpriteEffects.None, 1f);
+          Debug.SpriteBatch.DrawString(SpriteFont, Text, Position, Color, 0f, new Vector2(), Scale, SpriteEffects.None, 1f);
         }
 
         public override void OnInitialize()

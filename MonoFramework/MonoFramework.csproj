@@ -47,11 +47,12 @@
     <Compile Include="Cameras\Camera2D.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GeometryExtensions.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Frame.cs" />
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
     <Compile Include="Network\Server.cs" />
-    <Compile Include="Objects\Abstract\AnimableObject.cs" />
+    <Compile Include="Objects\AnimableObject.cs" />
     <Compile Include="Objects\UI\Button.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />

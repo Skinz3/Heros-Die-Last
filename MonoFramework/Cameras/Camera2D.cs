@@ -31,7 +31,7 @@ namespace MonoFramework.Cameras
         public float Zoom
         {
             get { return _zoom; }
-            set { _zoom = value; if (_zoom <1f) _zoom = 1f; } // Negative zoom will flip image
+            set { _zoom = value; if (_zoom <1f) _zoom = 1f; } // Negative zoom will flip image at 0.1, < 1 Pixel is not displayed? (Texture Filtering)
         }
 
         public float Rotation
@@ -59,7 +59,7 @@ namespace MonoFramework.Cameras
         {
             var state = Keyboard.GetState();
 
-            float speed = 5f;
+            float speed = 7f;
 
             if (state.IsKeyDown(Keys.D))
             {
@@ -82,18 +82,18 @@ namespace MonoFramework.Cameras
 
             if (scrollWheelValue > OldMouseScrollWhellValue)
             {
-                Zoom += 0.01f;
+                Zoom += 0.02f;
             }
             else if (scrollWheelValue < OldMouseScrollWhellValue)
             {
-                Zoom -= 0.01f;
+                Zoom -= 0.02f;
             }
             OldMouseScrollWhellValue = scrollWheelValue;
         }
         public Matrix GetTransformation()
         {
             _transform =
-              Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
+              Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 1)) *
                                          Matrix.CreateRotationZ(Rotation) *
                                          Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)
                                         );

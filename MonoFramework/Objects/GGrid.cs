@@ -53,11 +53,17 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
+        public LayerEnum DisplayedLayer
+        {
+            get;
+            private set;
+        }
         public GGrid(Vector2 position, Point gridSize, float cellSize, Color color, int thickness) : base(position, new Point((int)(gridSize.X * cellSize), (int)(gridSize.Y * cellSize)), color)
         {
             this.GridSize = gridSize;
             this.CellSize = cellSize;
             this.Thickness = thickness;
+            this.DisplayedLayer = LayerEnum.First | LayerEnum.Second | LayerEnum.Third;
         }
         /// <summary>
         /// Require OnInitializationComplete
@@ -68,6 +74,15 @@ namespace MonoFramework.Objects
             {
                 cell.DrawRectangle = draw;
             }
+        }
+
+        public void DefineDisplayedLayer(LayerEnum displayedLayer)
+        {
+            foreach (var cell in Cells)
+            {
+                cell.DisplayedLayers = displayedLayer;
+            }
+            this.DisplayedLayer = displayedLayer;
         }
         /// <summary>
         /// Require OnInitializationComplete
@@ -97,7 +112,7 @@ namespace MonoFramework.Objects
 
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
-                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color,Layer, Thickness);
+                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Layer, Thickness);
                     Cells[id].Initialize();
                     Cells[id].OnMouseEnter += Cell_OnMouseEnter;
                     Cells[id].OnMouseLeave += Cell_OnMouseLeave;
@@ -193,6 +208,11 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
+        public LayerEnum DisplayedLayers
+        {
+            get;
+            set;
+        }
         public Dictionary<LayerEnum, Sprite> Sprites
         {
             get;
@@ -209,6 +229,7 @@ namespace MonoFramework.Objects
             this.Thickness = thickness;
             this.DrawRectangle = true;
             this.Layer = layer;
+            this.DisplayedLayers = LayerEnum.First | LayerEnum.Second | LayerEnum.Third;
         }
 
 
@@ -225,9 +246,10 @@ namespace MonoFramework.Objects
         {
             Fill(BackColor);
 
-            foreach (var sprite in Sprites.Values)
+            foreach (var pair in Sprites)
             {
-                sprite.Draw(GRectangle.Rectangle, Color.White);
+                if (DisplayedLayers.HasFlag(pair.Key))
+                    pair.Value.Draw(GRectangle.Rectangle, Color.White);
             }
 
             Fill(FillColor);

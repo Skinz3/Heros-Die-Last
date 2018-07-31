@@ -55,8 +55,7 @@ namespace MonoFramework.IO.Maps
 
             foreach (var sprite in Sprites)
             {
-                writer.WriteUTF(sprite.SpriteName);
-                writer.WriteByte((byte)sprite.Layer);
+                sprite.Serialize(writer);
             }
         }
         public void Deserialize(LittleEndianReader reader)
@@ -68,8 +67,7 @@ namespace MonoFramework.IO.Maps
             for (int i = 0; i < Sprites.Length; i++)
             {
                 Sprites[i] = new SpriteTemplate();
-                Sprites[i].SpriteName = reader.ReadUTF();
-                Sprites[i].Layer = (LayerEnum)reader.ReadByte();
+                Sprites[i].Deserialize(reader);
             }
         }
     }
@@ -78,6 +76,26 @@ namespace MonoFramework.IO.Maps
         public string SpriteName;
 
         public LayerEnum Layer;
+
+        public bool FlippedVertically;
+
+        public bool FlippedHorizontally;
+
+
+        public void Serialize(LittleEndianWriter writer)
+        {
+            writer.WriteUTF(SpriteName);
+            writer.WriteByte((byte)Layer);
+            writer.WriteBoolean(FlippedVertically);
+            writer.WriteBoolean(FlippedHorizontally);
+        }
+        public void Deserialize(LittleEndianReader reader)
+        {
+            this.SpriteName = reader.ReadUTF();
+            this.Layer = (LayerEnum)reader.ReadByte();
+            this.FlippedVertically = reader.ReadBoolean();
+            this.FlippedHorizontally = reader.ReadBoolean();
+        }
 
     }
 }

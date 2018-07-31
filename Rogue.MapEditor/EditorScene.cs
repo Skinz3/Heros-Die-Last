@@ -18,6 +18,7 @@ using MonoFramework.Objects.UI;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MonoFramework.Objects.Abstract;
 
 namespace Rogue.MapEditor
 {
@@ -47,6 +48,11 @@ namespace Rogue.MapEditor
             set;
         }
         private GString DrawingLayerLabel
+        {
+            get;
+            set;
+        }
+        private GString DisplayedLayerLabel
         {
             get;
             set;
@@ -82,38 +88,68 @@ namespace Rogue.MapEditor
                     Map.Load(template);
                 }
             }
+            if (obj == Keys.LeftShift)
+            {
+                TileSelectionGrid.Cursor.Sprite = Sprite.Flip(TileSelectionGrid.Cursor.Sprite, false, true);
+            }
+            if (obj == Keys.LeftControl)
+            {
+                TileSelectionGrid.Cursor.Sprite = Sprite.Flip(TileSelectionGrid.Cursor.Sprite, true, false);
+            }
             if (obj == Keys.P)
             {
                 System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
                 dialog.ShowDialog();
+                if (dialog.FileName != string.Empty)
+                {
+                    var template = Map.Export();
 
-                var template = Map.Export();
-
-                LittleEndianWriter writer = new LittleEndianWriter();
-                template.Serialize(writer);
-                File.WriteAllBytes(dialog.FileName, writer.Data);
+                    LittleEndianWriter writer = new LittleEndianWriter();
+                    template.Serialize(writer);
+                    File.WriteAllBytes(dialog.FileName, writer.Data);
+                }
 
             }
             if (obj == Keys.Tab)
             {
                 int drawingLayer = (int)DrawingLayer;
-                drawingLayer++;
+                drawingLayer *= 2;
 
-                if (drawingLayer == 4)
+                if (drawingLayer > 4)
                     drawingLayer = 1;
 
                 DrawingLayer = (LayerEnum)drawingLayer;
-                DrawingLayerLabel.Text = "Drawing Layer: " + DrawingLayer.ToString();
+
             }
+
+            if (obj == Keys.D1)
+            {
+                Map.DefineDisplayedLayer(LayerEnum.First);
+            }
+            if (obj == Keys.D2)
+            {
+                Map.DefineDisplayedLayer(LayerEnum.Second);
+            }
+            if (obj == Keys.D3)
+            {
+                Map.DefineDisplayedLayer(LayerEnum.Third);
+            }
+            if (obj == Keys.D4)
+            {
+                Map.DefineDisplayedLayer(LayerEnum.First | LayerEnum.Second | LayerEnum.Third);
+            }
+
+            DisplayedLayerLabel.Text = "Displayed Layer: " + Map.DisplayedLayer.ToString();
+            DrawingLayerLabel.Text = "Drawing Layer: " + DrawingLayer.ToString();
         }
 
         public override void OnInitialize()
         {
-            this.DrawingLayer = LayerEnum.FIRST;
+            this.DrawingLayer = LayerEnum.First;
 
             InputManager.OnKeyPressed += InputManager_OnKeyPressed;
 
-            TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 640), new Point(15, 3), 50, Color.Black, 1);
+            TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 650), new Point(20, 3), 50, Color.Black, 1);
             AddObject(TileSelectionGrid, LayerEnum.UI);
 
             Map = new GMap(new Point(40, 40));
@@ -121,17 +157,25 @@ namespace Rogue.MapEditor
             Map.OnMouseEnterCell += Map_OnMouseEnter;
             Map.OnMouseLeaveCell += Map_OnMouseLeave;
             Map.OnMouseRightClickCell += Map_OnMouseRightClick;
-            AddObject(Map, LayerEnum.FIRST);
-
+            AddObject(Map, LayerEnum.First);
 
             this.DrawingLayerLabel = new GString(new Vector2(), "arial", "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
             AddObject(DrawingLayerLabel, LayerEnum.UI);
+
+            this.DisplayedLayerLabel = new GString(new Vector2(0, 30f), "arial", "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.Black, 1f);
+            AddObject(DisplayedLayerLabel, LayerEnum.UI);
+
+            AddObject(new AnimableObject(new Vector2(150,150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
+                LayerEnum.First);
+
         }
+
+
 
 
         public override void OnInitializeComplete()
         {
-            
+
         }
 
         #region Mouse Events
@@ -148,13 +192,17 @@ namespace Rogue.MapEditor
 
         private void Map_OnMouseRightClick(GCell obj)
         {
-            obj.RemoveSprite(DrawingLayer);
+            if (Map.DisplayedLayer.HasFlag(DrawingLayer))
+                obj.RemoveSprite(DrawingLayer);
         }
 
         private void Map_OnMouseLeftClick(GCell obj)
         {
-            if (TileSelectionGrid.SelectedSprite != null)
-                obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+            if (Map.DisplayedLayer.HasFlag(DrawingLayer))
+            {
+                if (TileSelectionGrid.SelectedSprite != null)
+                    obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+            }
         }
         #endregion
 

@@ -13,7 +13,7 @@ namespace MonoFramework.Objects
     {
         public const float MAP_CELL_SIZE = 50f;
 
-        public GMap(Point size) : base(new Vector2(), size, MAP_CELL_SIZE, Color.Black,1)
+        public GMap(Point size) : base(new Vector2(), size, MAP_CELL_SIZE, Color.Black, 1)
         {
 
         }
@@ -25,7 +25,13 @@ namespace MonoFramework.Objects
 
                 foreach (var sprite in cell.Sprites)
                 {
-                    gCell.AddSprite(SpriteManager.GetSprite(sprite.SpriteName), sprite.Layer);
+                    var target = SpriteManager.GetSprite(sprite.SpriteName);
+
+                    if (sprite.FlippedVertically || sprite.FlippedHorizontally)
+                    {
+                        target = Sprite.Flip(target, sprite.FlippedVertically, sprite.FlippedHorizontally);
+                    }
+                    gCell.AddSprite(target, sprite.Layer);
                 }
             }
         }
@@ -51,6 +57,8 @@ namespace MonoFramework.Objects
                     result.Cells[i].Sprites[j] = new SpriteTemplate();
                     result.Cells[i].Sprites[j].SpriteName = Cells[i].Sprites.ElementAt(j).Value.Name;
                     result.Cells[i].Sprites[j].Layer = Cells[i].Sprites.ElementAt(j).Key;
+                    result.Cells[i].Sprites[j].FlippedVertically = Cells[i].Sprites.ElementAt(j).Value.FlippedVertically;
+                    result.Cells[i].Sprites[j].FlippedHorizontally = Cells[i].Sprites.ElementAt(j).Value.FlippedHorizontally;
                 }
             }
             return result;

@@ -38,7 +38,7 @@ namespace MonoFramework
             this.IsMouseVisible = true;
 
            
-            //this.GraphicsDeviceManager.IsFullScreen = true;
+           //this.GraphicsDeviceManager.IsFullScreen = true;
         }
 
         protected override void Initialize()

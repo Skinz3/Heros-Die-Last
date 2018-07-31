@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using MonoFramework.Objects.Abstract;
 using MonoFramework.Sprites;
 
-namespace MonoFramework.Objects.Abstract
+namespace MonoFramework.Objects
 {
-    public abstract class AnimableObject : PositionableObject
+    public class AnimableObject : PositionableObject
     {
         private int CurrentIndex
         {
@@ -48,7 +49,7 @@ namespace MonoFramework.Objects.Abstract
         /// <param name="spriteNames"></param>
         /// <param name="delay">en ms</param>
         /// <param name="loop"></param>
-        public AnimableObject(Vector2 position, Point size, string[] spriteNames, float delay, bool loop) : base(position,size)
+        public AnimableObject(Vector2 position, Point size, string[] spriteNames, float delay, bool loop) : base(position, size)
         {
             this.SpritesNames = spriteNames;
             this.Delay = delay;
@@ -74,18 +75,21 @@ namespace MonoFramework.Objects.Abstract
                 CurrentIndex++;
                 CurrentDelay = Delay; // 1f
 
-                if (CurrentIndex >= Sprites.Length) 
+                if (CurrentIndex >= Sprites.Length)
                 {
                     CurrentIndex = 0;
                 }
             }
-           
+
         }
         public override void OnDraw(GameTime time)
         {
-           
             Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, Rectangle, Color.White);
         }
 
+        public override void OnInitialize()
+        {
+          
+        }
     }
 }

@@ -44,10 +44,28 @@ namespace MonoFramework.Sprites
                 return System.IO.Path.GetFileNameWithoutExtension(Path);
             }
         }
-
+        public bool FlippedVertically
+        {
+            get;
+            private set;
+        }
+        public bool FlippedHorizontally
+        {
+            get;
+            private set;
+        }
         public Sprite(string path)
         {
             this.Path = path;
+            this.FlippedVertically = false;
+            this.FlippedHorizontally = false;
+        }
+        public Sprite(string path, Texture2D texture, bool flippedVertically, bool flippedHorizontally)
+        {
+            this.Path = path;
+            this.Texture = texture;
+            this.FlippedVertically = flippedVertically;
+            this.FlippedHorizontally = flippedHorizontally;
         }
         public void Dispose()
         {
@@ -62,6 +80,38 @@ namespace MonoFramework.Sprites
         public void Draw(Rectangle rect, Color color)
         {
             Debug.SpriteBatch.Draw(Texture, rect, color);
+        }
+        public static Sprite Flip(Sprite input, bool vertical, bool horizontal)
+        {
+            Texture2D flipped = new Texture2D(input.Texture.GraphicsDevice, input.Texture.Width, input.Texture.Height);
+            Color[] data = new Color[input.Texture.Width * input.Texture.Height];
+            Color[] flipped_data = new Color[data.Length];
+
+            input.Texture.GetData(data);
+
+            for (int x = 0; x < input.Texture.Width; x++)
+            {
+                for (int y = 0; y < input.Texture.Height; y++)
+                {
+                    int index = 0;
+                    if (horizontal && vertical)
+                        index = input.Texture.Width - 1 - x + (input.Texture.Height - 1 - y) * input.Texture.Width;
+                    else if (horizontal && !vertical)
+                        index = input.Texture.Width - 1 - x + y * input.Texture.Width;
+                    else if (!horizontal && vertical)
+                        index = x + (input.Texture.Height - 1 - y) * input.Texture.Width;
+                    else if (!horizontal && !vertical)
+                        index = x + y * input.Texture.Width;
+
+                    flipped_data[x + y * input.Texture.Width] = data[index];
+                }
+            }
+
+            flipped.SetData(flipped_data);
+
+            vertical = vertical ? !input.FlippedVertically : input.FlippedVertically;
+            horizontal = horizontal ? !input.FlippedHorizontally : input.FlippedHorizontally;
+            return new Sprite(input.Path, flipped, vertical, horizontal);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoFramework.Input;
 using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
@@ -26,6 +27,10 @@ namespace Rogue.MapEditor.Objects
                 {
                     m_spriteIndex = 0;
                 }
+                else if (value >= Sprites.Length - (GridSize.X * GridSize.Y) + GridSize.Y)
+                {
+                    return;
+                }
                 else
                     m_spriteIndex = value;
             }
@@ -33,10 +38,10 @@ namespace Rogue.MapEditor.Objects
 
         private int m_spriteIndex = 0;
 
-        private GCursor Cursor
+        public GCursor Cursor
         {
             get;
-            set;
+            private set;
         }
         public Sprite SelectedSprite
         {
@@ -50,7 +55,7 @@ namespace Rogue.MapEditor.Objects
             get;
             set;
         }
-        public TileSelectionGrid(Vector2 position, Point gridSize, int cellSize, Color color, int thickness) : base(position, gridSize, cellSize, color,thickness)
+        public TileSelectionGrid(Vector2 position, Point gridSize, int cellSize, Color color, int thickness) : base(position, gridSize, cellSize, color, thickness)
         {
             this.OnMouseEnterCell += TileSelectionGrid_OnMouseEnter;
             this.OnMouseLeaveCell += TileSelectionGrid_OnMouseLeave;
@@ -64,8 +69,10 @@ namespace Rogue.MapEditor.Objects
         {
             this.Sprites = SpriteManager.GetSprites();
             this.AddChild(Cursor);
+
             base.OnInitialize();
         }
+
         public override void OnInitializeComplete()
         {
             DisplaySprite();
@@ -78,9 +85,9 @@ namespace Rogue.MapEditor.Objects
                 {
                     if (!Sprites[i].Loaded)
                         Sprites[i].Load();
-                    
+
                     Cells[i - SpriteIndex].BackColor = Color.White;
-                    Cells[i - SpriteIndex].AddSprite(Sprites[i], LayerEnum.FIRST);
+                    Cells[i - SpriteIndex].AddSprite(Sprites[i], LayerEnum.First);
 
                 }
                 else
@@ -89,14 +96,19 @@ namespace Rogue.MapEditor.Objects
                     break;
                 }
             }
-           
+            for (int i = 0; i < SpriteIndex + Cells.Length; i++)
+            {
+                if (i >= Sprites.Length && i - SpriteIndex > 0)
+                    Cells[i - SpriteIndex].RemoveSprites();
+            }
+
         }
 
         private void TileSelectionGrid_OnMouseLeftClick(GCell obj)
         {
-            if (obj.Sprites.ContainsKey(LayerEnum.FIRST))
+            if (obj.Sprites.ContainsKey(LayerEnum.First))
             {
-                Cursor.Sprite = obj.Sprites[LayerEnum.FIRST];
+                Cursor.Sprite = obj.Sprites[LayerEnum.First];
             }
         }
         private void TileSelectionGrid_OnMouseRightClick(GCell obj)
@@ -117,12 +129,12 @@ namespace Rogue.MapEditor.Objects
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                SpriteIndex += 1;
+                SpriteIndex += GridSize.Y;
                 DisplaySprite();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                SpriteIndex -= 1;
+                SpriteIndex -= GridSize.Y;
                 DisplaySprite();
             }
             base.OnUpdate(time);

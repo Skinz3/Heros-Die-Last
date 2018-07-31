@@ -43,9 +43,9 @@ namespace MonoFramework.Scenes
             this.UIGameObjects = new List<GameObject>();
             this.GameObjects = new Dictionary<LayerEnum, List<GameObject>>()
             {
-                { LayerEnum.FIRST, new List<GameObject>() },
-                { LayerEnum.SECOND, new List<GameObject>() },
-                { LayerEnum.THIRD, new List<GameObject>() },
+                { LayerEnum.First, new List<GameObject>() },
+                { LayerEnum.Second, new List<GameObject>() },
+                { LayerEnum.Third, new List<GameObject>() },
                 { LayerEnum.UI,new List<GameObject>() },
             };
         }
@@ -119,11 +119,12 @@ namespace MonoFramework.Scenes
             Debug.GraphicsDevice.Clear(Color.White);
 
             Debug.SpriteBatch.Begin(SpriteSortMode.Deferred,
-                        BlendState.AlphaBlend,SamplerState.PointClamp,
+                        BlendState.AlphaBlend, SamplerState.PointClamp,
                         null,
                         null,
                         null,
                         Camera.GetTransformation());
+
             foreach (var list in GameObjects.Values)
             {
                 foreach (var gameObject in list)
@@ -133,8 +134,8 @@ namespace MonoFramework.Scenes
             }
             Debug.SpriteBatch.End();
 
-            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred,null,SamplerState.PointClamp,null,
-                null,null,null);  
+            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null,
+               null, null, null);
 
             foreach (var gameObject in UIGameObjects)
             {

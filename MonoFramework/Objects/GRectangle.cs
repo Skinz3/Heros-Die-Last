@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoFramework.Cameras;
 using MonoFramework.Objects.Abstract;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace MonoFramework.Objects
             Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Bottom, Rectangle.Width, Thickness), Color);
             Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Top, Thickness, Rectangle.Height), Color);
             Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Right, Rectangle.Top, Thickness, Rectangle.Height + 1), Color);
+
+           
         }
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
         {

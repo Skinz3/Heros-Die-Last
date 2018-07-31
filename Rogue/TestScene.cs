@@ -52,7 +52,7 @@ namespace Rogue
 
             foreach (var obj in Objects)
             {
-                AddObject(obj, LayerEnum.FIRST);
+                AddObject(obj, LayerEnum.First);
             }
         }
 

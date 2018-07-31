@@ -13,6 +13,8 @@ namespace MonoFramework.Input
 
         public static event Action<Keys> OnKeyPressed;
 
+        public static event Action<Keys> OnKeyDown;
+
         public static void Update()
         {
             if (OnKeyPressed == null)
@@ -27,14 +29,17 @@ namespace MonoFramework.Input
                 if (keys.Contains(pressedKey) == false)
                 {
                     PressedKeys.Remove(pressedKey);
-                    OnKeyPressed(pressedKey);
+                    OnKeyPressed?.Invoke(pressedKey);
                 }
             }
 
             foreach (var key in keys)
             {
                 if (PressedKeys.Contains(key) == false)
-                PressedKeys.Add(key);
+                {
+                    OnKeyDown?.Invoke(key);
+                    PressedKeys.Add(key);
+                }
             }
         }
     }

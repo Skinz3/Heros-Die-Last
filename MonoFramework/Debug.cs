@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace MonoFramework
 {
@@ -50,7 +51,7 @@ namespace MonoFramework
             get;
             private set;
         }
-        public static void Initialize(SpriteBatch spritebatch,ContentManager content)
+        public static void Initialize(SpriteBatch spritebatch, ContentManager content)
         {
             SpriteBatch = spritebatch;
             Content = content;
@@ -64,12 +65,12 @@ namespace MonoFramework
             float rotation = (float)Math.Atan2(end.Y - start.Y, end.X - start.X);
             SpriteBatch.Draw(DummyTexture, start, null, color, rotation, Vector2.Zero, new Vector2(length, thickness), SpriteEffects.None, 0);
         }
-        public static void DrawRectangle(Rectangle rectangle, Color color, float thickness)
+        public static void DrawRectangle(Rectangle rectangle, Color color, int thickness)
         {
-            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, 1), color);
-            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Bottom, rectangle.Width, 1), color);
-            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, 1, rectangle.Height), color);
-            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Right, rectangle.Top, 1, rectangle.Height + 1), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, thickness), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Bottom, rectangle.Width, thickness), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, thickness, rectangle.Height), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Right, rectangle.Top, thickness, rectangle.Height + 1), color);
         }
         public static void FillRectangle(Rectangle rectangle, Color color)
         {
