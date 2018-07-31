@@ -34,9 +34,7 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        public override Point Size => new Point((int)Radius, (int)Radius);
-
-        public GCircle(Vector2 position, float radius, Color color, float sharpness = 1f, int thickness = -1) : base(position, color)
+        public GCircle(Vector2 position, float radius, Color color, float sharpness = 1f, int thickness = -1) : base(position,new Point((int)radius,(int)radius),color)
         {
             this.Radius = radius;
             this.Sharpness = sharpness;

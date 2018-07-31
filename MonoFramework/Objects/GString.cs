@@ -34,7 +34,7 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        public GString(Vector2 position, string spriteFontName, string text, Color color, float scale) : base(position)
+        public GString(Vector2 position, string spriteFontName, string text, Color color, float scale) : base(position,new Point())
         {
             this.SpriteFontName = spriteFontName;
             this.Text = text;
@@ -42,7 +42,6 @@ namespace MonoFramework.Objects
             this.Scale = scale;
         }
 
-        public override Point Size => throw new NotImplementedException();
 
         public override void OnDraw(GameTime time)
         {
@@ -57,6 +56,11 @@ namespace MonoFramework.Objects
         public override void OnUpdate(GameTime time)
         {
 
+        }
+
+        public override void OnInitializeComplete()
+        {
+          
         }
     }
 }

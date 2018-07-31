@@ -26,18 +26,10 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        private Point TextureSize
-        {
-            get;
-             set;
-        }
-        public GCursor(Vector2 position, Color color, Sprite sprite, Point textureSize) : base(position, color)
+        public GCursor(Vector2 position, Color color, Sprite sprite, Point textureSize) : base(position, textureSize, color)
         {
             this.Sprite = sprite;
-            this.TextureSize = textureSize;
         }
-
-        public override Point Size => TextureSize;
 
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
         {
@@ -57,6 +49,6 @@ namespace MonoFramework.Objects
             }
         }
 
-       
+
     }
 }

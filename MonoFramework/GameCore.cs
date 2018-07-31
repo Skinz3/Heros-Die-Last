@@ -36,6 +36,7 @@ namespace MonoFramework
             GraphicsDeviceManager.PreferredBackBufferWidth = 1000;  // largeur de la fenêtre
             GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
             this.IsMouseVisible = true;
+            //this.GraphicsDeviceManager.IsFullScreen = true;
         }
 
         protected override void Initialize()

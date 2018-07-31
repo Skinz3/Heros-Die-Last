@@ -13,7 +13,7 @@ namespace MonoFramework.Objects
     {
         public const float MAP_CELL_SIZE = 50f;
 
-        public GMap(Point size) : base(new Vector2(), size, MAP_CELL_SIZE, Color.Black, 1f)
+        public GMap(Point size) : base(new Vector2(), size, MAP_CELL_SIZE, Color.Black,2)
         {
 
         }

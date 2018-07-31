@@ -36,10 +36,7 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
-        public abstract Point Size
-        {
-            get;
-        }
+      
         public GameObject()
         {
             this.Childs = new List<GameObject>();

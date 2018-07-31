@@ -21,13 +21,11 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        public GLine(Vector2 position, Vector2 target, Color color, float thickness) : base(position, color)
+        public GLine(Vector2 position, Vector2 target, Color color, float thickness) : base(position, new Point(), color)
         {
             this.Target = target;
             this.Thickness = thickness;
         }
-
-        public override Point Size => throw new NotImplementedException();
 
         public override void OnDraw(GameTime time)
         {

@@ -50,7 +50,7 @@ namespace Rogue.MapEditor.Objects
             get;
             set;
         }
-        public TileSelectionGrid(Vector2 position, Point gridSize, int cellSize, Color color, float thickness) : base(position, gridSize, cellSize, color, thickness)
+        public TileSelectionGrid(Vector2 position, Point gridSize, int cellSize, Color color, int thickness) : base(position, gridSize, cellSize, color,thickness)
         {
             this.OnMouseEnter += TileSelectionGrid_OnMouseEnter;
             this.OnMouseLeave += TileSelectionGrid_OnMouseLeave;
@@ -81,8 +81,7 @@ namespace Rogue.MapEditor.Objects
                         Sprites[i].Load();
                     
                     // check if the cell sprite is used in map, if not, dispose it
-                    Cells[i - SpriteIndex].FillOverSprites = false;
-                    Cells[i - SpriteIndex].FillColor = Color.White;
+                    Cells[i - SpriteIndex].BackColor = Color.White;
                     Cells[i - SpriteIndex].AddSprite(Sprites[i], LayerEnum.FIRST);
 
                 }
@@ -110,10 +109,11 @@ namespace Rogue.MapEditor.Objects
         private void TileSelectionGrid_OnMouseEnter(GCell obj)
         {
             obj.FillColor = Color.Red;
+            obj.FillColor.A = 50;
         }
         private void TileSelectionGrid_OnMouseLeave(GCell obj)
         {
-            obj.FillColor = Color.White;
+            obj.FillColor = Color.Transparent;
         }
         public override void OnUpdate(GameTime time)
         {

@@ -48,10 +48,16 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public GGrid(Vector2 position, Point gridSize, float cellSize, Color color, float thickness) : base(position, color)
+        public int Thickness
+        {
+            get;
+            private set;
+        }
+        public GGrid(Vector2 position, Point gridSize, float cellSize, Color color, int thickness) : base(position, new Point((int)(gridSize.X * cellSize), (int)(gridSize.Y * cellSize)), color)
         {
             this.GridSize = gridSize;
             this.CellSize = cellSize;
+            this.Thickness = thickness;
         }
         /// <summary>
         /// Require OnInitializationComplete
@@ -75,8 +81,6 @@ namespace MonoFramework.Objects
             return Cells.FirstOrDefault(x => x.Id == id);
         }
 
-        public override Point Size => new Point((int)(GridSize.X * CellSize), (int)(GridSize.Y * CellSize));
-
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
         {
             return Debug.DummyTexture;
@@ -93,7 +97,7 @@ namespace MonoFramework.Objects
 
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
-                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color);
+                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Thickness);
                     Cells[id].Initialize();
                     id++;
                     relativeY++;
@@ -119,7 +123,13 @@ namespace MonoFramework.Objects
 
                 if (Layer != LayerEnum.UI)
                 {
-                    location += Camera2D.MainCamera.Position.ToPoint();
+                    float tX = location.X / Camera2D.MainCamera.Zoom;
+                    float tY = location.Y / Camera2D.MainCamera.Zoom;
+
+                    tX += Camera2D.MainCamera.Position.X;
+                    tY += Camera2D.MainCamera.Position.Y;
+
+                    location = new Point((int)tX, (int)tY);
                 }
                 if (cell.GRectangle.Rectangle.Intersects(new Rectangle(location, Debug.CURSOR_SIZE)))
                 {
@@ -187,34 +197,37 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
+
         public Color FillColor;
 
-        public bool FillOverSprites
+        public Color BackColor;
+
+        public int Thickness
         {
             get;
-            set;
+            private set;
         }
         public Dictionary<LayerEnum, Sprite> Sprites
         {
             get;
             private set;
         }
-        public GCell(Vector2 position, Point relativePosition, int id, float size, Color color) : base(position, color)
+        public GCell(Vector2 position, Point relativePosition, int id, float size, Color color, int thickness) : base(position, new Point((int)size, (int)size), color)
         {
             this.Id = id;
             this.CellSize = size;
             this.RelativePosition = relativePosition;
             this.Sprites = new Dictionary<LayerEnum, Sprite>();
             this.FillColor = Color.Transparent;
-            this.FillOverSprites = false;
+            this.BackColor = Color.Transparent;
+            this.Thickness = thickness;
             this.DrawRectangle = true;
         }
 
-        public override Point Size => new Point((int)CellSize, (int)CellSize);
 
         public override void OnInitialize()
         {
-            this.GRectangle = new GRectangle(Position, Size, Color);
+            this.GRectangle = new GRectangle(Position, Size, Color, Thickness);
             this.GRectangle.Initialize();
         }
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
@@ -223,19 +236,14 @@ namespace MonoFramework.Objects
         }
         public override void OnDraw(GameTime time)
         {
-            if (!FillOverSprites)
-            {
-                Fill(FillColor);
-            }
+            Fill(BackColor);
+
             foreach (var sprite in Sprites.Values)
             {
                 sprite.Draw(GRectangle.Rectangle, Color.White);
             }
 
-            if (FillOverSprites)
-            {
-                Fill(FillColor);
-            }
+            Fill(FillColor);
 
             if (DrawRectangle)
                 this.GRectangle.Draw(time);

@@ -119,8 +119,7 @@ namespace MonoFramework.Scenes
             Debug.GraphicsDevice.Clear(Color.White);
 
             Debug.SpriteBatch.Begin(SpriteSortMode.Deferred,
-                        BlendState.AlphaBlend,
-                        null,
+                        BlendState.AlphaBlend,SamplerState.PointClamp,
                         null,
                         null,
                         null,
@@ -135,7 +134,8 @@ namespace MonoFramework.Scenes
             }
             Debug.SpriteBatch.End();
 
-            Debug.SpriteBatch.Begin();  
+            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred,null,SamplerState.PointClamp,null,
+                null,null,null);  
 
             foreach (var gameObject in UIGameObjects)
             {

@@ -11,21 +11,22 @@ namespace MonoFramework.Objects
 {
     public class GRectangle : TextureOwnerObject
     {
-        public Rectangle Rectangle;
-
-        public GRectangle(Vector2 position, Point size, Color color) : base(position, color)
+        public int Thickness
         {
-            this.Rectangle = new Rectangle(Position.ToPoint(), size);
+            get;
+            set;
         }
-
-        public override Point Size => Rectangle.Size;
+        public GRectangle(Vector2 position, Point size, Color color,int thickness) : base(position, size, color)
+        {
+            this.Thickness = thickness;
+        }
 
         public override void OnDraw(GameTime time)
         {
-            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width, 1), Color);
-            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Bottom, Rectangle.Width, 1), Color);
-            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Top, 1, Rectangle.Height), Color);
-            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Right, Rectangle.Top, 1, Rectangle.Height + 1), Color);
+            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width, Thickness), Color);
+            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Bottom, Rectangle.Width, Thickness), Color);
+            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Left, Rectangle.Top, Thickness, Rectangle.Height), Color);
+            Debug.SpriteBatch.Draw(Texture, new Rectangle(Rectangle.Right, Rectangle.Top, Thickness, Rectangle.Height + 1), Color);
         }
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
         {

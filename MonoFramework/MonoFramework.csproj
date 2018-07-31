@@ -51,6 +51,7 @@
     <Compile Include="Network\Frame.cs" />
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
     <Compile Include="Network\Server.cs" />
+    <Compile Include="Objects\Abstract\AnimableObject.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />

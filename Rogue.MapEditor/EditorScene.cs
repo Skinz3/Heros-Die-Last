@@ -8,6 +8,7 @@ using MonoFramework.IO;
 using MonoFramework.IO.Maps;
 using MonoFramework.Objects;
 using MonoFramework.Scenes;
+using MonoFramework.Sprites;
 using Rogue.MapEditor.Objects;
 using System;
 using System.Collections.Generic;
@@ -74,20 +75,14 @@ namespace Rogue.MapEditor
             }
             if (obj == Keys.P)
             {
-                var thread = new Thread(new ThreadStart(new Action(() =>
-                {
-                    System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
-                    dialog.ShowDialog();
+                System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
+                dialog.ShowDialog();
 
-                    var template = Map.Export();
+                var template = Map.Export();
 
-                    LittleEndianWriter writer = new LittleEndianWriter();
-                    template.Serialize(writer);
-                    File.WriteAllBytes(dialog.FileName, writer.Data);
-                })));
-                thread.SetApartmentState(ApartmentState.STA);
-
-                thread.Start();
+                LittleEndianWriter writer = new LittleEndianWriter();
+                template.Serialize(writer);
+                File.WriteAllBytes(dialog.FileName, writer.Data);
 
             }
         }
@@ -96,13 +91,26 @@ namespace Rogue.MapEditor
         {
             InputManager.OnKeyPressed += InputManager_OnKeyPressed;
 
-            TileSelectionGrid = new TileSelectionGrid(new Vector2(100, 640), new Point(15, 3), 50, Color.Black, 1f);
+            TileSelectionGrid = new TileSelectionGrid(new Vector2(100, 640), new Point(15, 3), 50, Color.Black, 1);
             AddObject(TileSelectionGrid, LayerEnum.UI);
 
             Map = new GMap(new Point(40, 40));
             Map.OnMouseLeftClick += Map_OnMouseLeftClick;
+            Map.OnMouseEnter += Map_OnMouseEnter;
+            Map.OnMouseLeave += Map_OnMouseLeave;
             Map.OnMouseRightClick += Map_OnMouseRightClick;
             AddObject(Map, LayerEnum.FIRST);
+        }
+
+        private void Map_OnMouseLeave(GCell obj)
+        {
+            obj.FillColor = Color.Transparent;
+        }
+
+        private void Map_OnMouseEnter(GCell obj)
+        {
+            obj.FillColor = Color.Red;
+            obj.FillColor.A = 50;
         }
 
         private void Map_OnMouseRightClick(GCell obj)
@@ -118,7 +126,7 @@ namespace Rogue.MapEditor
 
         public override void OnInitializeComplete()
         {
-
+         
         }
 
     }

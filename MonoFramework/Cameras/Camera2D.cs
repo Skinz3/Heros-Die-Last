@@ -42,12 +42,19 @@ namespace MonoFramework.Cameras
 
         public Vector2 Position;
 
+        private int OldMouseScrollWhellValue
+        {
+            get;
+            set;
+        }
+
         public Camera2D()
         {
             _zoom = 1.0f;
             Rotation = 0.0f;
             Position = Vector2.Zero;
         }
+
         public void HandleInput()
         {
             var state = Keyboard.GetState();
@@ -70,13 +77,25 @@ namespace MonoFramework.Cameras
             {
                 Camera2D.MainCamera.Position.Y += speed;
             }
+
+            var scrollWheelValue = Mouse.GetState().ScrollWheelValue;
+
+            if (scrollWheelValue > OldMouseScrollWhellValue)
+            {
+                Zoom += 0.008f;
+            }
+            else if (scrollWheelValue < OldMouseScrollWhellValue)
+            {
+                Zoom -= 0.008f;
+            }
+            OldMouseScrollWhellValue = scrollWheelValue;
         }
         public Matrix GetTransformation()
         {
-            _transform =       
-              Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
+            _transform =
+              Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y,0)) *
                                          Matrix.CreateRotationZ(Rotation) *
-                                         Matrix.CreateScale(new Vector3(Zoom, Zoom, 1));
+                                         Matrix.CreateScale(new Vector3(Zoom, Zoom, 0));
             return _transform;
         }
     }

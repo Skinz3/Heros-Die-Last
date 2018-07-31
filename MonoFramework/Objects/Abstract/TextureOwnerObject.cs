@@ -10,7 +10,7 @@ namespace MonoFramework.Objects.Abstract
 {
     public abstract class TextureOwnerObject : PositionableObject
     {
-        public TextureOwnerObject(Vector2 position, Color color) : base(position)
+        public TextureOwnerObject(Vector2 position, Point size, Color color) : base(position, size)
         {
             this.Color = color;
         }
@@ -31,13 +31,12 @@ namespace MonoFramework.Objects.Abstract
         }
         public override void OnInitializeComplete()
         {
-           
+
         }
         public override void OnDraw(GameTime time)
         {
             Debug.SpriteBatch.Draw(Texture, new Rectangle(Position.ToPoint(), Size), Color.White);
         }
-
 
         public abstract Texture2D CreateTexture(GraphicsDevice graphicsDevice);
     }

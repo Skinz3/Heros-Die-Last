@@ -58,10 +58,7 @@ namespace MonoFramework.Sprites
         {
             FileStream stream = new FileStream(Path, FileMode.Open);
             Texture = Texture2D.FromStream(Debug.GraphicsDevice, stream);
-
-            
         }
-
         public void Draw(Rectangle rect, Color color)
         {
             Debug.SpriteBatch.Draw(Texture, rect, color);

@@ -11,13 +11,20 @@ namespace MonoFramework.Objects.Abstract
     {
         public Vector2 Position;
 
-        public PositionableObject(Vector2 position)
+        public Point Size;
+
+
+        public Rectangle Rectangle
+        {
+            get
+            {
+                return new Rectangle(Position.ToPoint(), Size);
+            }
+        }
+        public PositionableObject(Vector2 position,Point size)
         {
             this.Position = position;
-        }
-        public override void OnInitializeComplete()
-        {
-           
+            this.Size = size;
         }
     }
 }
