@@ -31,7 +31,7 @@ namespace MonoFramework.Cameras
         public float Zoom
         {
             get { return _zoom; }
-            set { _zoom = value; if (_zoom < 0.1f) _zoom = 0.1f; } // Negative zoom will flip image
+            set { _zoom = value; if (_zoom <1f) _zoom = 1f; } // Negative zoom will flip image
         }
 
         public float Rotation
@@ -82,20 +82,21 @@ namespace MonoFramework.Cameras
 
             if (scrollWheelValue > OldMouseScrollWhellValue)
             {
-                Zoom += 0.008f;
+                Zoom += 0.01f;
             }
             else if (scrollWheelValue < OldMouseScrollWhellValue)
             {
-                Zoom -= 0.008f;
+                Zoom -= 0.01f;
             }
             OldMouseScrollWhellValue = scrollWheelValue;
         }
         public Matrix GetTransformation()
         {
             _transform =
-              Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y,0)) *
+              Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
                                          Matrix.CreateRotationZ(Rotation) *
-                                         Matrix.CreateScale(new Vector3(Zoom, Zoom, 0));
+                                         Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)
+                                        );
             return _transform;
         }
     }

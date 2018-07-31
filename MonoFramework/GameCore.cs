@@ -36,6 +36,8 @@ namespace MonoFramework
             GraphicsDeviceManager.PreferredBackBufferWidth = 1000;  // largeur de la fenêtre
             GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
             this.IsMouseVisible = true;
+
+           
             //this.GraphicsDeviceManager.IsFullScreen = true;
         }
 
@@ -49,6 +51,7 @@ namespace MonoFramework
             SpriteBatch = new SpriteBatch(GraphicsDevice); // Le SpriteBatch permet de dessiner a l'écran
             Debug.Initialize(SpriteBatch,Content); // Charge toute les variable statiques
             SceneManager.Initialize();
+
         }
 
         protected override void UnloadContent()

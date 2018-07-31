@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects
 {
-    public class GRectangle : TextureOwnerObject
+    public class GRectangle : DrawableObject
     {
         public int Thickness
         {

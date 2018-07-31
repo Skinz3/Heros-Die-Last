@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoFramework.Objects.UI;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,10 +41,18 @@ namespace Rogue.MapEditor
 
         public override bool HandleCameraInput => true;
 
-
+        private LayerEnum DrawingLayer
+        {
+            get;
+            set;
+        }
+        private GString DrawingLayerLabel
+        {
+            get;
+            set;
+        }
         public EditorScene()
         {
-
         }
 
 
@@ -85,23 +94,47 @@ namespace Rogue.MapEditor
                 File.WriteAllBytes(dialog.FileName, writer.Data);
 
             }
+            if (obj == Keys.Tab)
+            {
+                int drawingLayer = (int)DrawingLayer;
+                drawingLayer++;
+
+                if (drawingLayer == 4)
+                    drawingLayer = 1;
+
+                DrawingLayer = (LayerEnum)drawingLayer;
+                DrawingLayerLabel.Text = "Drawing Layer: " + DrawingLayer.ToString();
+            }
         }
 
         public override void OnInitialize()
         {
+            this.DrawingLayer = LayerEnum.FIRST;
+
             InputManager.OnKeyPressed += InputManager_OnKeyPressed;
 
-            TileSelectionGrid = new TileSelectionGrid(new Vector2(100, 640), new Point(15, 3), 50, Color.Black, 1);
+            TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 640), new Point(15, 3), 50, Color.Black, 1);
             AddObject(TileSelectionGrid, LayerEnum.UI);
 
             Map = new GMap(new Point(40, 40));
-            Map.OnMouseLeftClick += Map_OnMouseLeftClick;
-            Map.OnMouseEnter += Map_OnMouseEnter;
-            Map.OnMouseLeave += Map_OnMouseLeave;
-            Map.OnMouseRightClick += Map_OnMouseRightClick;
+            Map.OnMouseLeftClickCell += Map_OnMouseLeftClick;
+            Map.OnMouseEnterCell += Map_OnMouseEnter;
+            Map.OnMouseLeaveCell += Map_OnMouseLeave;
+            Map.OnMouseRightClickCell += Map_OnMouseRightClick;
             AddObject(Map, LayerEnum.FIRST);
+
+
+            this.DrawingLayerLabel = new GString(new Vector2(), "arial", "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
+            AddObject(DrawingLayerLabel, LayerEnum.UI);
         }
 
+
+        public override void OnInitializeComplete()
+        {
+            
+        }
+
+        #region Mouse Events
         private void Map_OnMouseLeave(GCell obj)
         {
             obj.FillColor = Color.Transparent;
@@ -115,19 +148,15 @@ namespace Rogue.MapEditor
 
         private void Map_OnMouseRightClick(GCell obj)
         {
-            obj.RemoveSprite(LayerEnum.FIRST);
+            obj.RemoveSprite(DrawingLayer);
         }
 
         private void Map_OnMouseLeftClick(GCell obj)
         {
             if (TileSelectionGrid.SelectedSprite != null)
-                obj.AddSprite(TileSelectionGrid.SelectedSprite, LayerEnum.FIRST);
+                obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
         }
-
-        public override void OnInitializeComplete()
-        {
-         
-        }
+        #endregion
 
     }
 }

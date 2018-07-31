@@ -17,13 +17,13 @@ namespace MonoFramework.Objects
     /// <summary>
     /// Représente une grille en 2D , elle est utilisé pour afficher une carte.
     /// </summary>
-    public class GGrid : TextureOwnerObject
+    public class GGrid : DrawableObject
     {
-        public event Action<GCell> OnMouseEnter;
-        public event Action<GCell> OnMouseLeave;
+        public event Action<GCell> OnMouseEnterCell;
+        public event Action<GCell> OnMouseLeaveCell;
 
-        public event Action<GCell> OnMouseRightClick;
-        public event Action<GCell> OnMouseLeftClick;
+        public event Action<GCell> OnMouseRightClickCell;
+        public event Action<GCell> OnMouseLeftClickCell;
 
         /// <summary>
         /// Require OnInitializationComplete
@@ -97,14 +97,44 @@ namespace MonoFramework.Objects
 
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
-                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Thickness);
+                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color,Layer, Thickness);
                     Cells[id].Initialize();
+                    Cells[id].OnMouseEnter += Cell_OnMouseEnter;
+                    Cells[id].OnMouseLeave += Cell_OnMouseLeave;
+                    Cells[id].OnMouseLeftClick += Cell_OnMouseLeftClick;
+                    Cells[id].OnMouseRightClick += Cell_OnMouseRightClick;
                     id++;
                     relativeY++;
                 }
                 relativeX++;
             }
         }
+        public override void OnInitializeComplete()
+        {
+            base.OnInitializeComplete();
+        }
+
+        private void Cell_OnMouseRightClick(PositionableObject obj)
+        {
+            OnMouseRightClickCell?.Invoke((GCell)obj);
+        }
+
+        private void Cell_OnMouseLeftClick(PositionableObject obj)
+        {
+            OnMouseLeftClickCell?.Invoke((GCell)obj);
+        }
+
+        private void Cell_OnMouseLeave(PositionableObject obj)
+        {
+            OnMouseLeaveCell?.Invoke((GCell)obj);
+        }
+
+        private void Cell_OnMouseEnter(PositionableObject obj)
+        {
+            OnMouseEnterCell?.Invoke((GCell)obj);
+        }
+
+
         public override void OnDraw(GameTime time)
         {
             foreach (var cell in Cells)
@@ -117,50 +147,11 @@ namespace MonoFramework.Objects
         {
             foreach (var cell in Cells)
             {
-                MouseState state = Mouse.GetState();
-
-                Point location = new Point(state.Position.X, state.Position.Y);
-
-                if (Layer != LayerEnum.UI)
-                {
-                    float tX = location.X / Camera2D.MainCamera.Zoom;
-                    float tY = location.Y / Camera2D.MainCamera.Zoom;
-
-                    tX += Camera2D.MainCamera.Position.X;
-                    tY += Camera2D.MainCamera.Position.Y;
-
-                    location = new Point((int)tX, (int)tY);
-                }
-                if (cell.GRectangle.Rectangle.Intersects(new Rectangle(location, Debug.CURSOR_SIZE)))
-                {
-                    if (!cell.MouseIn)
-                    {
-                        OnMouseEnter?.Invoke(cell);
-                    }
-                    cell.MouseIn = true;
-
-                    if (state.LeftButton == ButtonState.Pressed)
-                    {
-                        OnMouseLeftClick?.Invoke(cell);
-                    }
-                    if (state.RightButton == ButtonState.Pressed)
-                    {
-                        OnMouseRightClick?.Invoke(cell);
-                    }
-
-                }
-                else if (cell.MouseIn)
-                {
-                    OnMouseLeave?.Invoke(cell);
-                    cell.MouseIn = false;
-                }
-
                 cell.Update(time);
             }
         }
-
     }
-    public class GCell : TextureOwnerObject
+    public class GCell : DrawableObject
     {
         public int Id
         {
@@ -168,11 +159,6 @@ namespace MonoFramework.Objects
             private set;
         }
         private float CellSize
-        {
-            get;
-            set;
-        }
-        public bool MouseIn
         {
             get;
             set;
@@ -212,7 +198,7 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public GCell(Vector2 position, Point relativePosition, int id, float size, Color color, int thickness) : base(position, new Point((int)size, (int)size), color)
+        public GCell(Vector2 position, Point relativePosition, int id, float size, Color color, LayerEnum layer, int thickness) : base(position, new Point((int)size, (int)size), color)
         {
             this.Id = id;
             this.CellSize = size;
@@ -222,6 +208,7 @@ namespace MonoFramework.Objects
             this.BackColor = Color.Transparent;
             this.Thickness = thickness;
             this.DrawRectangle = true;
+            this.Layer = layer;
         }
 
 

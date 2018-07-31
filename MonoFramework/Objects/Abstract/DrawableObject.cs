@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects.Abstract
 {
-    public abstract class TextureOwnerObject : PositionableObject
+    public abstract class DrawableObject : PositionableObject
     {
-        public TextureOwnerObject(Vector2 position, Point size, Color color) : base(position, size)
+        public DrawableObject(Vector2 position, Point size, Color color) : base(position, size)
         {
             this.Color = color;
         }

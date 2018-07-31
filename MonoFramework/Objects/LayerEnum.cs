@@ -8,9 +8,9 @@ namespace MonoFramework.Objects
 {
     public enum LayerEnum
     {
-        FIRST,
-        SECOND,
-        THIRD,
-        UI, // Ne prend pas en compte le mouvement de la caméra
+        FIRST = 1,
+        SECOND = 2,
+        THIRD = 3,
+        UI = 4, // Ne prend pas en compte le mouvement de la caméra
     }
 }

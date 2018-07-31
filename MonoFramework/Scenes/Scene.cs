@@ -124,7 +124,6 @@ namespace MonoFramework.Scenes
                         null,
                         null,
                         Camera.GetTransformation());
-
             foreach (var list in GameObjects.Values)
             {
                 foreach (var gameObject in list)

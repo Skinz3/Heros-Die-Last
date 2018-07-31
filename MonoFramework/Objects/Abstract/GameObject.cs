@@ -71,10 +71,10 @@ namespace MonoFramework.Objects.Abstract
             }
         }
 
-        public void Update(GameTime time)
+        public virtual void Update(GameTime time)
         {
             OnUpdate(time);
-
+            
             foreach (var child in Childs)
             {
                 child.Update(time);

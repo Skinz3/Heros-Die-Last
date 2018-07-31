@@ -52,6 +52,7 @@
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Objects\Abstract\AnimableObject.cs" />
+    <Compile Include="Objects\UI\Button.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="Network\Protocol\ProtocolManager.cs" />
     <Compile Include="Objects\Abstract\GameObject.cs" />
     <Compile Include="Objects\Abstract\PositionableObject.cs" />
-    <Compile Include="Objects\Abstract\TextureOwnerObject.cs" />
+    <Compile Include="Objects\Abstract\DrawableObject.cs" />
     <Compile Include="Objects\GCircle.cs" />
     <Compile Include="Objects\GCursor.cs" />
     <Compile Include="Objects\GGrid.cs" />
