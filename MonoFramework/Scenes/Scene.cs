@@ -36,7 +36,10 @@ namespace MonoFramework.Scenes
         {
             get;
         }
-
+        public abstract Color ClearColor
+        {
+            get;
+        }
         public Scene()
         {
             this.Camera = new Camera2D();
@@ -64,8 +67,6 @@ namespace MonoFramework.Scenes
                 gameObject.Initialize();
             }
             OnInitializeComplete();
-
-
         }
         /// <summary>
         /// On ajoute les elements a la scène
@@ -95,7 +96,11 @@ namespace MonoFramework.Scenes
         }
         public abstract void Dispose();
 
-        public void Update(GameTime gameTime)
+        /// <summary>
+        /// Remove virtual while test finished
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public virtual void Update(GameTime gameTime)
         {
             if (HandleCameraInput)
                 Camera.HandleInput();
@@ -113,10 +118,9 @@ namespace MonoFramework.Scenes
                 gameObject.Update(gameTime);
             }
         }
-
         public void Draw(GameTime gameTime)
         {
-            Debug.GraphicsDevice.Clear(Color.White);
+            Debug.GraphicsDevice.Clear(ClearColor);
 
             Debug.SpriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.AlphaBlend, SamplerState.PointClamp,

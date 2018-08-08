@@ -54,6 +54,8 @@
     <Compile Include="Network\Server.cs" />
     <Compile Include="Objects\AnimableObject.cs" />
     <Compile Include="Objects\UI\Button.cs" />
+    <Compile Include="PhysX\Raycast.cs" />
+    <Compile Include="PhysX\RaycastZ.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />
@@ -74,7 +76,7 @@
     <Compile Include="Objects\GLine.cs" />
     <Compile Include="Objects\GRectangle.cs" />
     <Compile Include="Objects\LayerEnum.cs" />
-    <Compile Include="Objects\GString.cs" />
+    <Compile Include="Objects\GText.cs" />
     <Compile Include="Objects\GMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\Scene.cs" />

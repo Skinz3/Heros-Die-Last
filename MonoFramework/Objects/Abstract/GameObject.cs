@@ -86,5 +86,9 @@ namespace MonoFramework.Objects.Abstract
         public abstract void OnDraw(GameTime time);
         public abstract void OnUpdate(GameTime time);
 
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
     }
 }

@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MonoFramework.Objects.Abstract;
+using MonoFramework.Collisions;
 
 namespace Rogue.MapEditor
 {
@@ -47,16 +48,19 @@ namespace Rogue.MapEditor
             get;
             set;
         }
-        private GString DrawingLayerLabel
+        private GText DrawingLayerLabel
         {
             get;
             set;
         }
-        private GString DisplayedLayerLabel
+        private GText DisplayedLayerLabel
         {
             get;
             set;
         }
+
+        public override Color ClearColor => Color.White;
+
         public EditorScene()
         {
         }
@@ -67,7 +71,6 @@ namespace Rogue.MapEditor
         {
 
         }
-
         private void InputManager_OnKeyPressed(Keys obj)
         {
             if (obj == Keys.F)
@@ -159,18 +162,16 @@ namespace Rogue.MapEditor
             Map.OnMouseRightClickCell += Map_OnMouseRightClick;
             AddObject(Map, LayerEnum.First);
 
-            this.DrawingLayerLabel = new GString(new Vector2(), "arial", "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
+            this.DrawingLayerLabel = new GText(new Vector2(), "arial", "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
             AddObject(DrawingLayerLabel, LayerEnum.UI);
 
-            this.DisplayedLayerLabel = new GString(new Vector2(0, 30f), "arial", "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.Black, 1f);
+            this.DisplayedLayerLabel = new GText(new Vector2(0, 30f), "arial", "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.Black, 1f);
             AddObject(DisplayedLayerLabel, LayerEnum.UI);
 
-            AddObject(new AnimableObject(new Vector2(150,150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
+            AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
                 LayerEnum.First);
 
         }
-
-
 
 
         public override void OnInitializeComplete()
@@ -198,10 +199,15 @@ namespace Rogue.MapEditor
 
         private void Map_OnMouseLeftClick(GCell obj)
         {
-            if (Map.DisplayedLayer.HasFlag(DrawingLayer))
+            if (Map.DisplayedLayer.HasFlag(DrawingLayer)) // Si on dessine bien sur le layer affiché
             {
-                if (TileSelectionGrid.SelectedSprite != null)
-                    obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                RaycastZ rayCast = new RaycastZ(Mouse.GetState().Position); 
+
+                if (rayCast.Cast() == Map) // Si on clique bien sur la carte (et pas sur un élément d'UI par dessus par exemple)
+                {
+                    if (TileSelectionGrid.SelectedSprite != null) // Si on a bien séléctionné un sprite
+                        obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                }
             }
         }
         #endregion

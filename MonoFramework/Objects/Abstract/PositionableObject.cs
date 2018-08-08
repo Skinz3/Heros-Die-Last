@@ -13,6 +13,7 @@ namespace MonoFramework.Objects.Abstract
     {
         public event Action<PositionableObject> OnMouseEnter;
         public event Action<PositionableObject> OnMouseLeave;
+        public event Action<PositionableObject> OnMouseIn;
 
         public event Action<PositionableObject> OnMouseRightClick;
         public event Action<PositionableObject> OnMouseLeftClick;
@@ -36,24 +37,36 @@ namespace MonoFramework.Objects.Abstract
             this.Size = size;
             this.MouseIn = false;
         }
+        public Point TranslateToScenePosition(Point point)
+        {
+            if (Layer != LayerEnum.UI)
+            {
+                float tX = point.X / Camera2D.MainCamera.Zoom;
+                float tY = point.Y / Camera2D.MainCamera.Zoom;
+
+                tX += Camera2D.MainCamera.Position.X;
+                tY += Camera2D.MainCamera.Position.Y;
+
+                return new Point((int)tX, (int)tY);
+
+            }
+            else
+            {
+                return point;
+            }
+        }
         public override void Update(GameTime time)
         {
             var state = Mouse.GetState();
 
             Point location = new Point(state.Position.X, state.Position.Y);
 
-            if (Layer != LayerEnum.UI)
-            {
-                float tX = location.X / Camera2D.MainCamera.Zoom;
-                float tY = location.Y / Camera2D.MainCamera.Zoom;
+            location = TranslateToScenePosition(location);
 
-                tX += Camera2D.MainCamera.Position.X;
-                tY += Camera2D.MainCamera.Position.Y;
-
-                location = new Point((int)tX, (int)tY);
-            }
             if (Rectangle.Intersects(new Rectangle(location, Debug.CURSOR_SIZE)))
             {
+                OnMouseIn?.Invoke(this);
+
                 if (!MouseIn)
                 {
                     OnMouseEnter?.Invoke(this);
@@ -78,6 +91,9 @@ namespace MonoFramework.Objects.Abstract
 
             base.Update(time);
         }
-     
+        public override string ToString()
+        {
+            return GetType().Name + " " + Rectangle;
+        }
     }
 }

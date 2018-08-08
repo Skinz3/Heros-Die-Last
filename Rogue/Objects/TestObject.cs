@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using System;
@@ -18,11 +19,26 @@ namespace Rogue.Objects
 
         public override void OnInitialize()
         {
-
+            speed = 3f;
         }
         public override void OnUpdate(GameTime time)
         {
-            Position.Y += speed;
+            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                Position.Y -= speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                Position.Y += speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                Position.X += speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                Position.X -= speed;
+            }
             base.OnUpdate(time);
         }
     }
