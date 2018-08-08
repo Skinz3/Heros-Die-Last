@@ -61,7 +61,7 @@ namespace MonoFramework
 
         protected override void Update(GameTime gameTime)
         {
-            InputManager.Update();
+            KeyboardManager.Update();
             SceneManager.Update(gameTime);
             base.Update(gameTime);
         }

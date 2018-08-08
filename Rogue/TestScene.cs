@@ -25,7 +25,7 @@ namespace Rogue
 
         private MapTemplate mapTemplate;
         public GMap map;
-        private TestObject player;
+        private Player player;
 
         public TestScene()
         {
@@ -43,7 +43,7 @@ namespace Rogue
 
 
             string[] spriteNames = new string[] { "sprite_hero06", "sprite_hero07", "sprite_hero08", "sprite_hero09" };
-            player = new TestObject(new Vector2(), new Point(48 * 3, 48 * 3), spriteNames, 150f, true);
+            player = new Player(new Vector2(), new Point(48 * 3, 48 * 3), spriteNames, 150f, true);
             AddObject(player, LayerEnum.Second);
         }
 
@@ -53,7 +53,6 @@ namespace Rogue
             map.Load(mapTemplate);
 
 
-            map.GetCell(5, 1).Walkable = false;
             this.Camera.Target = player;
 
         }

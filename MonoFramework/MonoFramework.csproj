@@ -49,7 +49,9 @@
     <Compile Include="Collisions\DirectionEnum.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="GeometryExtensions.cs" />
+    <Compile Include="Geometry\Alignment.cs" />
+    <Compile Include="Geometry\GeometryExtensions.cs" />
+    <Compile Include="Input\MovementEngine.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Frame.cs" />
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />
-    <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Input\KeyboardManager.cs" />
     <Compile Include="IO\LittleEndianReader.cs" />
     <Compile Include="IO\LittleEndianWriter.cs" />
     <Compile Include="IO\Maps\MapTemplate.cs" />

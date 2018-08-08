@@ -47,6 +47,8 @@ namespace MonoFramework.IO.Maps
 
         public SpriteTemplate[] Sprites;
 
+        public bool Walkable;
+
         public void Serialize(LittleEndianWriter writer)
         {
             writer.WriteInt(Id);
@@ -57,6 +59,9 @@ namespace MonoFramework.IO.Maps
             {
                 sprite.Serialize(writer);
             }
+
+            writer.WriteBoolean(Walkable);
+
         }
         public void Deserialize(LittleEndianReader reader)
         {
@@ -69,6 +74,8 @@ namespace MonoFramework.IO.Maps
                 Sprites[i] = new SpriteTemplate();
                 Sprites[i].Deserialize(reader);
             }
+
+            Walkable = reader.ReadBoolean();
         }
     }
     public class SpriteTemplate

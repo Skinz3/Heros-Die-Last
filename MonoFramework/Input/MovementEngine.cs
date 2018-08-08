@@ -1,51 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework;
 using MonoFramework.Collisions;
-using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
-using Rogue.Collisions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rogue.Objects
+namespace MonoFramework.Input
 {
-    public class TestObject : AnimableObject
+    public class MovementEngine
     {
-        public float speed;
-
         private Collider2D Collider
         {
             get;
             set;
         }
-        public TestObject(Vector2 position, Point size, string[] spriteNames, float delay, bool loop) : base(position, size, spriteNames, delay, loop)
+        private PositionableObject Target
         {
-            this.Collider = new PlayerCollider(this, (SceneManager.CurrentScene as TestScene).map);
+            get;
+            set;
         }
-
-        public override void OnInitialize()
+        public float Speed
         {
-            speed = 3f;
+            get;
+            set;
         }
-        public override void OnDraw(GameTime time)
+        public MovementEngine(Collider2D collider, PositionableObject target, float speed)
         {
-            Debug.DrawRectangle(Collider.HitBox, Color.Red);
-
-     
-
-            base.OnDraw(time);
+            this.Collider = collider;
+            this.Target = target;
+            this.Speed = speed;
         }
-        public override void OnUpdate(GameTime time)
+        public void Update(GameTime time)
         {
             DirectionEnum direction = DirectionEnum.None;
 
             Vector2 input = new Vector2();
-            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            if (Keyboard.GetState().IsKeyDown(Keys.Z)) // ! Pouvoir configurer les touches !
             {
                 input.Y -= 1;
                 direction = DirectionEnum.Up;
@@ -69,21 +62,20 @@ namespace Rogue.Objects
             if (input != new Vector2(0, 0))
             {
                 input.Normalize();
-                input = input * new Vector2(speed);
+                input = input * new Vector2(Speed);
 
-                var newPosition = Position + input;
+                var newPosition = Target.Position + input;
 
                 if (Collider.CanMove(newPosition, direction))
                 {
-                    Position = newPosition;
+                    Target.Position = newPosition;
                 }
-                else
-                {
-                    Console.WriteLine("Cannot move");
-                }
+                /*  else
+                  {
+                       On ne peut pas bouger ! 
+                  } */
 
             }
-            base.OnUpdate(time);
         }
     }
 }

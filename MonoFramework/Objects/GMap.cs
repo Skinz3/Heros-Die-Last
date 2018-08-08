@@ -23,6 +23,8 @@ namespace MonoFramework.Objects
             {
                 GCell gCell = GetCell(cell.Id);
 
+                gCell.Walkable = cell.Walkable;
+              
                 foreach (var sprite in cell.Sprites)
                 {
                     var target = SpriteManager.GetSprite(sprite.SpriteName);
@@ -48,6 +50,7 @@ namespace MonoFramework.Objects
                 result.Cells[i] = new CellTemplate()
                 {
                     Id = Cells[i].Id,
+                    Walkable = Cells[i].Walkable,
                 };
 
                 result.Cells[i].Sprites = new SpriteTemplate[Cells[i].Sprites.Count];

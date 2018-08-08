@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Input
 {
-    public class InputManager
+    public class KeyboardManager
     {
         private static List<Keys> PressedKeys = new List<Keys>();
 

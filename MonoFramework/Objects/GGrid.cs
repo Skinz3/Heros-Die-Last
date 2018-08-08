@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoFramework.Cameras;
 using MonoFramework.Collisions;
+using MonoFramework.Geometry;
 using MonoFramework.IO.Maps;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
@@ -211,7 +212,18 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public bool Walkable = true; // ??
+        public bool Walkable
+        {
+            get;
+            set;
+        }
+
+        private GText GText
+        {
+            get;
+            set;
+        }
+
         public Color FillColor;
 
         public Color BackColor;
@@ -241,6 +253,7 @@ namespace MonoFramework.Objects
             this.BackColor = Color.Transparent;
             this.Thickness = thickness;
             this.DrawRectangle = true;
+            this.Walkable = true;
             this.Layer = layer;
             this.DisplayedLayers = LayerEnum.First | LayerEnum.Second | LayerEnum.Third;
         }
@@ -255,6 +268,12 @@ namespace MonoFramework.Objects
         {
             return Debug.DummyTexture;
         }
+
+        public void RemoveText()
+        {
+            GText = null;
+        }
+
         public override void OnDraw(GameTime time)
         {
             Fill(BackColor);
@@ -269,6 +288,15 @@ namespace MonoFramework.Objects
 
             if (DrawRectangle)
                 this.GRectangle.Draw(time);
+
+            if (GText != null)
+                GText.Draw(time);
+        }
+        public void SetText(string text, Color color, Alignment alignment = Alignment.Center, float scale = 1f)
+        {
+            GText = new GText(Position, SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(),
+                text, color, scale);
+            GText.Align(Rectangle, alignment);
 
         }
         private void Fill(Color color)
@@ -293,7 +321,10 @@ namespace MonoFramework.Objects
         }
         public override void OnUpdate(GameTime time)
         {
-
+            if (GText != null)
+            {
+                GText.Update(time);
+            }
         }
         public GCell[] GetAdjacentCells(GGrid grid)
         {
@@ -312,7 +343,7 @@ namespace MonoFramework.Objects
 
             var vector = direction.GetInputVector().ToPoint();
 
-            for (int i = 1; i < length+1; i++)
+            for (int i = 1; i < length + 1; i++)
             {
                 cells.Add(grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
             }

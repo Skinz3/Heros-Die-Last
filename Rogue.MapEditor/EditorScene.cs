@@ -20,6 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Collisions;
+using MonoFramework.Geometry;
 
 namespace Rogue.MapEditor
 {
@@ -54,6 +55,12 @@ namespace Rogue.MapEditor
             private set;
         } = true;
 
+        public bool CollisionEditor
+        {
+            get;
+            private set;
+        } = false;
+
         public override bool HandleCameraInput => true;
 
         private LayerEnum DrawingLayer
@@ -71,7 +78,11 @@ namespace Rogue.MapEditor
             get;
             set;
         }
-
+        private GText CollisionEditorLabel
+        {
+            get;
+            set;
+        }
         public override Color ClearColor => Color.White;
 
         public override string DefaultFontName => "arial";
@@ -83,9 +94,51 @@ namespace Rogue.MapEditor
 
         }
 
+
+
+        #region Scene Initialization
+
+        public override void OnInitialize()
+        {
+            this.DrawingLayer = LayerEnum.First;
+
+            KeyboardManager.OnKeyPressed += InputManager_OnKeyPressed;
+
+            TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 650), new Point(20, 3), 50, Color.Black, 1);
+            AddObject(TileSelectionGrid, LayerEnum.UI);
+
+            Map = new GMap(new Point(40, 40));
+            Map.OnMouseLeftClickCell += Map_OnMouseLeftClick;
+            Map.OnMouseEnterCell += Map_OnMouseEnter;
+            Map.OnMouseLeaveCell += Map_OnMouseLeave;
+            Map.OnMouseRightClickCell += Map_OnMouseRightClick;
+            AddObject(Map, LayerEnum.First);
+
+            this.DrawingLayerLabel = TextRenderer.AddText(new Vector2(), "Drawing Layer: " + DrawingLayer.ToString(), Color.CornflowerBlue, 1f);
+
+            this.DisplayedLayerLabel = TextRenderer.AddText(new Vector2(0, 30f), "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.CornflowerBlue, 1f);
+            AddObject(DisplayedLayerLabel, LayerEnum.UI);
+
+            this.CollisionEditorLabel = TextRenderer.AddText(new Vector2(0, 60f), "Collision Editor :" + CollisionEditor, Color.CornflowerBlue);
+
+            AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
+                LayerEnum.First);
+
+
+        }
+        public override void OnInitializeComplete()
+        {
+
+        }
+        #endregion
+
         #region Keyboard Events
         private void InputManager_OnKeyPressed(Keys obj)
         {
+            if (obj == Keys.Space)
+            {
+                CollisionEditor = !CollisionEditor;
+            }
             if (obj == Keys.F)
             {
                 DisplayGrid = !DisplayGrid;
@@ -102,6 +155,18 @@ namespace Rogue.MapEditor
                     MapTemplate template = new MapTemplate();
                     template.Deserialize(reader);
                     Map.Load(template);
+
+
+                    foreach (var cell in template.Cells)
+                    {
+                        var gCell = Map.GetCell(cell.Id);
+
+                        if (cell.Walkable == false)
+                        {
+                            gCell.SetText("Wall", Color.Red);
+                        }
+                    }
+                  
                 }
             }
             if (obj == Keys.LeftShift)
@@ -157,39 +222,7 @@ namespace Rogue.MapEditor
 
             DisplayedLayerLabel.Text = "Displayed Layer: " + Map.DisplayedLayer.ToString();
             DrawingLayerLabel.Text = "Drawing Layer: " + DrawingLayer.ToString();
-        }
-        #endregion
-
-        #region Scene Initialization
-
-        public override void OnInitialize()
-        {
-            this.DrawingLayer = LayerEnum.First;
-
-            InputManager.OnKeyPressed += InputManager_OnKeyPressed;
-
-            TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 650), new Point(20, 3), 50, Color.Black, 1);
-            AddObject(TileSelectionGrid, LayerEnum.UI);
-
-            Map = new GMap(new Point(40, 40));
-            Map.OnMouseLeftClickCell += Map_OnMouseLeftClick;
-            Map.OnMouseEnterCell += Map_OnMouseEnter;
-            Map.OnMouseLeaveCell += Map_OnMouseLeave;
-            Map.OnMouseRightClickCell += Map_OnMouseRightClick;
-            AddObject(Map, LayerEnum.First);
-
-            this.DrawingLayerLabel = TextRenderer.AddText(new Vector2(), "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
-          
-            this.DisplayedLayerLabel = TextRenderer.AddText(new Vector2(0,30f), "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.Black, 1f);  
-            AddObject(DisplayedLayerLabel, LayerEnum.UI);
-
-            AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
-                LayerEnum.First);
-
-        }
-        public override void OnInitializeComplete()
-        {
-
+            CollisionEditorLabel.Text = "Collision Editor: " + CollisionEditor;
         }
         #endregion
 
@@ -208,7 +241,22 @@ namespace Rogue.MapEditor
         private void Map_OnMouseRightClick(GCell obj)
         {
             if (Map.DisplayedLayer.HasFlag(DrawingLayer))
-                obj.RemoveSprite(DrawingLayer);
+            {
+                RaycastZ rayCast = new RaycastZ(Mouse.GetState().Position);
+
+                if (rayCast.Cast() == Map) // Si on clique bien sur la carte (et pas sur un élément d'UI par dessus par exemple)
+                {
+                    if (CollisionEditor)
+                    {
+                        obj.Walkable = true;
+                        obj.RemoveText();
+                    }
+                    else
+                    {
+                        obj.RemoveSprite(DrawingLayer);
+                    }
+                }
+            }
         }
 
         private void Map_OnMouseLeftClick(GCell obj)
@@ -219,8 +267,16 @@ namespace Rogue.MapEditor
 
                 if (rayCast.Cast() == Map) // Si on clique bien sur la carte (et pas sur un élément d'UI par dessus par exemple)
                 {
-                    if (TileSelectionGrid.SelectedSprite != null) // Si on a bien séléctionné un sprite
-                        obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                    if (CollisionEditor)
+                    {
+                        obj.Walkable = false;
+                        obj.SetText("Wall", Color.Red);
+                    }
+                    else
+                    {
+                        if (TileSelectionGrid.SelectedSprite != null) // Si on a bien séléctionné un sprite
+                            obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                    }
                 }
             }
         }

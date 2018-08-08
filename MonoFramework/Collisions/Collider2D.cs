@@ -21,7 +21,7 @@ namespace MonoFramework.Collisions
             get;
             set;
         }
-        public Rectangle HitBox
+        public Rectangle MovementHitBox
         {
             get
             {
@@ -38,7 +38,7 @@ namespace MonoFramework.Collisions
         {
             get
             {
-                return Map.GetCell(HitBox.Center.ToVector2());
+                return Map.GetCell(MovementHitBox.Center.ToVector2());
             }
         }
 

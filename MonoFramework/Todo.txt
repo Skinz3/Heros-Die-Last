@@ -4,8 +4,11 @@ MonoFramework (26/07/2018)
 
 A faire:
 
+pouvoir configurer les toucher MovementEngine.cs
 
 - Organiser le dossier Objects? Est-il normal que les cercle , ligne et rectangle, soit dans le même dossier que map, ou grille?
 (obviously not)
 
   Boutons!
+  
+  PositionableObject.cs Alignments

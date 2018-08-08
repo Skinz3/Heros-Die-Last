@@ -16,10 +16,20 @@ namespace MonoFramework.Objects
             get;
             set;
         }
+
+        private string m_text;
+
         public string Text
         {
-            get;
-            set;
+            get
+            {
+                return m_text;
+            }
+            set
+            {
+                m_text = value;
+                UpdateSize();
+            }
         }
 
         public Color Color;
@@ -30,14 +40,18 @@ namespace MonoFramework.Objects
             set;
         }
 
-        public GText(Vector2 position,SpriteFont font, string text, Color color, float scale) : base(position, new Point(50, 50))
+        private void UpdateSize()
+        {
+            this.Size = SpriteFont.MeasureString(Text).ToPoint() * new Vector2(Scale, Scale).ToPoint();
+        }
+        public GText(Vector2 position, SpriteFont font, string text, Color color, float scale) : base(position, new Point(50, 50))
         {
             this.SpriteFont = font;
+            this.Scale = scale;
             this.Text = text;
             this.Color = color;
-            this.Scale = scale;
         }
-     
+
         public override void OnDraw(GameTime time)
         {
             Debug.SpriteBatch.DrawString(SpriteFont, Text, Position, Color, 0f, new Vector2(), Scale, SpriteEffects.None, 0f);
@@ -46,9 +60,8 @@ namespace MonoFramework.Objects
 
         public override void OnUpdate(GameTime time)
         {
-            this.Size = SpriteFont.MeasureString(Text).ToPoint() * new Vector2(Scale, Scale).ToPoint();
+          
         }
-
         public override void OnInitializeComplete()
         {
 
@@ -56,7 +69,9 @@ namespace MonoFramework.Objects
 
         public override void OnInitialize()
         {
-         
+
         }
+
+    
     }
 }

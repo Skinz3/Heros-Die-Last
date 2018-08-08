@@ -8,11 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework
+namespace MonoFramework.Geometry
 {
     public static class GeometryExtensions
     {
-        
+        /// <summary>
+        /// Problème ! pas aligné au centre
+        /// </summary>
+        /// <param name="rectangle"></param>
+        /// <param name="dividerWidth"></param>
+        /// <param name="dividerHeight"></param>
+        /// <returns></returns>
         public static Rectangle Divide(this Rectangle rectangle, int dividerWidth, int dividerHeight)
         {
             int newWidth = (rectangle.Width / dividerWidth);

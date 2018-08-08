@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoFramework.Cameras;
+using MonoFramework.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,23 @@ namespace MonoFramework.Objects.Abstract
             }
 
             base.Update(time);
+        }
+        /// <summary>
+        /// Todo = other alignments
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="alignement"></param>
+        public void Align(Rectangle container, Alignment alignement)
+        {
+            switch (alignement)
+            {
+                case Alignment.Center:
+                    this.Position = new Vector2(container.X + (container.Width / 2) - (Size.X / 2),
+                  container.Y + (container.Height / 2) - (Size.Y / 2));
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
         public override string ToString()
         {
