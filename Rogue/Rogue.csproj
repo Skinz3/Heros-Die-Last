@@ -45,6 +45,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collisions\PlayerCollider.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Objects\Entities\Entity.cs" />
     <Compile Include="Objects\Entities\MovableEntity.cs" />

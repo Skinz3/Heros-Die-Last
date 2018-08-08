@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Cameras\Camera2D.cs" />
+    <Compile Include="Collisions\Collider2D.cs" />
     <Compile Include="Collisions\DirectionEnum.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="Extensions.cs" />

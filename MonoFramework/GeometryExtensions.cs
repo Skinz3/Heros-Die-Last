@@ -12,16 +12,7 @@ namespace MonoFramework
 {
     public static class GeometryExtensions
     {
-        /// <summary>
-        /// rien a faire ici, dans un systeme de collider (peut être meme un calcul constant pour un certain type d'entitée?)
-        /// Enfait c'est l'offset quand le personnage se déplace vers le bas
-        /// </summary>
-        /// <param name="rectangle"></param>
-        /// <returns></returns>
-        public static Vector2 GetCollidePointForDownDirection(this Rectangle rectangle)
-        {
-            return new Vector2(rectangle.X + rectangle.Width / 2, rectangle.Bottom);
-        }
+        
         public static Rectangle Divide(this Rectangle rectangle, int dividerWidth, int dividerHeight)
         {
             int newWidth = (rectangle.Width / dividerWidth);

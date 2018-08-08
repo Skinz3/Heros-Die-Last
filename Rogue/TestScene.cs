@@ -51,13 +51,16 @@ namespace Rogue
         {
             map.ToogleDrawRectangles(false);
             map.Load(mapTemplate);
+
+
+            map.GetCell(5, 1).Walkable = false;
             this.Camera.Target = player;
 
         }
 
         public override void OnDispose()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

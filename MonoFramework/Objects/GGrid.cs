@@ -104,6 +104,10 @@ namespace MonoFramework.Objects
         {
             return Cells.FirstOrDefault(x => x.Id == id);
         }
+        public GCell[] GetCells(Rectangle intersectRectangle)
+        {
+            return Cells.Where(x => x.Rectangle.Intersects(intersectRectangle)).ToArray();
+        }
 
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
         {
@@ -207,7 +211,7 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-
+        public bool Walkable = true; // ??
         public Color FillColor;
 
         public Color BackColor;

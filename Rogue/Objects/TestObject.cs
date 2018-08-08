@@ -5,6 +5,7 @@ using MonoFramework.Collisions;
 using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
+using Rogue.Collisions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,22 +17,15 @@ namespace Rogue.Objects
     public class TestObject : AnimableObject
     {
         public float speed;
-        public Rectangle HitBox
+
+        private Collider2D Collider
         {
-            get
-            {
-                return Rectangle.Divide(3, 3).Divide(1, 2);
-            }
-        }
-        public GCell CurrentCell
-        {
-            get
-            {
-                return (SceneManager.CurrentScene as TestScene).map.GetCell(HitBox.GetCollidePointForDownDirection());
-            }
+            get;
+            set;
         }
         public TestObject(Vector2 position, Point size, string[] spriteNames, float delay, bool loop) : base(position, size, spriteNames, delay, loop)
         {
+            this.Collider = new PlayerCollider(this, (SceneManager.CurrentScene as TestScene).map);
         }
 
         public override void OnInitialize()
@@ -40,8 +34,9 @@ namespace Rogue.Objects
         }
         public override void OnDraw(GameTime time)
         {
-            Debug.DrawRectangle(Rectangle, Color.LightGreen);
-            Debug.DrawRectangle(HitBox, Color.Red);
+            Debug.DrawRectangle(Collider.HitBox, Color.Red);
+
+     
 
             base.OnDraw(time);
         }
@@ -49,47 +44,45 @@ namespace Rogue.Objects
         {
             DirectionEnum direction = DirectionEnum.None;
 
-
             Vector2 input = new Vector2();
             if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
-                input.Y -= speed;
+                input.Y -= 1;
                 direction = DirectionEnum.Up;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                input.Y += speed;
+                input.Y += 1;
                 direction = DirectionEnum.Down;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                input.X += speed;
+                input.X += 1;
                 direction = DirectionEnum.Right;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
-                input.X -= speed;
+                input.X -= 1;
                 direction = DirectionEnum.Left;
             }
 
-            var map = (SceneManager.CurrentScene as TestScene).map;
-
-            var newPosition = Position + input;
-
-            if (CurrentCell != null)
+            if (input != new Vector2(0, 0))
             {
-                var nextCell = CurrentCell.GetNextCells(map, direction, 1)[0];
-             //   CurrentCell.FillColor = Color.MediumPurple;
+                input.Normalize();
+                input = input * new Vector2(speed);
 
-                Position = newPosition;
-            }
-            else
-            {
-                Console.WriteLine("Cell is null.");
-                Position = newPosition;
-            }
-           
+                var newPosition = Position + input;
 
+                if (Collider.CanMove(newPosition, direction))
+                {
+                    Position = newPosition;
+                }
+                else
+                {
+                    Console.WriteLine("Cannot move");
+                }
+
+            }
             base.OnUpdate(time);
         }
     }
