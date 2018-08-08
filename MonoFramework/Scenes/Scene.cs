@@ -40,6 +40,15 @@ namespace MonoFramework.Scenes
         {
             get;
         }
+        public TextRenderer TextRenderer
+        {
+            get;
+            private set;
+        }
+        public abstract string DefaultFontName
+        {
+            get;
+        }
         public Scene()
         {
             this.Camera = new Camera2D();
@@ -51,6 +60,7 @@ namespace MonoFramework.Scenes
                 { LayerEnum.Third, new List<GameObject>() },
                 { LayerEnum.UI,new List<GameObject>() },
             };
+            this.TextRenderer = new TextRenderer();
         }
         public void Initialize()
         {
@@ -94,7 +104,13 @@ namespace MonoFramework.Scenes
             else
                 this.GameObjects[gameObject.Layer].Remove(gameObject);
         }
-        public abstract void Dispose();
+        public void Dispose()
+        {
+            TextRenderer.Dispose();
+            OnDispose();
+        }
+
+        public abstract void OnDispose();
 
         /// <summary>
         /// Remove virtual while test finished

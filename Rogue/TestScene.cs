@@ -24,16 +24,12 @@ namespace Rogue
 
         public override Color ClearColor => Color.Black;
 
+        public override string DefaultFontName => "arial";
+
         public TestScene()
         {
 
         }
-
-        public override void Dispose()
-        {
-
-        }
-
         public override void OnInitialize()
         {
             string[] spriteNames = new string[] { "sprite_hero06", "sprite_hero07", "sprite_hero08", "sprite_hero09" };
@@ -46,6 +42,9 @@ namespace Rogue
 
         }
 
-
+        public override void OnDispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

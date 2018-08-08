@@ -53,6 +53,7 @@
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Objects\AnimableObject.cs" />
+    <Compile Include="Objects\TextRenderer.cs" />
     <Compile Include="Objects\UI\Button.cs" />
     <Compile Include="Collisions\Raycast.cs" />
     <Compile Include="Collisions\RaycastZ.cs" />

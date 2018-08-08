@@ -74,6 +74,8 @@ namespace Rogue.MapEditor
 
         public override Color ClearColor => Color.White;
 
+        public override string DefaultFontName => "arial";
+
         #endregion
 
         public EditorScene()
@@ -176,10 +178,9 @@ namespace Rogue.MapEditor
             Map.OnMouseRightClickCell += Map_OnMouseRightClick;
             AddObject(Map, LayerEnum.First);
 
-            this.DrawingLayerLabel = new GText(new Vector2(), "arial", "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
-            AddObject(DrawingLayerLabel, LayerEnum.UI);
-
-            this.DisplayedLayerLabel = new GText(new Vector2(0, 30f), "arial", "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.Black, 1f);
+            this.DrawingLayerLabel = TextRenderer.AddText(new Vector2(), "Drawing Layer: " + DrawingLayer.ToString(), Color.Black, 1f);
+          
+            this.DisplayedLayerLabel = TextRenderer.AddText(new Vector2(0,30f), "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.Black, 1f);  
             AddObject(DisplayedLayerLabel, LayerEnum.UI);
 
             AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
@@ -226,7 +227,8 @@ namespace Rogue.MapEditor
         #endregion
 
         #region Scene Disposal
-        public override void Dispose()
+
+        public override void OnDispose()
         {
 
         }

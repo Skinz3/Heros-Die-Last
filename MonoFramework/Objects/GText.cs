@@ -11,11 +11,6 @@ namespace MonoFramework.Objects
 {
     public class GText : PositionableObject
     {
-        public string SpriteFontName
-        {
-            get;
-            private set;
-        }
         private SpriteFont SpriteFont
         {
             get;
@@ -34,9 +29,10 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        public GText(Vector2 position, string spriteFontName, string text, Color color, float scale) : base(position, new Point(50, 50))
+
+        public GText(Vector2 position,SpriteFont font, string text, Color color, float scale) : base(position, new Point(50, 50))
         {
-            this.SpriteFontName = spriteFontName;
+            this.SpriteFont = font;
             this.Text = text;
             this.Color = color;
             this.Scale = scale;
@@ -47,10 +43,6 @@ namespace MonoFramework.Objects
             Debug.SpriteBatch.DrawString(SpriteFont, Text, Position, Color, 0f, new Vector2(), 1f, SpriteEffects.None, 1f);
         }
 
-        public override void OnInitialize()
-        {
-            this.SpriteFont = Debug.Content.Load<SpriteFont>(SpriteFontName);
-        }
 
         public override void OnUpdate(GameTime time)
         {
@@ -60,6 +52,11 @@ namespace MonoFramework.Objects
         public override void OnInitializeComplete()
         {
 
+        }
+
+        public override void OnInitialize()
+        {
+         
         }
     }
 }
