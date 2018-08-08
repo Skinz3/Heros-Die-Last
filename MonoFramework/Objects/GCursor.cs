@@ -26,7 +26,7 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        public GCursor(Vector2 position, Color color, Sprite sprite, Point textureSize) : base(position, textureSize, color)
+        public GCursor(Color color, Sprite sprite, Point textureSize) : base(new Vector2(), textureSize, color)
         {
             this.Sprite = sprite;
         }

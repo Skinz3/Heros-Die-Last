@@ -54,8 +54,8 @@
     <Compile Include="Network\Server.cs" />
     <Compile Include="Objects\AnimableObject.cs" />
     <Compile Include="Objects\UI\Button.cs" />
-    <Compile Include="PhysX\Raycast.cs" />
-    <Compile Include="PhysX\RaycastZ.cs" />
+    <Compile Include="Collisions\Raycast.cs" />
+    <Compile Include="Collisions\RaycastZ.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />

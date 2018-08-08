@@ -61,7 +61,7 @@ namespace Rogue.MapEditor.Objects
             this.OnMouseLeaveCell += TileSelectionGrid_OnMouseLeave;
             this.OnMouseLeftClickCell += TileSelectionGrid_OnMouseLeftClick;
             this.OnMouseRightClickCell += TileSelectionGrid_OnMouseRightClick;
-            this.Cursor = new GCursor(new Vector2(), Color.White, null, new Point(cellSize, cellSize));
+            this.Cursor = new GCursor(Color.White, null, new Point(cellSize, cellSize));
         }
 
 

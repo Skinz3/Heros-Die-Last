@@ -23,8 +23,21 @@ using MonoFramework.Collisions;
 
 namespace Rogue.MapEditor
 {
+    /// <summary>
+    /// Scene Properties : En grosse majoritée, déclaration des GameObjects qui composeront la scène.
+    /// 
+    /// KeyboardEvents: Gestion des évenements claviers (a remplacé un jour par une réel interface graphique :3)
+    /// 
+    /// Scene Initialization : Assignation des GameObjects, ajout a la scène grâce a la méthode base.AddObject(GameObject gameObject);
+    /// 
+    /// Mouse Events : Gestion des évenements souris
+    /// 
+    /// Scene Disposal : Fonctions permettant la libération des ressources. Dispose() est appelée lors d'un changement
+    /// de scène, ou bien à la fermture de l'application.
+    /// </summary>
     public class EditorScene : Scene
     {
+        #region Scene Properties
         private TileSelectionGrid TileSelectionGrid
         {
             get;
@@ -61,16 +74,14 @@ namespace Rogue.MapEditor
 
         public override Color ClearColor => Color.White;
 
+        #endregion
+
         public EditorScene()
         {
-        }
-
-
-
-        public override void Dispose()
-        {
 
         }
+
+        #region Keyboard Events
         private void InputManager_OnKeyPressed(Keys obj)
         {
             if (obj == Keys.F)
@@ -145,6 +156,9 @@ namespace Rogue.MapEditor
             DisplayedLayerLabel.Text = "Displayed Layer: " + Map.DisplayedLayer.ToString();
             DrawingLayerLabel.Text = "Drawing Layer: " + DrawingLayer.ToString();
         }
+        #endregion
+
+        #region Scene Initialization
 
         public override void OnInitialize()
         {
@@ -172,12 +186,11 @@ namespace Rogue.MapEditor
                 LayerEnum.First);
 
         }
-
-
         public override void OnInitializeComplete()
         {
 
         }
+        #endregion
 
         #region Mouse Events
         private void Map_OnMouseLeave(GCell obj)
@@ -201,7 +214,7 @@ namespace Rogue.MapEditor
         {
             if (Map.DisplayedLayer.HasFlag(DrawingLayer)) // Si on dessine bien sur le layer affiché
             {
-                RaycastZ rayCast = new RaycastZ(Mouse.GetState().Position); 
+                RaycastZ rayCast = new RaycastZ(Mouse.GetState().Position);
 
                 if (rayCast.Cast() == Map) // Si on clique bien sur la carte (et pas sur un élément d'UI par dessus par exemple)
                 {
@@ -209,6 +222,13 @@ namespace Rogue.MapEditor
                         obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
                 }
             }
+        }
+        #endregion
+
+        #region Scene Disposal
+        public override void Dispose()
+        {
+
         }
         #endregion
 
