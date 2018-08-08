@@ -121,6 +121,8 @@ namespace MonoFramework.Scenes
             if (HandleCameraInput)
                 Camera.HandleInput();
 
+            Camera.Update();
+
             foreach (var list in GameObjects.Values)
             {
                 foreach (var gameObject in list)

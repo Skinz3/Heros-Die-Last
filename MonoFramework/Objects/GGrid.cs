@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoFramework.Cameras;
+using MonoFramework.Collisions;
 using MonoFramework.IO.Maps;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
@@ -85,11 +86,19 @@ namespace MonoFramework.Objects
             this.DisplayedLayer = displayedLayer;
         }
         /// <summary>
+        /// (x,y) = Relative Position
         /// Require OnInitializationComplete
         /// </summary>
         public GCell GetCell(int x, int y)
         {
             return Cells.FirstOrDefault(w => w.RelativePosition == new Point(x, y));
+        }
+        /// <summary>
+        /// Vector2 = Screen position
+        /// </summary>
+        public GCell GetCell(Vector2 position)
+        {
+            return Cells.FirstOrDefault(x => x.IntersectsPoint(position.ToPoint()));
         }
         public GCell GetCell(int id)
         {
@@ -281,6 +290,29 @@ namespace MonoFramework.Objects
         public override void OnUpdate(GameTime time)
         {
 
+        }
+        public GCell[] GetAdjacentCells(GGrid grid)
+        {
+            GCell[] cells = new GCell[4];
+
+            cells[0] = grid.GetCell(RelativePosition.X + 1, RelativePosition.Y);
+            cells[1] = grid.GetCell(RelativePosition.X - 1, RelativePosition.Y);
+            cells[2] = grid.GetCell(RelativePosition.X, RelativePosition.Y + 1);
+            cells[3] = grid.GetCell(RelativePosition.X, RelativePosition.Y - 1);
+
+            return cells;
+        }
+        public GCell[] GetNextCells(GGrid grid, DirectionEnum direction, int length)
+        {
+            List<GCell> cells = new List<GCell>();
+
+            var vector = direction.GetInputVector().ToPoint();
+
+            for (int i = 1; i < length+1; i++)
+            {
+                cells.Add(grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
+            }
+            return cells.ToArray();
         }
     }
 }

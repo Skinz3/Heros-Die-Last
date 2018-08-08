@@ -17,14 +17,15 @@ namespace Rogue
 {
     public class TestScene : Scene
     {
-
-        TestObject obj;
-
         public override bool HandleCameraInput => false;
 
         public override Color ClearColor => Color.Black;
 
         public override string DefaultFontName => "arial";
+
+        private MapTemplate mapTemplate;
+        public GMap map;
+        private TestObject player;
 
         public TestScene()
         {
@@ -32,13 +33,25 @@ namespace Rogue
         }
         public override void OnInitialize()
         {
+            mapTemplate = new MapTemplate();
+            LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(@"C:/Users/Skinz/Documents/test.map"));
+            mapTemplate.Deserialize(reader);
+
+            map = new GMap(new Point(mapTemplate.Width, mapTemplate.Height));
+            AddObject(map, LayerEnum.First);
+
+
+
             string[] spriteNames = new string[] { "sprite_hero06", "sprite_hero07", "sprite_hero08", "sprite_hero09" };
-            var obj = new TestObject(new Vector2(), new Point(48 * 3, 48 * 3), spriteNames, 150f, true);
-            AddObject(obj, LayerEnum.First);
+            player = new TestObject(new Vector2(), new Point(48 * 3, 48 * 3), spriteNames, 150f, true);
+            AddObject(player, LayerEnum.Second);
         }
 
         public override void OnInitializeComplete()
         {
+            map.ToogleDrawRectangles(false);
+            map.Load(mapTemplate);
+            this.Camera.Target = player;
 
         }
 

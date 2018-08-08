@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace MonoFramework.Cameras
         public float Zoom
         {
             get { return _zoom; }
-            set { _zoom = value; if (_zoom <1f) _zoom = 1f; } // Negative zoom will flip image at 0.1, < 1 Pixel is not displayed? (Texture Filtering)
+            set { _zoom = value; if (_zoom < 1f) _zoom = 1f; } // Negative zoom will flip image at 0.1, < 1 Pixel is not displayed? (Texture Filtering)
         }
 
         public float Rotation
@@ -48,6 +49,11 @@ namespace MonoFramework.Cameras
             set;
         }
 
+        public PositionableObject Target
+        {
+            get;
+            set;
+        }
         public Camera2D()
         {
             _zoom = 1.0f;
@@ -55,6 +61,15 @@ namespace MonoFramework.Cameras
             Position = Vector2.Zero;
         }
 
+        public void Update()
+        {
+            if (Target != null)
+            {
+                var v1 = Vector2.Divide(Debug.GraphicsDevice.Viewport.Bounds.Size.ToVector2(), 2);
+                var v2 = Vector2.Divide(Target.Rectangle.Size.ToVector2(), 2);
+                Position = Target.Position - v1 + v2; 
+            }
+        }
         public void HandleInput()
         {
             var state = Keyboard.GetState();

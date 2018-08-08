@@ -31,6 +31,10 @@ namespace MonoFramework.Objects.Abstract
                 return new Rectangle(Position.ToPoint(), Size);
             }
         }
+        public bool IntersectsPoint(Point point)
+        {
+            return Rectangle.Intersects(new Rectangle(point, new Point(1)));
+        }
         public PositionableObject(Vector2 position, Point size)
         {
             this.Position = position;

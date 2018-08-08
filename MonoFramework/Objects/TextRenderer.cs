@@ -40,7 +40,11 @@ namespace MonoFramework.Objects
             SceneManager.CurrentScene.AddObject(gText, LayerEnum.UI);
             return gText;
         }
-        private SpriteFont GetSpriteFont(string name)
+        public SpriteFont GetDefaultSpriteFont()
+        {
+            return GetSpriteFont(SceneManager.CurrentScene.DefaultFontName);
+        }
+        public SpriteFont GetSpriteFont(string name)
         {
             if (SpriteFonts.ContainsKey(name))
             {

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoFramework.Scenes;
 using System;
 using System.Collections.Generic;
 
@@ -59,18 +60,22 @@ namespace MonoFramework
             DummyTexture.SetData(new Color[] { Color.White });
         }
 
-        public static void DrawLine(Vector2 start, Vector2 end, Color color, float thickness)
+        public static void DrawLine(Vector2 start, Vector2 end, Color color, float thickness = 1f)
         {
             float length = (end - start).Length();
             float rotation = (float)Math.Atan2(end.Y - start.Y, end.X - start.X);
             SpriteBatch.Draw(DummyTexture, start, null, color, rotation, Vector2.Zero, new Vector2(length, thickness), SpriteEffects.None, 0);
         }
-        public static void DrawRectangle(Rectangle rectangle, Color color, int thickness)
+        public static void DrawRectangle(Rectangle rectangle, Color color, int thickness = 1)
         {
             SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, thickness), color);
             SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Bottom, rectangle.Width, thickness), color);
             SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, thickness, rectangle.Height), color);
             SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Right, rectangle.Top, thickness, rectangle.Height + 1), color);
+        }
+        public static void DrawText(Vector2 position, string text, Color color)
+        {
+            Debug.SpriteBatch.DrawString(SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(), text, position, color, 0f, new Vector2(), 1f, SpriteEffects.None, 0f);
         }
         public static void FillRectangle(Rectangle rectangle, Color color)
         {
