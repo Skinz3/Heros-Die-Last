@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoFramework.Collisions;
 using MonoFramework.IO;
 using MonoFramework.IO.Maps;
 using MonoFramework.Objects;
@@ -51,10 +52,7 @@ namespace Rogue
         {
             map.ToogleDrawRectangles(false);
             map.Load(mapTemplate);
-
-
             this.Camera.Target = player;
-
         }
 
         public override void OnDispose()

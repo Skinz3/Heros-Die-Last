@@ -21,7 +21,10 @@ namespace Rogue.Collisions
 
         public override Rectangle CalculateHitBox(Vector2 position)
         {
-            return new Rectangle(position.ToPoint(), GameObject.Size).Divide(3, 3).Divide(1, 2);
+            return new Rectangle(position.ToPoint(), GameObject.Size)
+                .Divide(3, 3, RectangleOrigin.Center)
+                .Divide(1, 2, RectangleOrigin.CenterBottom)
+                .Scale(0.7f, 0.7f, RectangleOrigin.CenterBottom);
         }
     }
 }

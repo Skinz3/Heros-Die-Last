@@ -39,8 +39,9 @@ namespace Rogue.Objects
         }
         public override void OnDraw(GameTime time)
         {
-            Debug.DrawRectangle(Collider.MovementHitBox, Color.Red);
             base.OnDraw(time);
+         //   Debug.DrawRectangle(Rectangle, Color.Green);
+         //   Debug.DrawRectangle(Collider.MovementHitBox, Color.Red);
         }
         public override void OnUpdate(GameTime time)
         {

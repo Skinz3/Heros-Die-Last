@@ -41,22 +41,22 @@ namespace MonoFramework.Input
             if (Keyboard.GetState().IsKeyDown(Keys.Z)) // ! Pouvoir configurer les touches !
             {
                 input.Y -= 1;
-                direction = DirectionEnum.Up;
+                direction |= DirectionEnum.Up;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 input.Y += 1;
-                direction = DirectionEnum.Down;
+                direction |= DirectionEnum.Down;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 input.X += 1;
-                direction = DirectionEnum.Right;
+                direction |= DirectionEnum.Right;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 input.X -= 1;
-                direction = DirectionEnum.Left;
+                direction |= DirectionEnum.Left;
             }
 
             if (input != new Vector2(0, 0))

@@ -51,6 +51,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Geometry\Alignment.cs" />
     <Compile Include="Geometry\GeometryExtensions.cs" />
+    <Compile Include="Geometry\RectangleOrigin.cs" />
     <Compile Include="Input\MovementEngine.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Frame.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="Network\Protocol\ProtocolManager.cs" />
     <Compile Include="Objects\Abstract\GameObject.cs" />
     <Compile Include="Objects\Abstract\PositionableObject.cs" />
-    <Compile Include="Objects\Abstract\DrawableObject.cs" />
+    <Compile Include="Geometry\DrawableObject.cs" />
     <Compile Include="Objects\GCircle.cs" />
     <Compile Include="Objects\GCursor.cs" />
     <Compile Include="Objects\GGrid.cs" />
