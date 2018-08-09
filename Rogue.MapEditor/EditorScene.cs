@@ -117,12 +117,11 @@ namespace Rogue.MapEditor
             this.DrawingLayerLabel = TextRenderer.AddText(new Vector2(), "Drawing Layer: " + DrawingLayer.ToString(), Color.CornflowerBlue, 1f);
 
             this.DisplayedLayerLabel = TextRenderer.AddText(new Vector2(0, 30f), "Displayed Layer: " + Map.DisplayedLayer.ToString(), Color.CornflowerBlue, 1f);
-            AddObject(DisplayedLayerLabel, LayerEnum.UI);
 
             this.CollisionEditorLabel = TextRenderer.AddText(new Vector2(0, 60f), "Collision Editor :" + CollisionEditor, Color.CornflowerBlue);
 
-            AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
-                LayerEnum.First);
+            // AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
+            //      LayerEnum.First);
 
 
         }
@@ -166,7 +165,7 @@ namespace Rogue.MapEditor
                             gCell.SetText("Wall", Color.Red);
                         }
                     }
-                  
+
                 }
             }
             if (obj == Keys.LeftShift)

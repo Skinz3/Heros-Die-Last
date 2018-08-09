@@ -30,7 +30,7 @@ namespace Rogue.Objects
         public Player(Vector2 position, Point size, string[] spriteNames, float delay, bool loop) : base(position, size, spriteNames, delay, loop)
         {
             this.Collider = new PlayerCollider(this, (SceneManager.CurrentScene as TestScene).map);
-            this.MovementEngine = new MovementEngine(Collider, this, 3f);
+            this.MovementEngine = new MovementEngine(Collider, this, 2.5f);
         }
 
         public override void OnInitialize()

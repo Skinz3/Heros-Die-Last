@@ -45,13 +45,16 @@ namespace Rogue
 
             string[] spriteNames = new string[] { "sprite_hero06", "sprite_hero07", "sprite_hero08", "sprite_hero09" };
             player = new Player(new Vector2(), new Point(48 * 3, 48 * 3), spriteNames, 150f, true);
-            AddObject(player, LayerEnum.Second);
+            //   this.AddObject(player,LayerEnum.Second);
+
         }
 
         public override void OnInitializeComplete()
         {
+            map.AddChild(player);
             map.ToogleDrawRectangles(false);
             map.Load(mapTemplate);
+
             this.Camera.Target = player;
         }
 

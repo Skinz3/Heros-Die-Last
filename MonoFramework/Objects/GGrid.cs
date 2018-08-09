@@ -127,15 +127,18 @@ namespace MonoFramework.Objects
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
                     Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Layer, Thickness);
-                    Cells[id].Initialize();
                     Cells[id].OnMouseEnter += Cell_OnMouseEnter;
                     Cells[id].OnMouseLeave += Cell_OnMouseLeave;
                     Cells[id].OnMouseLeftClick += Cell_OnMouseLeftClick;
                     Cells[id].OnMouseRightClick += Cell_OnMouseRightClick;
+                    AddChild(Cells[id]); // !!
                     id++;
                     relativeY++;
+
+
                 }
                 relativeX++;
+
             }
         }
         public override void OnInitializeComplete()
@@ -162,22 +165,13 @@ namespace MonoFramework.Objects
         {
             OnMouseEnterCell?.Invoke((GCell)obj);
         }
-
-
         public override void OnDraw(GameTime time)
         {
-            foreach (var cell in Cells)
-            {
-                cell.Draw(time);
-            }
-        }
 
+        }
         public override void OnUpdate(GameTime time)
         {
-            foreach (var cell in Cells)
-            {
-                cell.Update(time);
-            }
+
         }
     }
     public class GCell : DrawableObject
@@ -348,6 +342,10 @@ namespace MonoFramework.Objects
                 cells.Add(grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
             }
             return cells.ToArray();
+        }
+        public override string ToString()
+        {
+            return GetType().Name + " Id:" + Id + " Relative Position:" + RelativePosition;
         }
     }
 }

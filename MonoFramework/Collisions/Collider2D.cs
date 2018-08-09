@@ -68,7 +68,7 @@ namespace MonoFramework.Collisions
                 var nextCell = cell.GetNextCells(Map, direction, 1)[0];
                 nextCells.Add(nextCell);
 
-                var flags = direction.GetFlags(); // Dat fucking semi isometric view :3
+             var flags = direction.GetFlags(); // Dat fucking semi isometric view :3
 
                 if (flags.Count() > 1) // on a plus d'une direction (par exemple bas droite, dans ce cas on ajoute les cellules du bas et les cellules de droites)
                 {
@@ -76,7 +76,7 @@ namespace MonoFramework.Collisions
                     {
                         nextCells.Add(cell.GetNextCells(Map, dir, 1)[0]);
                     }
-                }
+                } 
 
                 foreach (var next in nextCells)
                 {

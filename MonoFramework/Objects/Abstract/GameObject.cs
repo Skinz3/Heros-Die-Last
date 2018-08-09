@@ -12,13 +12,18 @@ namespace MonoFramework.Objects.Abstract
     /// </summary>
     public abstract class GameObject
     {
+        public bool Initialized
+        {
+            get;
+            private set;
+        }
         /// <summary>
         /// Objets enfants (seront dessinés sous le parent)
         /// </summary>
-        private List<GameObject> Childs
+        public List<GameObject> Childs
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Objet parent
@@ -36,7 +41,7 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
-      
+
         public GameObject()
         {
             this.Childs = new List<GameObject>();
@@ -46,18 +51,19 @@ namespace MonoFramework.Objects.Abstract
         /// </summary>
         public void Initialize()
         {
+            if (Initialized)
+                throw new Exception("Object already initialized " + GetType().Name);
             OnInitialize();
 
-            foreach (var child in Childs)
-            {
-                child.Initialize();
-            }
+
 
             OnInitializeComplete();
-          
+            Initialized = true;
+
         }
         public void AddChild(GameObject child)
         {
+            child.Initialize();
             child.Parent = this;
             Childs.Add(child);
         }
@@ -74,7 +80,7 @@ namespace MonoFramework.Objects.Abstract
         public virtual void Update(GameTime time)
         {
             OnUpdate(time);
-            
+
             foreach (var child in Childs)
             {
                 child.Update(time);
