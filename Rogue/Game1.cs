@@ -14,7 +14,12 @@ namespace Rogue
     {
         public Game1()
         {
-            SceneManager.SetScene(new TestScene());
+            
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            SceneManager.SetScene(new MenuScene());
         }
     }
 }

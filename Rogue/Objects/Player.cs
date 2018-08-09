@@ -22,26 +22,23 @@ namespace Rogue.Objects
             get;
             set;
         }
-        private MovementEngine MovementEngine
+        public MovementEngine MovementEngine
         {
             get;
-            set;
+            private set;
         }
-        public Player(Vector2 position, Point size, string[] spriteNames, float delay, bool loop) : base(position, size, spriteNames, delay, loop)
+        public Player(Vector2 position, GMap map, Point size, string[] spriteNames, float delay, bool loop) : base(position, size, spriteNames, delay, loop)
         {
-            this.Collider = new PlayerCollider(this, (SceneManager.CurrentScene as TestScene).map);
+            this.Collider = new PlayerCollider(this, map);
             this.MovementEngine = new MovementEngine(Collider, this, 2.5f);
         }
 
-        public override void OnInitialize()
-        {
 
-        }
         public override void OnDraw(GameTime time)
         {
             base.OnDraw(time);
-         //   Debug.DrawRectangle(Rectangle, Color.Green);
-         //   Debug.DrawRectangle(Collider.MovementHitBox, Color.Red);
+            // Debug.DrawRectangle(Rectangle, Color.Green);
+         //   Debug.DrawRectangle(Collider.MovementHitBox, Color.LightGreen);
         }
         public override void OnUpdate(GameTime time)
         {

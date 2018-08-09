@@ -47,12 +47,13 @@
   <ItemGroup>
     <Compile Include="Collisions\PlayerCollider.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="MenuScene.cs" />
     <Compile Include="Objects\Entities\Entity.cs" />
     <Compile Include="Objects\Entities\MovableEntity.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestScene.cs" />
+    <Compile Include="GameScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -121,6 +122,10 @@
     <ProjectReference Include="..\MonoFramework\MonoFramework.csproj">
       <Project>{45584c6d-311e-4bb4-b5b8-88a1423f90cc}</Project>
       <Name>MonoFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rogue.MapEditor\Rogue.MapEditor.csproj">
+      <Project>{4e5bf3c1-06c0-481f-b60c-01c26faad01c}</Project>
+      <Name>Rogue.MapEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
