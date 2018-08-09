@@ -54,17 +54,14 @@ namespace MonoFramework.Objects.Abstract
             if (Initialized)
                 throw new Exception("Object already initialized " + GetType().Name);
             OnInitialize();
-
-
-
             OnInitializeComplete();
             Initialized = true;
 
         }
         public void AddChild(GameObject child)
         {
-            child.Initialize();
             child.Parent = this;
+            child.Initialize();
             Childs.Add(child);
         }
         public void Draw(GameTime time)

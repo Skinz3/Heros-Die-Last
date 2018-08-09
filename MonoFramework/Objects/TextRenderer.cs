@@ -59,10 +59,6 @@ namespace MonoFramework.Objects
         }
         public void Dispose()
         {
-            foreach (var pair in SpriteFonts)
-            {
-                pair.Value.Texture.Dispose();
-            }
             SpriteFonts = null;
         }
     }

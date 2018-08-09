@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects
 {
-    public class GCircle : DrawableObject
+    public class GCircle : SingleTextureObject
     {
         public float Radius
         {

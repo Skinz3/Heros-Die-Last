@@ -44,6 +44,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\Animator.cs" />
     <Compile Include="Cameras\Camera2D.cs" />
     <Compile Include="Collisions\Collider2D.cs" />
     <Compile Include="Collisions\DirectionEnum.cs" />
@@ -57,7 +59,9 @@
     <Compile Include="Network\Frame.cs" />
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
     <Compile Include="Network\Server.cs" />
+    <Compile Include="Objects\Abstract\ColorableObject.cs" />
     <Compile Include="Objects\AnimableObject.cs" />
+    <Compile Include="Objects\Entities\MovableEntity.cs" />
     <Compile Include="Objects\TextRenderer.cs" />
     <Compile Include="Objects\UI\Button.cs" />
     <Compile Include="Collisions\Raycast.cs" />
@@ -75,7 +79,7 @@
     <Compile Include="Network\Protocol\ProtocolManager.cs" />
     <Compile Include="Objects\Abstract\GameObject.cs" />
     <Compile Include="Objects\Abstract\PositionableObject.cs" />
-    <Compile Include="Geometry\DrawableObject.cs" />
+    <Compile Include="Objects\Abstract\SingleTextureObject.cs" />
     <Compile Include="Objects\GCircle.cs" />
     <Compile Include="Objects\GCursor.cs" />
     <Compile Include="Objects\GGrid.cs" />

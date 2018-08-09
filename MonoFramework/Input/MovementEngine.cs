@@ -12,6 +12,8 @@ namespace MonoFramework.Input
 {
     public class MovementEngine
     {
+        public event Action<DirectionEnum> OnDirectionChanged;
+
         private Collider2D Collider
         {
             get;
@@ -27,6 +29,11 @@ namespace MonoFramework.Input
             get;
             set;
         }
+        public DirectionEnum Direction
+        {
+            get;
+            private set;
+        }
         public MovementEngine(Collider2D collider, PositionableObject target, float speed)
         {
             this.Collider = collider;
@@ -35,28 +42,36 @@ namespace MonoFramework.Input
         }
         public void Update(GameTime time)
         {
-            DirectionEnum direction = DirectionEnum.None;
+            DirectionEnum oldDirection = Direction;
+
+            Direction = DirectionEnum.None;
 
             Vector2 input = new Vector2();
-            if (Keyboard.GetState().IsKeyDown(Keys.Z)) // ! Pouvoir configurer les touches !
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.Z)) // ! Pouvoir configurer les touches !
             {
                 input.Y -= 1;
-                direction |= DirectionEnum.Up;
+                Direction |= DirectionEnum.Up;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            if (state.IsKeyDown(Keys.S))
             {
                 input.Y += 1;
-                direction |= DirectionEnum.Down;
+                Direction |= DirectionEnum.Down;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (state.IsKeyDown(Keys.D))
             {
                 input.X += 1;
-                direction |= DirectionEnum.Right;
+                Direction |= DirectionEnum.Right;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            if (state.IsKeyDown(Keys.Q))
             {
                 input.X -= 1;
-                direction |= DirectionEnum.Left;
+                Direction |= DirectionEnum.Left;
+            }
+
+            if (Direction != oldDirection)
+            {
+                OnDirectionChanged?.Invoke(Direction);
             }
 
             if (input != new Vector2(0, 0))
@@ -66,7 +81,7 @@ namespace MonoFramework.Input
 
                 var newPosition = Target.Position + input;
 
-                if (Collider.CanMove(newPosition, direction))
+                if (Collider.CanMove(newPosition, Direction))
                 {
                     Target.Position = newPosition;
                 }

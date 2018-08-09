@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects
 {
-    public class GLine : DrawableObject
+    public class GLine : SingleTextureObject
     {
         public Vector2 Target
         {

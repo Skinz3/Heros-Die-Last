@@ -66,6 +66,13 @@ namespace MonoFramework.Objects
             }
             return result;
         }
+        public void Clean()
+        {
+            foreach (var cell in Cells)
+            {
+                cell.Clean();
+            }
+        }
         public override void OnInitializeComplete()
         {
             // load sprites

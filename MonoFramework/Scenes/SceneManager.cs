@@ -14,15 +14,11 @@ namespace MonoFramework.Scenes
             get;
             private set;
         }
-        public static void SetScene(Scene scene, bool initialize = false)
+        public static void SetScene(Scene scene)
         {
             CurrentScene?.Dispose();
             CurrentScene = scene;
-
-            if (initialize)
-            {
-                Initialize();
-            }
+            Initialize();
         }
 
         public static void Initialize()

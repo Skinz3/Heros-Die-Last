@@ -46,8 +46,8 @@ namespace Rogue
 
 
 
-            string[] spriteNames = new string[] { "sprite_hero06", "sprite_hero07", "sprite_hero08", "sprite_hero09" };
-            player = new Player(new Vector2(), map, new Point(48 * 3, 48 * 3), spriteNames, 150f, true);
+         
+            player = WhyNotSerialized.CreatePlayer(map); 
 
             AddObject(new AnimableObject(new Vector2(5 * 50,0), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
                LayerEnum.First);
@@ -71,10 +71,7 @@ namespace Rogue
             map.Load(mapTemplate);
             map.AddChild(player);
             this.Camera.Target = player;
-            Camera.Zoom = 1.2f;
-
-
-
+            Camera.Zoom = 1.3f;
         }
         public override void Update(GameTime gameTime)
         {

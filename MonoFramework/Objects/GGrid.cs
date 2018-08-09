@@ -19,7 +19,7 @@ namespace MonoFramework.Objects
     /// <summary>
     /// Représente une grille en 2D , elle est utilisé pour afficher une carte.
     /// </summary>
-    public class GGrid : DrawableObject
+    public class GGrid : SingleTextureObject
     {
         public event Action<GCell> OnMouseEnterCell;
         public event Action<GCell> OnMouseLeaveCell;
@@ -174,7 +174,7 @@ namespace MonoFramework.Objects
 
         }
     }
-    public class GCell : DrawableObject
+    public class GCell : SingleTextureObject
     {
         public int Id
         {
@@ -342,6 +342,14 @@ namespace MonoFramework.Objects
                 cells.Add(grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
             }
             return cells.ToArray();
+        }
+        public void Clean()
+        {
+            RemoveSprites();
+            Walkable = true;
+            GText = null;
+            BackColor = Color.Transparent;
+            FillColor = Color.Transparent;
         }
         public override string ToString()
         {

@@ -17,6 +17,9 @@ namespace MonoFramework.Objects.Abstract
         public event Action<PositionableObject> OnMouseIn;
 
         public event Action<PositionableObject> OnMouseRightClick;
+        /// <summary>
+        /// Pas bon! un seul event souris, pas plusieurs 
+        /// </summary>
         public event Action<PositionableObject> OnMouseLeftClick;
 
         public Vector2 Position;

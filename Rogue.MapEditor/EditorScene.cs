@@ -102,7 +102,7 @@ namespace Rogue.MapEditor
         {
             this.DrawingLayer = LayerEnum.First;
 
-            KeyboardManager.OnKeyPressed += InputManager_OnKeyPressed;
+            KeyboardManager.OnKeyPressed += OnKeyPressed;
 
             TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 650), new Point(20, 3), 50, Color.Black, 1);
             AddObject(TileSelectionGrid, LayerEnum.UI);
@@ -120,8 +120,7 @@ namespace Rogue.MapEditor
 
             this.CollisionEditorLabel = TextRenderer.AddText(new Vector2(0, 60f), "Collision Editor :" + CollisionEditor, Color.CornflowerBlue);
 
-            // AddObject(new AnimableObject(new Vector2(150, 150), new Point(50, 50), new string[] { "sprite_230", "sprite_231", "sprite_232", "sprite_233" }, 100f, true),
-            //      LayerEnum.First);
+        
 
 
         }
@@ -132,7 +131,7 @@ namespace Rogue.MapEditor
         #endregion
 
         #region Keyboard Events
-        private void InputManager_OnKeyPressed(Keys obj)
+        private void OnKeyPressed(Keys obj)
         {
             if (obj == Keys.Space)
             {
@@ -150,6 +149,7 @@ namespace Rogue.MapEditor
                 dialog.Dispose();
                 if (dialog.FileName != string.Empty)
                 {
+                    Map.Clean();
                     LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
                     MapTemplate template = new MapTemplate();
                     template.Deserialize(reader);
@@ -285,7 +285,7 @@ namespace Rogue.MapEditor
 
         public override void OnDispose()
         {
-
+            KeyboardManager.OnKeyPressed -= OnKeyPressed;
         }
         #endregion
 

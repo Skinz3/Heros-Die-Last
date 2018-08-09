@@ -51,24 +51,40 @@ namespace MonoFramework.Cameras
 
         public PositionableObject Target
         {
-            get;
-            set;
+            get
+            {
+                return m_target;
+            }
+            set
+            {
+                m_target = value;
+                UpdateTargetedPosition();
+            }
         }
+
+        private PositionableObject m_target;
+
         public Camera2D()
         {
             _zoom = 1.0f;
             Rotation = 0.0f;
             Position = Vector2.Zero;
         }
-
-        public void Update()
+        private void UpdateTargetedPosition()
         {
             if (Target != null)
             {
                 var v1 = Vector2.Divide(Debug.GraphicsDevice.Viewport.Bounds.Size.ToVector2(), 2);
                 var v2 = Vector2.Divide(Target.Rectangle.Size.ToVector2(), 2);
-                Position = Target.Position - v1 + v2; 
+                Position = Target.Position - v1 + v2;
             }
+        }
+        public void Update()
+        {
+            UpdateTargetedPosition();
+
+            if (SceneManager.CurrentScene.HandleCameraInput)
+                HandleInput();
         }
         public void HandleInput()
         {

@@ -83,6 +83,10 @@ namespace MonoFramework.Sprites
         }
         public static Sprite Flip(Sprite input, bool vertical, bool horizontal)
         {
+            if (!vertical && !horizontal)
+            {
+                return input;
+            }
             Texture2D flipped = new Texture2D(input.Texture.GraphicsDevice, input.Texture.Width, input.Texture.Height);
             Color[] data = new Color[input.Texture.Width * input.Texture.Height];
             Color[] flipped_data = new Color[data.Length];

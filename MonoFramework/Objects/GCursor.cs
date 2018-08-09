@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects
 {
-    public class GCursor : DrawableObject
+    public class GCursor : SingleTextureObject
     {
         public bool Active
         {

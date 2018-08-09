@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rogue.MapEditor</RootNamespace>
     <AssemblyName>Rogue.MapEditor</AssemblyName>
@@ -48,7 +48,6 @@
     <Compile Include="Editor.cs" />
     <Compile Include="EditorScene.cs" />
     <Compile Include="Objects\TileSelectionGrid.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

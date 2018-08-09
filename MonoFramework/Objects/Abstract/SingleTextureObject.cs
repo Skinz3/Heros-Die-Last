@@ -8,22 +8,18 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects.Abstract
 {
-    public abstract class DrawableObject : PositionableObject
+    public abstract class SingleTextureObject : ColorableObject
     {
-        public DrawableObject(Vector2 position, Point size, Color color) : base(position, size)
+        public SingleTextureObject(Vector2 position, Point size, Color color) : base(position, size, color)
         {
-            this.Color = color;
+
         }
         protected Texture2D Texture
         {
             get;
             private set;
         }
-        public Color Color
-        {
-            get;
-            set;
-        }
+
 
         public override void OnInitialize()
         {
@@ -35,7 +31,7 @@ namespace MonoFramework.Objects.Abstract
         }
         public override void OnDraw(GameTime time)
         {
-            Debug.SpriteBatch.Draw(Texture, new Rectangle(Position.ToPoint(), Size), Color.White);
+            Debug.SpriteBatch.Draw(Texture, new Rectangle(Position.ToPoint(), Size), Color);
         }
 
         public abstract Texture2D CreateTexture(GraphicsDevice graphicsDevice);

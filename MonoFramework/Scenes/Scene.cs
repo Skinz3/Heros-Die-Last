@@ -13,6 +13,10 @@ namespace MonoFramework.Scenes
 {
     public abstract class Scene
     {
+        public event Action OnIntializationFinalized;
+
+        public bool Initialized = false;
+
         public Camera2D Camera
         {
             get;
@@ -77,6 +81,8 @@ namespace MonoFramework.Scenes
                 gameObject.Initialize();
             }
             OnInitializeComplete();
+            OnIntializationFinalized?.Invoke();
+            Initialized = true;
         }
         /// <summary>
         /// On ajoute les elements a la scène
@@ -118,9 +124,6 @@ namespace MonoFramework.Scenes
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
-            if (HandleCameraInput)
-                Camera.HandleInput();
-
             Camera.Update();
 
             foreach (var list in GameObjects.Values)
