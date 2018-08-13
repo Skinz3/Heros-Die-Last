@@ -25,6 +25,8 @@ namespace MonoFramework.Network.Protocol
 
         public static bool ShowProtocolMessage;
 
+        public static bool Initialized;
+
         public static void Initialize(Assembly messagesAssembly, Assembly handlersAssembly, bool showProtocolMessages)
         {
             ShowProtocolMessage = showProtocolMessages;
@@ -84,6 +86,7 @@ namespace MonoFramework.Network.Protocol
 
             if (ShowProtocolMessage)
                 logger.Write(Messages.Count + " Message(s) Loaded | " + Handlers.Count + " Handler(s) Loaded");
+            Initialized = true;
         }
         /// <summary>
         /// Unpack message

@@ -83,6 +83,9 @@ namespace MonoFramework.Objects
 
         }
 
-        
+        public override void OnDispose()
+        {
+            Texture.Dispose();
+        }
     }
 }

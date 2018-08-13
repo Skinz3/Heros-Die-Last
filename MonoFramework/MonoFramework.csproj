@@ -45,27 +45,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animations\Animation.cs" />
-    <Compile Include="Animations\Animator.cs" />
     <Compile Include="Cameras\Camera2D.cs" />
     <Compile Include="Collisions\Collider2D.cs" />
     <Compile Include="Collisions\DirectionEnum.cs" />
     <Compile Include="Debug.cs" />
+    <Compile Include="DesignPattern\DeveloppmentManager.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Geometry\Alignment.cs" />
     <Compile Include="Geometry\GeometryExtensions.cs" />
     <Compile Include="Geometry\RectangleOrigin.cs" />
+    <Compile Include="Input\MouseManager.cs" />
     <Compile Include="Input\MovementEngine.cs" />
+    <Compile Include="IO\Maps\Template.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Frame.cs" />
     <Compile Include="Network\Protocol\ProtocolTypeManager.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Objects\Abstract\ColorableObject.cs" />
     <Compile Include="Objects\AnimableObject.cs" />
-    <Compile Include="Objects\Entities\MovableEntity.cs" />
+    <Compile Include="Objects\IScript.cs" />
     <Compile Include="Objects\TextRenderer.cs" />
     <Compile Include="Objects\UI\Button.cs" />
     <Compile Include="Collisions\Raycast.cs" />
     <Compile Include="Collisions\RaycastZ.cs" />
+    <Compile Include="Objects\UI\InputText.cs" />
+    <Compile Include="Objects\UI\SimpleButton.cs" />
+    <Compile Include="Objects\UI\Background.cs" />
+    <Compile Include="Objects\UI\UIObject.cs" />
+    <Compile Include="PhysX\Force2D.cs" />
+    <Compile Include="Scenes\MapScene.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />
@@ -93,6 +100,8 @@
     <Compile Include="Scenes\SceneManager.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteManager.cs" />
+    <Compile Include="Utils\ReversedUniqueIdProvider.cs" />
+    <Compile Include="Utils\UniqueIdProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -100,37 +109,41 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="YAXLib">
+      <HintPath>..\..\..\Cooper Last Revision\Cooper\Sources\Cooper.Server\bin\Debug\YAXLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
       <Link>x86\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\SDL2.dll">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x64\SDL2.dll">
       <Link>x64\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\soft_oal.dll">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x86\soft_oal.dll">
       <Link>x86\soft_oal.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\soft_oal.dll">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x64\soft_oal.dll">
       <Link>x64\soft_oal.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libSDL2-2.0.so.0">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libSDL2-2.0.so.0">
       <Link>x86\libSDL2-2.0.so.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libSDL2-2.0.so.0">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libSDL2-2.0.so.0">
       <Link>x64\libSDL2-2.0.so.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libopenal.so.1">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libopenal.so.1">
       <Link>x86\libopenal.so.1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libopenal.so.1">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libopenal.so.1">
       <Link>x64\libopenal.so.1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

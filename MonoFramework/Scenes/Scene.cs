@@ -112,6 +112,19 @@ namespace MonoFramework.Scenes
         }
         public void Dispose()
         {
+            foreach (var list in GameObjects.Values)
+            {
+                foreach (var gameObject in list)
+                {
+                    gameObject.Dispose();
+                }
+            }
+            foreach (var gameObject in UIGameObjects)
+            {
+                gameObject.Dispose();
+            }
+            GameObjects.Clear();
+            UIGameObjects.Clear();
             TextRenderer.Dispose();
             OnDispose();
         }
@@ -128,18 +141,17 @@ namespace MonoFramework.Scenes
 
             foreach (var list in GameObjects.Values)
             {
-                foreach (var gameObject in list)
+                foreach (var gameObject in list.ToArray())
                 {
                     gameObject.Update(gameTime);
-
                 }
             }
-            foreach (var gameObject in UIGameObjects)
+            foreach (var gameObject in UIGameObjects.ToArray())
             {
                 gameObject.Update(gameTime);
             }
         }
-        public void Draw(GameTime gameTime)
+        public virtual void Draw(GameTime gameTime)
         {
             Debug.GraphicsDevice.Clear(ClearColor);
 
@@ -149,7 +161,6 @@ namespace MonoFramework.Scenes
                         null,
                         null,
                         Camera.GetTransformation());
-
             foreach (var list in GameObjects.Values)
             {
                 foreach (var gameObject in list)

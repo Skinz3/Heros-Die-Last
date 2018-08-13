@@ -17,7 +17,7 @@ namespace MonoFramework.Input
 
         public static void Update()
         {
-            if (OnKeyPressed == null)
+            if (OnKeyPressed == null && OnKeyDown == null)
                 return;
 
             KeyboardState state = Keyboard.GetState();

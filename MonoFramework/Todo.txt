@@ -13,4 +13,36 @@ pouvoir configurer les toucher MovementEngine.cs
   
   PositionableObject.cs Alignments
 
-  PositionableObject.cs OnMouseLeftClick/RightClick un seul appui (booléens)
+  MapEditor, one click only?
+
+  Idées items =>
+
+=> Arc tirer en head shot
+=> coffre a ouvrir pour items
+=> fantome tranparency 0.5f
+=> Transformation en mob caché
+=> root
+=> castlevania
+=> shield?
+=> charge?
+=> grab?
+=> dash
+=> regroupement zarya
+=> shield temporaire
+=> super poings?	
+=> mine
+=> explorateur
+=> aimant a loot
+=> freeze
+=> frappe zone
+=> smg
+=> zone heal (rédemp)
+=> coeur de vie (instant)
+=> beam
+=> invulnerable	
+=> pierre (lie , 2x plus d'hp chaqun, 1 meurt les deux meurt)
+=> sacrifice sacrieur
+=> roulette russe (explosion? perte de pv?)
+=> endormissement
+=> poison grenade?
+=> eclair tout le monde?

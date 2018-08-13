@@ -24,10 +24,10 @@ namespace MonoFramework.Objects.Abstract
         public override void OnInitialize()
         {
             this.Texture = CreateTexture(Debug.GraphicsDevice);
+          
         }
         public override void OnInitializeComplete()
         {
-
         }
         public override void OnDraw(GameTime time)
         {

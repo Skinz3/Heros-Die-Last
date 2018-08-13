@@ -16,7 +16,7 @@ namespace Rogue.MapEditor
          //  this.GraphicsDeviceManager.IsFullScreen = true;
            // this.GraphicsDeviceManager.PreferredBackBufferWidth =1920 /2;
       
-            SceneManager.SetScene(new EditorScene());
+            SceneManager.LoadScene(new EditorScene());
         }
     }
 }

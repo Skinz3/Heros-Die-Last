@@ -7,11 +7,40 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using YAXLib;
 
 namespace MonoFramework
 {
     public static class Extensions
     {
+        public static string XMLSerialize(this object obj)
+        {
+            YAXSerializer serializer = new YAXSerializer(obj.GetType());
+            return serializer.Serialize(obj);
+        }
+        public static object XMLDeserialize(this string content, Type type)
+        {
+            if (content == string.Empty)
+                return Activator.CreateInstance(type);
+
+            YAXSerializer serializer = new YAXSerializer(type);
+            return Convert.ChangeType(serializer.Deserialize(content), type);
+        }
+        /// <summary>
+        /// Less Faster then XMLDeserialize(this string content,Type type)
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static object XMLDeserialize(this string content, Assembly assembly)
+        {
+            string typeAsString = new string(content.Split('>')[0].Skip(1).ToArray());
+            var type = assembly.GetTypes().FirstOrDefault(x => x.Name == typeAsString);
+            return XMLDeserialize(content, type);
+        }
+        public static T XMLDeserialize<T>(this string content)
+        {
+            return (T)XMLDeserialize(content, typeof(T));
+        }
         public static IEnumerable<Enum> GetFlags(this Enum input)
         {
             foreach (Enum value in Enum.GetValues(input.GetType()))
@@ -105,4 +134,6 @@ namespace MonoFramework
             return methodInfo.GetCustomAttributes(false).FirstOrDefault(x => x.GetType() == attributeType);
         }
     }
+
+    
 }

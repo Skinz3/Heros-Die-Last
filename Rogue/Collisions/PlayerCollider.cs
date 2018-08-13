@@ -14,7 +14,7 @@ namespace Rogue.Collisions
 {
     public class PlayerCollider : Collider2D
     {
-        public PlayerCollider(PositionableObject gameObject, GMap map) : base(gameObject, map)
+        public PlayerCollider(PositionableObject gameObject) : base(gameObject)
         {
 
         }

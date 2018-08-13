@@ -74,7 +74,7 @@ namespace MonoFramework.Cameras
         {
             if (Target != null)
             {
-                var v1 = Vector2.Divide(Debug.GraphicsDevice.Viewport.Bounds.Size.ToVector2(), 2);
+                var v1 = Vector2.Divide(Debug.GraphicsDevice.Viewport.Bounds.Size.ToVector2() / new Vector2(Zoom), 2);
                 var v2 = Vector2.Divide(Target.Rectangle.Size.ToVector2(), 2);
                 Position = Target.Position - v1 + v2;
             }

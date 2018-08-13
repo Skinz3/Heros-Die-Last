@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoFramework.DesignPattern;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,15 +68,17 @@ namespace MonoFramework.Sprites
             this.FlippedVertically = flippedVertically;
             this.FlippedHorizontally = flippedHorizontally;
         }
+        [InDeveloppement]
         public void Dispose()
         {
-            Texture.Dispose();
-            Texture = null;
+          //  Texture?.Dispose(); Sprite Garabage Collector needed!
+          //  Texture = null;
         }
         public void Load()
         {
             FileStream stream = new FileStream(Path, FileMode.Open);
             Texture = Texture2D.FromStream(Debug.GraphicsDevice, stream);
+            stream.Dispose();
         }
         public void Draw(Rectangle rect, Color color)
         {

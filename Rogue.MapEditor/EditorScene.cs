@@ -149,7 +149,6 @@ namespace Rogue.MapEditor
                 dialog.Dispose();
                 if (dialog.FileName != string.Empty)
                 {
-                    Map.Clean();
                     LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
                     MapTemplate template = new MapTemplate();
                     template.Deserialize(reader);
@@ -182,7 +181,7 @@ namespace Rogue.MapEditor
                 dialog.ShowDialog();
                 if (dialog.FileName != string.Empty)
                 {
-                    var template = Map.Export();
+                    var template = Map.Export(Camera.Zoom);
 
                     LittleEndianWriter writer = new LittleEndianWriter();
                     template.Serialize(writer);

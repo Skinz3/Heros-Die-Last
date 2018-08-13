@@ -9,6 +9,11 @@ namespace MonoFramework.Objects.Abstract
 {
     public abstract class ColorableObject : PositionableObject
     {
+        public Color DefaultColor
+        {
+            get;
+            private set;
+        }
         public Color Color
         {
             get;
@@ -17,6 +22,7 @@ namespace MonoFramework.Objects.Abstract
         public ColorableObject(Vector2 position, Point size, Color color) : base(position, size)
         {
             this.Color = color;
+            this.DefaultColor = color;
         }
         public void SetTransparency(float value)
         {

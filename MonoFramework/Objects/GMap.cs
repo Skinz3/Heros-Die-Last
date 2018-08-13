@@ -5,20 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using MonoFramework.IO.Maps;
+using MonoFramework.Scenes;
 using MonoFramework.Sprites;
 
 namespace MonoFramework.Objects
 {
     public class GMap : GGrid
     {
-        public const float MAP_CELL_SIZE = 50f;
-
-        public GMap(Point size) : base(new Vector2(), size, MAP_CELL_SIZE, Color.Black, 1)
+        public GMap(Point size) : base(new Vector2(), size, MapTemplate.MAP_CELL_SIZE, Color.Black, 1)
         {
 
         }
         public void Load(MapTemplate template)
         {
+            Clean();
+
             foreach (var cell in template.Cells)
             {
                 GCell gCell = GetCell(cell.Id);
@@ -37,13 +38,14 @@ namespace MonoFramework.Objects
                 }
             }
         }
-        public MapTemplate Export()
+        public MapTemplate Export(float zoom)
         {
             MapTemplate result = new MapTemplate();
 
             result.Width = GridSize.X;
             result.Height = GridSize.Y;
             result.Cells = new CellTemplate[Cells.Length];
+            result.Zoom = zoom;
 
             for (int i = 0; i < Cells.Length; i++)
             {
@@ -63,16 +65,11 @@ namespace MonoFramework.Objects
                     result.Cells[i].Sprites[j].FlippedVertically = Cells[i].Sprites.ElementAt(j).Value.FlippedVertically;
                     result.Cells[i].Sprites[j].FlippedHorizontally = Cells[i].Sprites.ElementAt(j).Value.FlippedHorizontally;
                 }
+
             }
             return result;
         }
-        public void Clean()
-        {
-            foreach (var cell in Cells)
-            {
-                cell.Clean();
-            }
-        }
+    
         public override void OnInitializeComplete()
         {
             // load sprites

@@ -6,6 +6,7 @@ using MonoFramework.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,11 +34,12 @@ namespace MonoFramework
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             SpriteManager.Initialize(@"/Content");
+            SceneManager.Initialize(Assembly.GetEntryAssembly());
+
             GraphicsDeviceManager.PreferredBackBufferWidth = 1000;  // largeur de la fenêtre
             GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
             this.IsMouseVisible = true;
 
-           
            //this.GraphicsDeviceManager.IsFullScreen = true;
         }
 
@@ -51,7 +53,7 @@ namespace MonoFramework
             SpriteBatch = new SpriteBatch(GraphicsDevice); // Le SpriteBatch permet de dessiner a l'écran
             Debug.Initialize(SpriteBatch,Content); // Charge toute les variable statiques
         }
-
+        
         protected override void UnloadContent()
         {
             SceneManager.Dispose();
@@ -60,6 +62,7 @@ namespace MonoFramework
         protected override void Update(GameTime gameTime)
         {
             KeyboardManager.Update();
+            MouseManager.Update();
             SceneManager.Update(gameTime);
             base.Update(gameTime);
         }

@@ -1,21 +1,26 @@
 ﻿using MonoFramework.Objects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MonoFramework.IO.Maps
 {
-    public class MapTemplate
+    public class MapTemplate : Template
     {
+        public const int MAP_CELL_SIZE = 50;
+
         public int Width;
 
         public int Height;
 
         public CellTemplate[] Cells;
 
-        public void Deserialize(LittleEndianReader reader)
+        public float Zoom;
+
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.Width = reader.ReadInt();
             this.Height = reader.ReadInt();
@@ -27,8 +32,10 @@ namespace MonoFramework.IO.Maps
                 Cells[i] = new CellTemplate();
                 Cells[i].Deserialize(reader);
             }
+
+            this.Zoom = reader.ReadFloat();
         }
-        public void Serialize(LittleEndianWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.WriteInt(Width);
             writer.WriteInt(Height);
@@ -39,7 +46,11 @@ namespace MonoFramework.IO.Maps
             {
                 cell.Serialize(writer);
             }
+
+            writer.WriteFloat(Zoom);
         }
+
+       
     }
     public class CellTemplate
     {

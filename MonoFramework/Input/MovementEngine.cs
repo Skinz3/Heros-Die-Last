@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoFramework.Collisions;
+using MonoFramework.DesignPattern;
+using MonoFramework.Geometry;
 using MonoFramework.Objects.Abstract;
 using System;
 using System.Collections.Generic;
@@ -32,48 +34,37 @@ namespace MonoFramework.Input
         public DirectionEnum Direction
         {
             get;
-            private set;
+            set; // private?
+        }
+        public bool CanMove
+        {
+            get;
+            set;
         }
         public MovementEngine(Collider2D collider, PositionableObject target, float speed)
         {
             this.Collider = collider;
             this.Target = target;
             this.Speed = speed;
+            this.CanMove = true;
         }
-        public void Update(GameTime time)
+        public void Move(Vector2 input)
         {
+            if (!CanMove)
+                return;
+
             DirectionEnum oldDirection = Direction;
 
-            Direction = DirectionEnum.None;
+            Direction = input.GetDirection();
 
-            Vector2 input = new Vector2();
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Z)) // ! Pouvoir configurer les touches !
+            if (Direction == (DirectionEnum.Right | DirectionEnum.Left) || Direction == (DirectionEnum.Up | DirectionEnum.Down))
             {
-                input.Y -= 1;
-                Direction |= DirectionEnum.Up;
+                Direction = DirectionEnum.None;
             }
-            if (state.IsKeyDown(Keys.S))
-            {
-                input.Y += 1;
-                Direction |= DirectionEnum.Down;
-            }
-            if (state.IsKeyDown(Keys.D))
-            {
-                input.X += 1;
-                Direction |= DirectionEnum.Right;
-            }
-            if (state.IsKeyDown(Keys.Q))
-            {
-                input.X -= 1;
-                Direction |= DirectionEnum.Left;
-            }
-
             if (Direction != oldDirection)
             {
                 OnDirectionChanged?.Invoke(Direction);
             }
-
             if (input != new Vector2(0, 0))
             {
                 input.Normalize();
@@ -89,8 +80,31 @@ namespace MonoFramework.Input
                   {
                        On ne peut pas bouger ! 
                   } */
-
             }
+
+        }
+        [InDeveloppement(InDeveloppementState.THINK_ABOUT_IT, "(btw bad spelling DevEloppment), Configure key, architecture problem with networking?")]
+        public void UpdateInputs(GameTime time)
+        {
+            Vector2 input = new Vector2();
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.Z)) // ! Pouvoir configurer les touches !
+            {
+                input.Y -= 1;
+            }
+            if (state.IsKeyDown(Keys.S))
+            {
+                input.Y += 1;
+            }
+            if (state.IsKeyDown(Keys.D))
+            {
+                input.X += 1;
+            }
+            if (state.IsKeyDown(Keys.Q))
+            {
+                input.X -= 1;
+            }
+            Move(input);
         }
     }
 }

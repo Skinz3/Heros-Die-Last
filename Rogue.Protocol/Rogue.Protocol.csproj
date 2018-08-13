@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +41,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\AccountCreationResultEnum.cs" />
+    <Compile Include="Enums\AuthentificationFailureEnum.cs" />
+    <Compile Include="Enums\EntityTypeEnum.cs" />
+    <Compile Include="Enums\FrameEnum.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Messages\Client\FrameLoadedMessage.cs" />
+    <Compile Include="Messages\Client\GameEntitiesRequestMessage.cs" />
+    <Compile Include="Messages\Client\PlayRequestMessage.cs" />
+    <Compile Include="Messages\Server\EntityDispositionMessageDiag.cs" />
+    <Compile Include="Messages\Client\EntityDispositionRequestMessage.cs" />
+    <Compile Include="Messages\Server\GameEntitiesMessage.cs" />
+    <Compile Include="Messages\Client\GameEntityOKRequestMessage.cs" />
+    <Compile Include="Messages\Server\RemoveEntityMessage.cs" />
+    <Compile Include="Messages\Server\AuthentificationFailedMessage.cs" />
+    <Compile Include="Messages\Client\AuthentificationRequestMessage.cs" />
+    <Compile Include="Messages\Server\AuthentificationSuccesMessage.cs" />
+    <Compile Include="Messages\Server\EntityDispositionMessage.cs" />
+    <Compile Include="Messages\Server\LoadFrameMessage.cs" />
+    <Compile Include="Messages\Server\ShowEntityMessage.cs" />
+    <Compile Include="Messages\Client\TeleportRequestMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\DirectionalAnimation.cs" />
+    <Compile Include="Types\IProtocolable.cs" />
+    <Compile Include="Types\MessageType.cs" />
+    <Compile Include="Types\ProtocolEntity.cs" />
+    <Compile Include="Types\ProtocolMovableEntity.cs" />
+    <Compile Include="Types\ProtocolMonster.cs" />
+    <Compile Include="Types\ProtocolPlayer.cs" />
+    <Compile Include="Types\Stats.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LiteNetLib\LiteNetLib.csproj">
+      <Project>{B0A014E4-0392-4E35-AA42-8FB5A40417E0}</Project>
+      <Name>LiteNetLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoFramework\MonoFramework.csproj">
+      <Project>{45584C6D-311E-4BB4-B5B8-88A1423F90CC}</Project>
+      <Name>MonoFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

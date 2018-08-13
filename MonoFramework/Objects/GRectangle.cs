@@ -40,5 +40,10 @@ namespace MonoFramework.Objects
         {
 
         }
+
+        public override void OnDispose()
+        {
+          
+        }
     }
 }

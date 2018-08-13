@@ -11,7 +11,7 @@ namespace MonoFramework.Objects
 {
     public class GText : PositionableObject
     {
-        private SpriteFont SpriteFont
+        public SpriteFont SpriteFont
         {
             get;
             set;
@@ -19,7 +19,7 @@ namespace MonoFramework.Objects
 
         private string m_text;
 
-        public string Text
+        public new string Text // lol
         {
             get
             {
@@ -69,9 +69,11 @@ namespace MonoFramework.Objects
 
         public override void OnInitialize()
         {
-
         }
 
-    
+        public override void OnDispose()
+        {
+           
+        }
     }
 }

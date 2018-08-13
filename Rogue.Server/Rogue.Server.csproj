@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\Cooper Last Revision\Cooper\Sources\Cooper.Server\bin\Debug\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,21 +43,58 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="YAXLib">
+      <HintPath>..\..\..\Cooper Last Revision\Cooper\Sources\Cooper.Server\bin\Debug\YAXLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\AccountManager.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Frames\AuthentificationFrame.cs" />
+    <Compile Include="Frames\HubFrame.cs" />
+    <Compile Include="Frames\MenuFrame.cs" />
+    <Compile Include="Frames\ServerFrame.cs" />
+    <Compile Include="Handlers\FrameHandler.cs" />
+    <Compile Include="Handlers\AuthentificationHandler.cs" />
+    <Compile Include="Handlers\MapHandler.cs" />
+    <Compile Include="Handlers\MenuHandler.cs" />
+    <Compile Include="Network\RogueClient.cs" />
+    <Compile Include="Network\RogueServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Records\AccountRecord.cs" />
+    <Compile Include="Records\MapRecord.cs" />
+    <Compile Include="Records\PlayerRecord.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="Utils\StartupManager.cs" />
+    <Compile Include="World\Entities\Entity.cs" />
+    <Compile Include="World\Entities\MovableEntity.cs" />
+    <Compile Include="World\Entities\Player.cs" />
+    <Compile Include="World\Maps\MapGrid.cs" />
+    <Compile Include="World\Maps\MapInstance.cs" />
+    <Compile Include="World\Maps\MapsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LiteNetLib\LiteNetLib.csproj">
+      <Project>{B0A014E4-0392-4E35-AA42-8FB5A40417E0}</Project>
+      <Name>LiteNetLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonoFramework\MonoFramework.csproj">
       <Project>{45584c6d-311e-4bb4-b5b8-88a1423f90cc}</Project>
       <Name>MonoFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Rogue.ORM\Rogue.ORM.csproj">
+      <Project>{3943BF9C-E641-4E48-B362-156F2A66D19F}</Project>
+      <Name>Rogue.ORM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rogue.Protocol\Rogue.Protocol.csproj">
+      <Project>{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}</Project>
+      <Name>Rogue.Protocol</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

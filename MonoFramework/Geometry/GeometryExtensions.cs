@@ -83,6 +83,63 @@ namespace MonoFramework.Geometry
             rectangle.Y -= rectangle.Width;
             return rectangle;
         }
+        public static bool NormalizedBand(this Vector2 normalizedInput, Vector2 reference)
+        {
+            if (normalizedInput.X > 0)
+            {
+                normalizedInput.X = 1;
+            }
+            if (normalizedInput.X < -0.5)
+            {
+                normalizedInput.X = -1;
+            }
+            if (normalizedInput.Y > 0)
+            {
+                normalizedInput.Y = 1;
+            }
+            if (normalizedInput.Y < -0.5)
+            {
+                normalizedInput.Y = -1;
+            }
+            return normalizedInput == reference;
+        }
+        public static DirectionEnum GetDirection(this Vector2 normalizedInput)
+        {
+
+            if (normalizedInput.NormalizedBand(new Vector2(1, 0)))
+            {
+                return DirectionEnum.Right;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(-1, 0)))
+            {
+                return DirectionEnum.Left;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(0, 1)))
+            {
+                return DirectionEnum.Down;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(0, -1)))
+            {
+                return DirectionEnum.Up;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(1, 1)))
+            {
+                return DirectionEnum.Right | DirectionEnum.Down;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(1, -1)))
+            {
+                return DirectionEnum.Right | DirectionEnum.Up;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(-1, 1)))
+            {
+                return DirectionEnum.Left | DirectionEnum.Down;
+            }
+            else if (normalizedInput.NormalizedBand(new Vector2(-1, -1)))
+            {
+                return DirectionEnum.Left | DirectionEnum.Up;
+            }
+            return DirectionEnum.None;
+        }
         public static Vector2 GetInputVector(this DirectionEnum direction)
         {
             Vector2 input = new Vector2();

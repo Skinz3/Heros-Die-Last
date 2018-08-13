@@ -64,6 +64,15 @@ namespace MonoFramework.Animations
             this.FlipVertical = flipVertical;
             this.FlipHorizontal = flipHorizontal;
         }
+
+        public void Dispose()
+        {
+            foreach (var sprite in Sprites)
+            {
+                sprite.Dispose();
+            }
+        }
+
         public void Initialize()
         {
             this.CurrentDelay = Delay;

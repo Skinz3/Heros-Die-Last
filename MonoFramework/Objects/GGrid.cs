@@ -40,7 +40,7 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public float CellSize
+        public int CellSize
         {
             get;
             private set;
@@ -60,7 +60,7 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public GGrid(Vector2 position, Point gridSize, float cellSize, Color color, int thickness) : base(position, new Point((int)(gridSize.X * cellSize), (int)(gridSize.Y * cellSize)), color)
+        public GGrid(Vector2 position, Point gridSize, int cellSize, Color color, int thickness) : base(position, new Point((int)(gridSize.X * cellSize), (int)(gridSize.Y * cellSize)), color)
         {
             this.GridSize = gridSize;
             this.CellSize = cellSize;
@@ -131,7 +131,7 @@ namespace MonoFramework.Objects
                     Cells[id].OnMouseLeave += Cell_OnMouseLeave;
                     Cells[id].OnMouseLeftClick += Cell_OnMouseLeftClick;
                     Cells[id].OnMouseRightClick += Cell_OnMouseRightClick;
-                    AddChild(Cells[id]); // !!
+                    Cells[id].Initialize();
                     id++;
                     relativeY++;
 
@@ -165,13 +165,38 @@ namespace MonoFramework.Objects
         {
             OnMouseEnterCell?.Invoke((GCell)obj);
         }
+        public void DrawLayer(GameTime time, LayerEnum layer)
+        {
+            foreach (var cell in Cells)
+            {
+                cell.DrawLayer(time, layer);
+            }
+        }
         public override void OnDraw(GameTime time)
         {
-
+            foreach (var cell in Cells)
+            {
+                cell.Draw(time);
+            }
         }
         public override void OnUpdate(GameTime time)
         {
+            foreach (var cell in Cells)
+            {
+                cell.Update(time);
+            }
+        }
+        public void Clean()
+        {
+            foreach (var cell in Cells)
+            {
+                cell.Clean();
+            }
+        }
 
+        public override void OnDispose()
+        {
+            Cells = null;
         }
     }
     public class GCell : SingleTextureObject
@@ -181,7 +206,7 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        private float CellSize
+        private int CellSize
         {
             get;
             set;
@@ -212,15 +237,10 @@ namespace MonoFramework.Objects
             set;
         }
 
-        private GText GText
-        {
-            get;
-            set;
-        }
-
         public Color FillColor;
 
         public Color BackColor;
+
 
         public int Thickness
         {
@@ -232,12 +252,17 @@ namespace MonoFramework.Objects
             get;
             set;
         }
+        public Dictionary<LayerEnum, Color> SpriteColors
+        {
+            get;
+            private set;
+        }
         public Dictionary<LayerEnum, Sprite> Sprites
         {
             get;
             private set;
         }
-        public GCell(Vector2 position, Point relativePosition, int id, float size, Color color, LayerEnum layer, int thickness) : base(position, new Point((int)size, (int)size), color)
+        public GCell(Vector2 position, Point relativePosition, int id, int size, Color color, LayerEnum layer, int thickness) : base(position, new Point((int)size, (int)size), color)
         {
             this.Id = id;
             this.CellSize = size;
@@ -250,6 +275,12 @@ namespace MonoFramework.Objects
             this.Walkable = true;
             this.Layer = layer;
             this.DisplayedLayers = LayerEnum.First | LayerEnum.Second | LayerEnum.Third;
+            this.SpriteColors = new Dictionary<LayerEnum, Color>()
+            {
+                {LayerEnum.First,Color.White },
+                {LayerEnum.Second,Color.White },
+                {LayerEnum.Third,Color.White },
+            };
         }
 
 
@@ -263,10 +294,6 @@ namespace MonoFramework.Objects
             return Debug.DummyTexture;
         }
 
-        public void RemoveText()
-        {
-            GText = null;
-        }
 
         public override void OnDraw(GameTime time)
         {
@@ -275,7 +302,7 @@ namespace MonoFramework.Objects
             foreach (var pair in Sprites)
             {
                 if (DisplayedLayers.HasFlag(pair.Key))
-                    pair.Value.Draw(GRectangle.Rectangle, Color.White);
+                    pair.Value.Draw(GRectangle.Rectangle, SpriteColors[pair.Key]);
             }
 
             Fill(FillColor);
@@ -283,16 +310,31 @@ namespace MonoFramework.Objects
             if (DrawRectangle)
                 this.GRectangle.Draw(time);
 
-            if (GText != null)
-                GText.Draw(time);
+            if (Text != null)
+                Text.Draw(time);
         }
-        public void SetText(string text, Color color, Alignment alignment = Alignment.Center, float scale = 1f)
+        public void DrawLayer(GameTime time, LayerEnum layer)
         {
-            GText = new GText(Position, SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(),
-                text, color, scale);
-            GText.Align(Rectangle, alignment);
+            if (layer == LayerEnum.First)
+            {
+                Fill(BackColor);
+            }
+            if (Sprites.ContainsKey(layer))
+            {
+                Sprites[layer].Draw(GRectangle.Rectangle, SpriteColors[layer]);
+            }
+            if (layer == LayerEnum.Third)
+            {
+                Fill(FillColor);
 
+                if (DrawRectangle)
+                    this.GRectangle.Draw(time);
+
+                if (Text != null)
+                    Text.Draw(time);
+            }
         }
+
         private void Fill(Color color)
         {
             if (color != Color.Transparent)
@@ -304,6 +346,13 @@ namespace MonoFramework.Objects
                 this.Sprites[layer] = sprite;
             else
                 this.Sprites.Add(layer, sprite);
+
+            OrderSprites();
+
+        }
+        public void OrderSprites()
+        {
+            Sprites = Sprites.OrderByDescending(x => (int)x.Key).Reverse().ToDictionary(x => x.Key, x => x.Value);
         }
         public void RemoveSprites()
         {
@@ -315,9 +364,11 @@ namespace MonoFramework.Objects
         }
         public override void OnUpdate(GameTime time)
         {
-            if (GText != null)
+            GRectangle.Position = Position;
+
+            if (Text != null)
             {
-                GText.Update(time);
+                Text.Update(time);
             }
         }
         public GCell[] GetAdjacentCells(GGrid grid)
@@ -347,13 +398,23 @@ namespace MonoFramework.Objects
         {
             RemoveSprites();
             Walkable = true;
-            GText = null;
+            RemoveText();
             BackColor = Color.Transparent;
             FillColor = Color.Transparent;
         }
         public override string ToString()
         {
             return GetType().Name + " Id:" + Id + " Relative Position:" + RelativePosition;
+        }
+
+        public override void OnDispose()
+        {
+            Clean();
+
+            foreach (var sprite in Sprites)
+            {
+                sprite.Value.Dispose();
+            }
         }
     }
 }
