@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoFramework.Network.Protocol;
-using MonoFramework.Objects;
+using Rogue.Objects;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Objects.UI;
-using MonoFramework.Scenes;
+using Rogue.Scenes;
 using Rogue.MapEditor;
 using Rogue.Network;
 using Rogue.Protocol.Messages.Client;
@@ -15,6 +15,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Objects;
+using MonoFramework.Scenes;
 
 namespace Rogue.Scenes
 {
@@ -42,7 +44,7 @@ namespace Rogue.Scenes
 
         private void LoadMapEditor(PositionableObject obj)
         {
-            SceneManager.LoadScene(new EditorScene());
+            SceneManager.LoadScene(new EditorMenuScene());
         }
 
         private void OnConnectClicked(PositionableObject obj)
@@ -60,13 +62,9 @@ namespace Rogue.Scenes
         {
             ClientHost.DestroyClient();
         }
-        private bool x = false;
         private void OnConnectionSucceed()
         {
-            if (!x)
-                ClientHost.Client.Send(new AuthentificationRequestMessage("test1", "test"));
-            else
-                ClientHost.Client.Send(new AuthentificationRequestMessage("test2", "test"));
+            ClientHost.Client.Send(new AuthentificationRequestMessage("test1", "test"));
         }
 
         public override void OnInitializeComplete()
@@ -76,10 +74,6 @@ namespace Rogue.Scenes
         }
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                x = true;
-            }
             base.Update(gameTime);
         }
         public override void OnDispose()

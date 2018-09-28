@@ -1,5 +1,4 @@
-﻿using MonoFramework.Utils;
-using Rogue.ORM.Attributes;
+﻿using Rogue.ORM.Attributes;
 using Rogue.ORM.Interfaces;
 using Rogue.Protocol.Enums;
 using Rogue.Server.Auth;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Utils;
 
 namespace Rogue.Server.Records
 {

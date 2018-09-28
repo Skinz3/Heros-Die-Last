@@ -33,51 +33,75 @@ namespace MonoFramework.Collisions
         {
             get
             {
-                return CalculateHitBox(GameObject.Position);
+                return CalculateMovementHitBox(GameObject.Position);
             }
         }
-        private GCell[] CurrentCells
+        public Rectangle EntityHitBox
         {
-            get;
-            set;
+            get
+            {
+                return CalculateEntityHitBox(GameObject.Position);
+            }
         }
-
-        public GCell CurrentCell
+        public GCell[] CurrentCells
         {
             get;
             private set;
         }
 
-        public abstract Rectangle CalculateHitBox(Vector2 position);
+        private GCell m_currentCell;
+
+        public GCell CurrentCell
+        {
+            get
+            {
+                if (m_currentCell == null)
+                {
+                    m_currentCell = (GCell)Map.GetCell(MovementHitBox.Center.ToVector2());
+                }
+                return m_currentCell;
+            }
+            private set
+            {
+                m_currentCell = value;
+            }
+        }
+
+        public abstract Rectangle CalculateMovementHitBox(Vector2 position);
+
+        public abstract Rectangle CalculateEntityHitBox(Vector2 position);
 
         public Collider2D(PositionableObject gameObject)
         {
             this.GameObject = gameObject;
             this.CurrentCells = new GCell[0];
         }
-        /// <summary>
-        /// Temps d'execution :  inferieur a 0ms 
-        /// Todo : Check les collisions avec les autres entitées
-        /// :p
-        public bool CanMove(Vector2 newPosition, DirectionEnum direction)
+        public void Update()
         {
             var oldCell = CurrentCell;
-            CurrentCell = Map.GetCell(MovementHitBox.Center.ToVector2());
+            CurrentCell = (GCell)Map.GetCell(MovementHitBox.Center.ToVector2());
 
             if (oldCell != CurrentCell)
             {
                 OnCellChanged?.Invoke(oldCell, CurrentCell);
             }
+        }
+        /// <summary>
+        /// Temps d'execution :  inferieur a 0ms 
+        /// Todo : Check les collisions avec les autres entitées
+        /// :p
+        public GameObject CanMove(Vector2 newPosition, DirectionEnum direction, bool collidesEntity = true)
+        {
 
-            var newHitBox = CalculateHitBox(newPosition);
+            var newHitBox = CalculateMovementHitBox(newPosition);
 
-            CurrentCells = Map.GetCells(newHitBox);
+            CurrentCells = (GCell[])Map.GetCells(newHitBox);
 
             foreach (var cell in CurrentCells)
             {
                 List<GCell> nextCells = new List<GCell>();
 
-                var nextCell = cell.GetNextCells(Map, direction, 1)[0];
+                var nextCell = (GCell)cell.GetNextCells(Map, direction, 1)[0];
                 nextCells.Add(nextCell);
 
                 var flags = direction.GetFlags(); // Dat fucking semi isometric view :3
@@ -86,7 +110,7 @@ namespace MonoFramework.Collisions
                 {
                     foreach (DirectionEnum dir in flags)
                     {
-                        nextCells.Add(cell.GetNextCells(Map, dir, 1)[0]);
+                        nextCells.Add((GCell)cell.GetNextCells(Map, dir, 1)[0]);
                     }
                 }
 
@@ -94,11 +118,20 @@ namespace MonoFramework.Collisions
                 {
                     if (next != null && next.Rectangle.Intersects(newHitBox) && next.Walkable == false)
                     {
-                        return false;
+                        return next;
                     }
                 }
             }
-            return true;
+
+
+            return collidesEntity ? CollideEntity(newHitBox) : null;
+        }
+
+        public abstract GameObject CollideEntity(Rectangle futureHitBox);
+
+        public GameObject CollideEntity(Vector2 newPosition)
+        {
+            return CollideEntity(CalculateEntityHitBox(newPosition));
         }
 
     }

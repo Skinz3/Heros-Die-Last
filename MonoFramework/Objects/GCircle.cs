@@ -87,5 +87,7 @@ namespace MonoFramework.Objects
         {
             Texture.Dispose();
         }
+
+      
     }
 }

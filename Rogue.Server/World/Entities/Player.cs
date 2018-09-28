@@ -1,8 +1,5 @@
 ﻿using LiteNetLib;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Objects;
-using MonoFramework.Utils;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Protocol.Types;
@@ -15,10 +12,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Utils;
+using MonoFramework.Collisions;
+using Rogue.Server.World.Entities.Scripts;
+using Rogue.Server.Collisions;
+using Rogue.Server.World.Items;
 
 namespace Rogue.Server.World.Entities
 {
-    public class Player : MovableEntity
+    public class Player : RecordableEntity
     {
         Logger logger = new Logger();
 
@@ -32,7 +34,13 @@ namespace Rogue.Server.World.Entities
             get;
             set;
         }
-
+        public MapCell CurrentCell
+        {
+            get
+            {
+                return (MapCell)MapInstance.Record.Grid.GetCell(Record.Center(Position));
+            }
+        }
         public override int Id => Account.Id;
 
         public bool Teleporting
@@ -40,28 +48,38 @@ namespace Rogue.Server.World.Entities
             get;
             set;
         }
-
-        public override string Name => Account.CharacterName;
-
-        public PlayerRecord Record
+        public Inventory Inventory
         {
             get;
             private set;
         }
-        public Player(RogueClient client, PlayerRecord record) : base(Stats.GetDefaultStats())
+        public override string Name => Account.CharacterName;
+
+        public Player(RogueClient client, EntityRecord record, Vector2 position) : base(record, position)
         {
             this.Client = client;
             this.Account = client.Account;
-            this.Record = record;
+            this.Inventory = new Inventory(this);
         }
 
+        private void TeleportOnMap(MapRecord targetMap)
+        {
+            TeleportOnMap(targetMap, targetMap.RandomSpawnPosition(Record.Width, Record.Height));
+        }
         private void TeleportOnMap(MapRecord targetMap, int cellId)
         {
+            TeleportOnMap(targetMap, targetMap.Grid.GetCell<MapCell>(cellId).GetCenterPosition(Record.Width, Record.Height));
+        }
+        private void TeleportOnMap(MapRecord targetMap, Vector2 position)
+        {
+            if (Teleporting)
+            {
+                logger.Write("User try to teleport but was already teleporting...", MessageState.ERROR);
+                return;
+            }
             Teleporting = true;
 
-            MapCell targetCell = targetMap.Grid.GetCell(cellId);
-
-            Client.Player.Position = targetCell.Rectangle.Center.ToVector2();
+            Client.Player.Position = position;
 
             Client.Player.LeaveMapInstance();
 
@@ -76,41 +94,66 @@ namespace Rogue.Server.World.Entities
             }
 
         }
-        public void Teleport(int mapId)
+        public void Teleport(string mapName)
         {
-            MapRecord targetMap = MapRecord.GetMap(mapId);
-            TeleportOnMap(targetMap, targetMap.RandomSpawnCellId());
+            MapRecord targetMap = MapRecord.GetMap(mapName);
+            TeleportOnMap(targetMap);
         }
-        public void Teleport(string sceneName)
+        public void TeleportSameMap(int cellId)
         {
-            MapRecord targetMap = MapRecord.GetMap(sceneName);
-            TeleportOnMap(targetMap, targetMap.RandomSpawnCellId());
+            this.Position = GetCellPosition(MapInstance.Record.Grid.GetCell<MapCell>(cellId));
+            MapInstance.Send(new TeleportSameMapMessage(Id, Position));
 
         }
-        
+
+        public void Teleport(string mapName, int cellId)
+        {
+            MapRecord targetMap = MapRecord.GetMap(mapName);
+            TeleportOnMap(targetMap, cellId);
+        }
+
         public void OnReceivePosition(Vector2 position, DirectionEnum direction)
         {
             if (Teleporting)
             {
                 return;
             }
-            this.Position = position;
-            this.Direction = direction;
-            //   if (Configuration.Self.DiagnosticsEnabled == false)
+
+            Position = position;
+            Direction = direction;
+
+            SendPosition();
+
+            if (CurrentCell != null && CurrentCell.Id == 286)
             {
-                this.MapInstance.Send(new EntityDispositionMessage(Id, position, direction), Id, SendOptions.Sequenced);
+                //   TeleportSameMap(40);
             }
-            //   else
-            {
-                //  this.MapInstance.Send(new EntityDispositionMessageDiag(Id, position, rotation, DateTime.Now.ToBinary())
-                //      , Id, SendOptions.Sequenced);
-            }
+
         }
         public override ProtocolEntity GetProtocolObject()
         {
-            return new ProtocolPlayer(Name, Id, Position, new Point(Record.Width, Record.Height), Stats.GetDefaultStats(), Record.Animations);
+            return new ProtocolPlayer(Name, Id, Position, new Point(Record.Width, Record.Height), Stats, Record.Animations);
+        }
+
+        public override void OnUpdate(long deltaTime)
+        {
+           
         }
 
 
+        public override MapInstance GetMapInstance()
+        {
+            return MapInstance;
+        }
+
+        public override Collisions.Collider2D CreateCollider()
+        {
+            return new WonderDotCollider(this);
+        }
+
+        public override Rectangle GetHitBox()
+        {
+            return Collider.EntityHitBox;
+        }
     }
 }

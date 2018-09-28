@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Sprites;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Animations
 {
-    public class Animation
+    public class Animation : ICellElement
     {
         private int CurrentIndex
         {
@@ -26,12 +27,12 @@ namespace MonoFramework.Animations
             get;
             set;
         }
-        private double Delay
+        private float Delay
         {
             get;
             set;
         }
-        private double CurrentDelay
+        private float CurrentDelay
         {
             get;
             set;
@@ -41,10 +42,10 @@ namespace MonoFramework.Animations
             get;
             set;
         }
-        private bool End
+        public bool End
         {
             get;
-            set;
+            private set;
         }
         private bool FlipVertical
         {
@@ -56,6 +57,8 @@ namespace MonoFramework.Animations
             get;
             set;
         }
+        public event Action OnEnded;
+
         public Animation(string[] spriteNames, float delay, bool loop = true, bool flipVertical = false, bool flipHorizontal = false)
         {
             this.SpritesNames = spriteNames;
@@ -89,7 +92,7 @@ namespace MonoFramework.Animations
         {
             if (!End)
             {
-                CurrentDelay -= time.ElapsedGameTime.TotalMilliseconds;
+                CurrentDelay -= (float)time.ElapsedGameTime.TotalMilliseconds;
 
                 if (CurrentDelay <= 0)
                 {
@@ -103,6 +106,7 @@ namespace MonoFramework.Animations
                         else
                         {
                             CurrentIndex--;
+                            OnEnded?.Invoke();
                             End = true;
                         }
                     }
@@ -112,6 +116,11 @@ namespace MonoFramework.Animations
         public void Draw(Rectangle rectangle, Color color)
         {
             Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, rectangle, color);
+        }
+
+        public Animation Clone()
+        {
+            return new Animation(SpritesNames, Delay, Loop, FlipVertical, FlipHorizontal);
         }
     }
 }

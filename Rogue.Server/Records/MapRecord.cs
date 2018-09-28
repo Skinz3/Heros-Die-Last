@@ -3,14 +3,15 @@ using Rogue.ORM.Attributes;
 using Rogue.Protocol.Enums;
 using System;
 using System.Collections.Generic;
-using MonoFramework;
+using Rogue;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rogue.ORM.Interfaces;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
 using Rogue.Server.World.Maps;
+using MonoFramework.IO.Maps;
+using MonoFramework;
+using Rogue.Protocol.Types;
 
 namespace Rogue.Server.Records
 {
@@ -39,6 +40,12 @@ namespace Rogue.Server.Records
         [Ignore]
         public MapGrid Grid;
 
+        [Ignore]
+        public MapObjectRecord[] MapObjects;
+
+        [Ignore]
+        public MapLightRecord[] MapLights;
+
         public MapRecord(int id, string mapName, FrameEnum frame, bool lonlyInstance, List<int> spawnPositions)
         {
             this.Id = id;
@@ -55,11 +62,25 @@ namespace Rogue.Server.Records
 
             Grid = new MapGrid(Template);
             Grid.Load();
+
+            this.MapObjects = MapObjectRecord.GetMapObjects(Id);
+            this.MapLights = MapLightRecord.GetMapLights(Id);
+
         }
 
         public int RandomSpawnCellId()
         {
             return SpawnPositions.Random();
+        }
+
+        public ProtocolMapLight[] GetProtocolMapLights()
+        {
+            return Array.ConvertAll(MapLights, x => x.GetProtocolObject());
+        }
+
+        public Vector2 RandomSpawnPosition(int width, int height)
+        {
+            return Grid.GetCell<MapCell>(RandomSpawnCellId()).GetCenterPosition(width, height);
         }
         public static MapRecord[] GetMaps(FrameEnum frameEnum)
         {

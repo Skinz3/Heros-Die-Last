@@ -13,17 +13,17 @@ namespace MonoFramework.Network.Protocol
         {
             get;
         }
-        public void Unpack(NetDataReader reader)
+        public void Unpack(LittleEndianReader reader)
         {
             this.Deserialize(reader);
         }
-        public void Pack(NetDataWriter writer)
+        public void Pack(LittleEndianWriter writer)
         {
             writer.Put((short)MessageId);
             Serialize(writer);
         }
-        public abstract void Serialize(NetDataWriter writer);
-        public abstract void Deserialize(NetDataReader reader);
+        public abstract void Serialize(LittleEndianWriter writer);
+        public abstract void Deserialize(LittleEndianReader reader);
 
         public override string ToString()
         {

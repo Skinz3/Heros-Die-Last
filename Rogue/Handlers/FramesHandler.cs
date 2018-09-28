@@ -23,13 +23,13 @@ namespace Rogue.Handlers
             switch (message.frame)
             {
                 case FrameEnum.AUTHENTIFICATION:
-                    client.LoadFrame(new AuthentificationFrame(message.sceneName));
+                    client.LoadFrame(new AuthentificationFrame(message.dataName));
                     break;
                 case FrameEnum.MENU:
-                    client.LoadFrame(new MenuFrame(message.sceneName));
+                    client.LoadFrame(new MenuFrame(message.dataName));
                     break;
                 case FrameEnum.HUB:
-                    client.LoadFrame(new HubFrame(message.sceneName));
+                    client.LoadFrame(new HubFrame(message.dataName));
                     break;
                 default:
                     logger.Write("Server wants me to load a weird frame...", MessageState.ERROR);

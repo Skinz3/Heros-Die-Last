@@ -17,7 +17,7 @@ namespace MonoFramework.Scenes
             get;
             private set;
         }
-        protected MapTemplate MapTemplate
+        public MapTemplate MapTemplate
         {
             get;
             private set;
@@ -32,21 +32,20 @@ namespace MonoFramework.Scenes
             OnMapLoaded();
         }
         public abstract void OnMapLoaded();
+
         public override void Update(GameTime gameTime)
         {
             Map.Update(gameTime);
             base.Update(gameTime);
         }
-        public override void Draw(GameTime gameTime)
+        protected override void DrawSceneObjects(GameTime gameTime)
         {
-            Debug.GraphicsDevice.Clear(ClearColor);
-
             Debug.SpriteBatch.Begin(SpriteSortMode.Immediate,
-                        BlendState.AlphaBlend, SamplerState.PointClamp,
-                        null,
-                        null,
-                        null,
-                        Camera.GetTransformation());
+                       BlendState.AlphaBlend, SamplerState.PointClamp,
+                       null,
+                       null,
+                       null,
+                       Camera.GetTransformation());
 
             foreach (var pair in GameObjects)
             {
@@ -58,16 +57,6 @@ namespace MonoFramework.Scenes
                 }
             }
             Debug.SpriteBatch.End();
-
-            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null,
-               null, null, null);
-
-            foreach (var gameObject in UIGameObjects)
-            {
-                gameObject.Draw(gameTime);
-            }
-            Debug.SpriteBatch.End();
-
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using LiteNetLib;
-using MonoFramework.DesignPattern;
-using MonoFramework.Network;
-using MonoFramework.Network.Protocol;
-using MonoFramework.Utils;
 using Rogue.Protocol.Enums;
+using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Frames;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
@@ -12,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Network;
+using MonoFramework.Utils;
+using MonoFramework.Network.Protocol;
 
 namespace Rogue.Server.Network
 {
@@ -67,6 +67,24 @@ namespace Rogue.Server.Network
                 Player = null;
             }
         }
+        protected override bool OnMessageReceived(Message message)
+        {
+            if (Player != null && Player.MapInstance != null)
+            {
+                Player.MapInstance.Invoke(new Action(() =>
+                {
+                    base.OnMessageReceived(message);
+
+                }));
+
+                return true; // ?
+            }
+            else
+            {
+                return base.OnMessageReceived(message);
+            }
+
+        }
         public override void OnDataArrival(byte[] buffer)
         {
             base.OnDataArrival(buffer);
@@ -90,10 +108,6 @@ namespace Rogue.Server.Network
             this.Player = player;
         }
 
-        public void OpenHub()
-        {
-            LoadFrame(new HubFrame("test2"));
-        }
         public void OpenMenu()
         {
             this.LoadFrame(new MenuFrame("MenuScene"));

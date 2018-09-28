@@ -1,5 +1,4 @@
-﻿using MonoFramework.Utils;
-using Rogue.Server.Utils;
+﻿using Rogue.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YAXLib;
+using MonoFramework.Utils;
 
 namespace Rogue.Server
 {
@@ -30,11 +30,6 @@ namespace Rogue.Server
             }
         }
         public int Port
-        {
-            get;
-            set;
-        }
-        public bool DiagnosticsEnabled
         {
             get;
             set;
@@ -74,6 +69,7 @@ namespace Rogue.Server
             get;
             set;
         }
+
         [StartupInvoke("Configuration", StartupInvokePriority.Primitive)]
         public static void Initialize()
         {
@@ -111,9 +107,8 @@ namespace Rogue.Server
         {
             return new Configuration()
             {
-                DiagnosticsEnabled = true,
                 Port = 555,
-                PositionUpdateFrameCount = 6,
+                PositionUpdateFrameCount = 5,
                 DisplayProtocol = true,
                 MySQLHost = "127.0.0.1",
                 MySQLUser = "root",

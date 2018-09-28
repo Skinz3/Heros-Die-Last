@@ -24,15 +24,15 @@ namespace Rogue.Protocol.Types
         {
 
         }
-        public ProtocolPlayer(string name, int entityId, Vector2 position, Point size, Stats stats, DirectionalAnimation[] animations) : base(name, entityId, position, size, stats, animations)
+        public ProtocolPlayer(string name, int entityId, Vector2 position, Point size, Stats stats, StateAnimations[] animations) : base(name, entityId, position, size, stats, animations)
         {
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             base.Deserialize(reader);
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             base.Serialize(writer);
         }

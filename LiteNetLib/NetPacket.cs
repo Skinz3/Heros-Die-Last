@@ -101,7 +101,7 @@ namespace LiteNetLib
             return rawData;
         }
 
-        public static byte[] CreateRawPacket(PacketProperty property, NetDataWriter dataWriter)
+        public static byte[] CreateRawPacket(PacketProperty property, LittleEndianWriter dataWriter)
         {
             int headerSize = GetHeaderSize(property);
             byte[] rawData = new byte[headerSize + dataWriter.Length];
@@ -110,7 +110,7 @@ namespace LiteNetLib
             return rawData;
         }
 
-        public void Init(PacketProperty property, NetDataWriter dataWriter)
+        public void Init(PacketProperty property, LittleEndianWriter dataWriter)
         {
             int headerSize = GetHeaderSize(property);
             RawData = new byte[headerSize + dataWriter.Length];

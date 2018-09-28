@@ -29,6 +29,17 @@ namespace MonoFramework.Cameras
         float _zoom;
         Matrix _transform;
 
+        public Rectangle View
+        {
+            get
+            {
+                return GetView(Position);
+            }
+        }
+        public Rectangle GetView(Vector2 pos)
+        {
+            return new Rectangle(pos.ToPoint(), (Debug.ScreenSize / new Vector2(Zoom)).ToPoint());
+        }
         public float Zoom
         {
             get { return _zoom; }

@@ -33,6 +33,7 @@ namespace Rogue.Frames
                 };
             }
         }
+
         public override void Enter()
         {
             base.Enter();

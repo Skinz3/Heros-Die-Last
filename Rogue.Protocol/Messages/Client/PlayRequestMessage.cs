@@ -25,12 +25,12 @@ namespace Rogue.Protocol.Messages.Client
 
         }
        
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
 
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
 
         }

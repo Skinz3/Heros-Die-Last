@@ -30,12 +30,12 @@ namespace Rogue.Protocol.Messages.Client
         {
             this.frame = frame;
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.frame = (FrameEnum)reader.GetByte();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put((byte)frame);
         }

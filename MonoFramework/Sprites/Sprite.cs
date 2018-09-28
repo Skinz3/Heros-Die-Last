@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoFramework.DesignPattern;
+using MonoFramework.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ namespace MonoFramework.Sprites
     /// <summary>
     /// Représente un fichier de texture en 2D. (png,jpg,bmp,gif...)
     /// </summary>
-    public class Sprite
+    public class Sprite : ICellElement
     {
         /// <summary>
         /// La texture a elle été chargée?
@@ -68,14 +69,49 @@ namespace MonoFramework.Sprites
             this.FlippedVertically = flippedVertically;
             this.FlippedHorizontally = flippedHorizontally;
         }
-        [InDeveloppement]
+
         public void Dispose()
         {
-          //  Texture?.Dispose(); Sprite Garabage Collector needed!
-          //  Texture = null;
+            //  Texture?.Dispose(); Sprite Garabage Collector needed!
+            //  Texture = null;
+        }
+        [Obsolete("Remove this when developpement is finished")]
+        bool WaitForFile(string fullPath)
+        {
+            int numTries = 0;
+            while (true)
+            {
+                ++numTries;
+                try
+                {
+                    // Attempt to open the file exclusively.
+                    using (FileStream fs = new FileStream(fullPath,
+                        FileMode.Open, FileAccess.ReadWrite,
+                        FileShare.None, 100))
+                    {
+                        fs.ReadByte();
+
+                        // If we got this far the file is ready
+                        break;
+                    }
+                }
+                catch 
+                {
+                    if (numTries > 10)
+                    {
+                        return false;
+                    }
+
+                    // Wait for the lock to be released
+                    System.Threading.Thread.Sleep(500);
+                }
+            }
+
+            return true;
         }
         public void Load()
         {
+            WaitForFile(Path); // Permit multiple instances of the game. (not allowed)
             FileStream stream = new FileStream(Path, FileMode.Open);
             Texture = Texture2D.FromStream(Debug.GraphicsDevice, stream);
             stream.Dispose();
@@ -119,6 +155,11 @@ namespace MonoFramework.Sprites
             vertical = vertical ? !input.FlippedVertically : input.FlippedVertically;
             horizontal = horizontal ? !input.FlippedHorizontally : input.FlippedHorizontally;
             return new Sprite(input.Path, flipped, vertical, horizontal);
+        }
+
+        public void Update(GameTime time)
+        {
+
         }
     }
 }

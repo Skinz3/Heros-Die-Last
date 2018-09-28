@@ -93,6 +93,7 @@ namespace MonoFramework.Scenes
         /// </summary>
         public abstract void OnInitializeComplete();
 
+
         public void AddObject(GameObject gameObject, LayerEnum layer)
         {
             gameObject.Layer = layer;
@@ -110,7 +111,7 @@ namespace MonoFramework.Scenes
             else
                 this.GameObjects[gameObject.Layer].Remove(gameObject);
         }
-        public void Dispose()
+        public virtual void Dispose()
         {
             foreach (var list in GameObjects.Values)
             {
@@ -151,9 +152,19 @@ namespace MonoFramework.Scenes
                 gameObject.Update(gameTime);
             }
         }
-        public virtual void Draw(GameTime gameTime)
+        protected virtual void DrawUI(GameTime gameTime)
         {
-            Debug.GraphicsDevice.Clear(ClearColor);
+            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null,
+               null, null, null);
+
+            foreach (var gameObject in UIGameObjects)
+            {
+                gameObject.Draw(gameTime);
+            }
+            Debug.SpriteBatch.End();
+        }
+        protected virtual void DrawSceneObjects(GameTime gameTime)
+        {
 
             Debug.SpriteBatch.Begin(SpriteSortMode.Deferred,
                         BlendState.AlphaBlend, SamplerState.PointClamp,
@@ -170,15 +181,14 @@ namespace MonoFramework.Scenes
             }
             Debug.SpriteBatch.End();
 
-            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null,
-               null, null, null);
 
-            foreach (var gameObject in UIGameObjects)
-            {
-                gameObject.Draw(gameTime);
-            }
-            Debug.SpriteBatch.End();
+        }
 
+        public virtual void Draw(GameTime gameTime)
+        {
+            Debug.GraphicsDevice.Clear(ClearColor);
+            DrawSceneObjects(gameTime);
+            DrawUI(gameTime);
         }
     }
 }

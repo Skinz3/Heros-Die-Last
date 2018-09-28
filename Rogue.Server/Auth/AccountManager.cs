@@ -1,11 +1,11 @@
-﻿using MonoFramework.Utils;
-using Rogue.Protocol.Enums;
+﻿using Rogue.Protocol.Enums;
 using Rogue.Server.Records;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Utils;
 
 namespace Rogue.Server.Auth
 {

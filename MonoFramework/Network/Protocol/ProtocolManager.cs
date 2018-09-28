@@ -94,7 +94,7 @@ namespace MonoFramework.Network.Protocol
         /// <param name="id">Id of the message</param>
         /// <param name="reader">Reader with the message datas</param>
         /// <returns></returns>
-        private static Message ConstructMessage(ushort id, NetDataReader reader)
+        private static Message ConstructMessage(ushort id, LittleEndianReader reader)
         {
             if (!Messages.ContainsKey(id))
             {
@@ -108,6 +108,10 @@ namespace MonoFramework.Network.Protocol
             message.Unpack(reader);
             return message;
         }
+        public static ushort GetNextMessageId()
+        {
+            return (ushort)(Messages.Keys.OrderByDescending(x => x).First() + 1);
+        }
         public static Dictionary<ushort, Delegate> GetHandlers(ushort[] ids)
         {
             return Handlers.Where(x => ids.Contains(x.Key)).ToDictionary(x => x.Key, y => y.Value);
@@ -119,7 +123,7 @@ namespace MonoFramework.Network.Protocol
         /// <returns>Message of your protocol, builted</returns>
         public static Message BuildMessage(byte[] buffer)
         {
-            var reader = new NetDataReader(buffer);
+            var reader = new LittleEndianReader(buffer);
             ushort messageId = (ushort)reader.GetShort();
 
             Message message;

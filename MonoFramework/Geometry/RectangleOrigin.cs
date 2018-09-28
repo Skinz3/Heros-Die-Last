@@ -8,6 +8,7 @@ namespace MonoFramework.Geometry
 {
     public enum RectangleOrigin
     {
+        None,
         TopRight,
         TopLeft,
         BottomRight,

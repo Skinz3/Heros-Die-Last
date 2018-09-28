@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rogue.Protocol.Types
 {
-    public interface IProtocolable<T>
+    public interface IProtocolable<T> where T : MessageType
     {
         T GetProtocolObject();
     }

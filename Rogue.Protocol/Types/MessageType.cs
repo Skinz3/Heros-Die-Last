@@ -14,7 +14,7 @@ namespace Rogue.Protocol.Types
             get;
         }
 
-        public abstract void Serialize(NetDataWriter writer);
-        public abstract void Deserialize(NetDataReader reader);
+        public abstract void Serialize(LittleEndianWriter writer);
+        public abstract void Deserialize(LittleEndianReader reader);
     }
 }

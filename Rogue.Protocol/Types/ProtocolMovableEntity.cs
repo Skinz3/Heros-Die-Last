@@ -1,6 +1,5 @@
 ﻿using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace Rogue.Protocol.Types
             get;
             private set;
         }
-        public DirectionalAnimation[] Animations
+        public StateAnimations[] Animations
         {
             get;
             private set;
@@ -35,28 +34,28 @@ namespace Rogue.Protocol.Types
         {
 
         }
-        public ProtocolMovableEntity(string name, int entityId, Vector2 position, Point size, Stats stats, DirectionalAnimation[] animations) : base(name, entityId, position, size)
+        public ProtocolMovableEntity(string name, int entityId, Vector2 position, Point size, Stats stats, StateAnimations[] animations) : base(name, entityId, position, size)
         {
             this.Stats = stats;
             this.Animations = animations;
         }
 
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.Stats = new Stats();
             this.Stats.Deserialize(reader);
 
-            this.Animations = new DirectionalAnimation[reader.GetInt()];
+            this.Animations = new StateAnimations[reader.GetInt()];
 
             for (int i = 0; i < Animations.Length; i++)
             {
-                Animations[i] = new DirectionalAnimation();
+                Animations[i] = new StateAnimations();
                 Animations[i].Deserialize(reader);
             }
             base.Deserialize(reader);
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             Stats.Serialize(writer);
 

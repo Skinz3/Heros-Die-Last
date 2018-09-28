@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using Rogue.Protocol.Types;
 using Rogue.World.Maps;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects.Entities
+namespace Rogue.Objects.Entities
 {
     public abstract class Entity : ColorableObject
     {
@@ -17,21 +18,40 @@ namespace MonoFramework.Objects.Entities
             get;
             set;
         }
+        public string Name
+        {
+            get;
+            private set;
+        }
+       
         public MapInstance MapInstance
         {
             get;
             private set;
         }
-
+        public bool InMapInstance
+        {
+            get
+            {
+                return MapInstance != null;
+            }
+        }
         public Entity(ProtocolEntity protocolEntity) : base(protocolEntity.Position, protocolEntity.Size, Color.White)
         {
             this.Id = protocolEntity.EntityId;
+            this.Name = protocolEntity.Name;
         }
-
+        public override void Dispose()
+        {
+            MapInstance = null;
+            base.Dispose();
+        }
         public void DefineMapInstance(MapInstance instance)
         {
             this.MapInstance = instance;
         }
+
+        public abstract GCell GetCell();
 
     }
 }

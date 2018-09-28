@@ -32,13 +32,13 @@ namespace Rogue.Protocol.Messages.Client
             this.Username = username;
             this.Password = password;
         }
-        public override void Deserialize(NetDataReader reader) // permet de convertir les objets binaire en paramètres
+        public override void Deserialize(LittleEndianReader reader) // permet de convertir les objets binaire en paramètres
         {
             this.Username = reader.GetString();
             this.Password = reader.GetString();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(Username);
             writer.Put(Password);

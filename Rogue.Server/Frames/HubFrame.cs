@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
+using Rogue.Protocol.Messages.Server;
+using Rogue.Server.World.Maps;
 
 namespace Rogue.Server.Frames
 {
     public class HubFrame : ServerFrame
     {
-        private string MapName
+        public HubFrame(string sceneName) : base(sceneName)
         {
-            get;
-            set;
-        }
-        public HubFrame(string mapName, string sceneName = "GameScene") : base(sceneName)
-        {
-            this.MapName = mapName;
+
         }
 
         public override FrameEnum FrameEnum => FrameEnum.HUB;
@@ -29,11 +27,13 @@ namespace Rogue.Server.Frames
             GameEntitiesRequestMessage.Id,
             GameEntityOKRequestMessage.Id,
             EntityDispositionRequestMessage.Id,
+            ClickMessage.Id,
+            KeyInputMessage.Id,
         };
 
         public override void Enter()
         {
-            base.JoinFreeMapInstance(MapName);
+            MapsManager.JoinFreeMapInstance(Client.Player, SceneName);
             base.Enter();
         }
         public override void OnEntitiesOK()
@@ -43,7 +43,7 @@ namespace Rogue.Server.Frames
 
         public override void OnLeave()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

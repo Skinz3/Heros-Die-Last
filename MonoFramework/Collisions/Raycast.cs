@@ -10,12 +10,12 @@ namespace MonoFramework.Collisions
 {
     public class Raycast
     {
-        private Ray Ray
+        private Ray2D Ray
         {
             get;
             set;
         }
-        public Raycast(Ray ray)
+        public Raycast(Ray2D ray)
         {
             this.Ray = ray;
         }
@@ -23,9 +23,15 @@ namespace MonoFramework.Collisions
         /// Todo
         /// </summary>
         /// <returns></returns>
-        public GameObject Cast()
+        public virtual IEnumerable<PositionableObject> Cast(PositionableObject[] sources)
         {
-            throw new NotImplementedException();
+            List<PositionableObject> results = new List<PositionableObject>();
+
+            foreach (var source in sources)
+            {
+                if (Ray.Intersects(source.Rectangle))
+                    yield return source;
+            }
         }
     }
 }

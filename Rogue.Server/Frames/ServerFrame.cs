@@ -32,9 +32,7 @@ namespace Rogue.Server.Frames
         {
             this.IsLoading = false;
         }
-
-
-
+        
         public void Load(RogueClient client)
         {
             this.Client = client;
@@ -48,22 +46,7 @@ namespace Rogue.Server.Frames
             }
         }
 
-        protected void JoinFreeMapInstance(string mapName)
-        {
-            if (!UseSceneManager)
-            {
-                throw new Exception("Cannot find map instance on a non scene manager frame.");
-            }
-            MapRecord targetMap = MapRecord.GetMap(mapName);
-
-            if (targetMap == null)
-            {
-                throw new Exception(SceneName + " is not a valid map.");
-            }
-
-            MapInstance targetInstance = MapsManager.FindMapInstance(Client.Player, targetMap);
-            Client.Player.DefineMapInstance(targetInstance);
-        }
+     
 
         public abstract void OnEntitiesOK();
 

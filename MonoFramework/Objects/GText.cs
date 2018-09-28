@@ -34,10 +34,22 @@ namespace MonoFramework.Objects
 
         public Color Color;
 
+        private float m_scale;
+
         public float Scale
         {
-            get;
-            set;
+            get
+            {
+                return m_scale;
+            }
+            set
+            {
+               
+                m_scale = value;
+
+                if (Text != null)
+                    UpdateSize();
+            }
         }
 
         private void UpdateSize()
@@ -60,7 +72,7 @@ namespace MonoFramework.Objects
 
         public override void OnUpdate(GameTime time)
         {
-          
+
         }
         public override void OnInitializeComplete()
         {
@@ -73,7 +85,7 @@ namespace MonoFramework.Objects
 
         public override void OnDispose()
         {
-           
+
         }
     }
 }

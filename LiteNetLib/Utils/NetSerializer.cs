@@ -18,8 +18,8 @@ namespace LiteNetLib.Utils
             }
         }
 
-        private delegate void CustomTypeWrite(NetDataWriter writer, object customObj);
-        private delegate object CustomTypeRead(NetDataReader reader);
+        private delegate void CustomTypeWrite(LittleEndianWriter writer, object customObj);
+        private delegate object CustomTypeRead(LittleEndianReader reader);
         private delegate TProperty GetMethodDelegate<TStruct, out TProperty>(ref TStruct obj) where TStruct : struct;
         private delegate void SetMethodDelegate<TStruct, in TProperty>(ref TStruct obj, TProperty property) where TStruct : struct;
 
@@ -45,15 +45,15 @@ namespace LiteNetLib.Utils
 
         private class StructInfo
         {
-            public readonly Action<NetDataWriter>[] WriteDelegate;
-            public readonly Action<NetDataReader>[] ReadDelegate;
+            public readonly Action<LittleEndianWriter>[] WriteDelegate;
+            public readonly Action<LittleEndianReader>[] ReadDelegate;
             public AbstractStructRefrence Reference;
             public Action<ValueType> OnReceive;
 
             public StructInfo(int membersCount)
             {
-                WriteDelegate = new Action<NetDataWriter>[membersCount];
-                ReadDelegate = new Action<NetDataReader>[membersCount];
+                WriteDelegate = new Action<LittleEndianWriter>[membersCount];
+                ReadDelegate = new Action<LittleEndianReader>[membersCount];
             }
         }
 
@@ -62,7 +62,7 @@ namespace LiteNetLib.Utils
         private readonly Dictionary<Type, RWDelegates> _registeredCustomTypes;
         private readonly char[] _hashBuffer = new char[1024];
         private readonly HashSet<Type> _acceptedTypes;
-        private readonly NetDataWriter _writer;
+        private readonly LittleEndianWriter _writer;
         private const int MaxStringLenght = 1024;
 
         public NetSerializer()
@@ -70,7 +70,7 @@ namespace LiteNetLib.Utils
             _cache = new Dictionary<ulong, StructInfo>();
             _hashCache = new Dictionary<string, ulong>();
             _registeredCustomTypes = new Dictionary<Type, RWDelegates>();
-            _writer = new NetDataWriter();
+            _writer = new LittleEndianWriter();
             _acceptedTypes = new HashSet<Type>
             {
                 typeof(int),
@@ -139,7 +139,7 @@ namespace LiteNetLib.Utils
         /// </summary>
         /// <param name="writeDelegate"></param>
         /// <param name="readDelegate"></param>
-        public void RegisterCustomType<T>(Action<NetDataWriter, T> writeDelegate, Func<NetDataReader, T> readDelegate) where T : struct
+        public void RegisterCustomType<T>(Action<LittleEndianWriter, T> writeDelegate, Func<LittleEndianReader, T> readDelegate) where T : struct
         {
             var t = typeof(T);
             if(_acceptedTypes.Contains(t))
@@ -418,7 +418,7 @@ namespace LiteNetLib.Utils
         /// Reads all available data from NetDataReader and calls OnReceive delegates
         /// </summary>
         /// <param name="reader">NetDataReader with packets data</param>
-        public void ReadAllPackets(NetDataReader reader)
+        public void ReadAllPackets(LittleEndianReader reader)
         {
             while (reader.AvailableBytes > 0)
             {
@@ -430,7 +430,7 @@ namespace LiteNetLib.Utils
         /// Reads one packet from NetDataReader and calls OnReceive delegate
         /// </summary>
         /// <param name="reader">NetDataReader with packet</param>
-        public void ReadPacket(NetDataReader reader)
+        public void ReadPacket(LittleEndianReader reader)
         {
             ulong name = reader.GetULong();
             var info = _cache[name];
@@ -462,7 +462,7 @@ namespace LiteNetLib.Utils
         /// </summary>
         /// <param name="writer">Serialization target NetDataWriter</param>
         /// <param name="obj">Struct to serialize</param>
-        public void Serialize<T>(NetDataWriter writer, T obj) where T : struct 
+        public void Serialize<T>(LittleEndianWriter writer, T obj) where T : struct 
         {
             Type t = typeof(T);
             ulong nameHash = HashStr(t.Name);

@@ -24,12 +24,12 @@ namespace Rogue.Protocol.Messages.Client
         {
 
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.mapId = reader.GetInt();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(mapId);
         }

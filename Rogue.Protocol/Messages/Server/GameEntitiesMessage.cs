@@ -30,13 +30,13 @@ namespace Rogue.Protocol.Messages.Server
         {
 
         }
-        public GameEntitiesMessage(ProtocolEntity[] entities,int positionUpdateFrameCount,bool useInterpolation)
+        public GameEntitiesMessage(ProtocolEntity[] entities, int positionUpdateFrameCount, bool useInterpolation)
         {
             this.entities = entities;
             this.positionUpdateFrameCount = positionUpdateFrameCount;
             this.useInterpolation = useInterpolation;
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             entities = new ProtocolEntity[reader.GetInt()];
 
@@ -53,7 +53,7 @@ namespace Rogue.Protocol.Messages.Server
         {
             return this.entities.FirstOrDefault(x => x.EntityId == accountId);
         }
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(entities.Length);
             foreach (var entity in entities)

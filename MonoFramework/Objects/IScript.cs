@@ -13,5 +13,9 @@ namespace MonoFramework.Objects
         void Initialize(GameObject target);
 
         void Update(GameTime time);
+
+        void Dispose();
+
+        void OnRemove();
     }
 }

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.Protocol", "Rogue.Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.ORM", "Rogue.ORM\Rogue.ORM.csproj", "{3943BF9C-E641-4E48-B362-156F2A66D19F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.ServerView", "Rogue.ServerView\Rogue.ServerView.csproj", "{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{3943BF9C-E641-4E48-B362-156F2A66D19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3943BF9C-E641-4E48-B362-156F2A66D19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3943BF9C-E641-4E48-B362-156F2A66D19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

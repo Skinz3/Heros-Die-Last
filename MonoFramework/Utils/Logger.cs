@@ -36,7 +36,7 @@ namespace MonoFramework.Utils
         };
         private void Logo()
         {
-            WriteColor1(@"Rogue Server", false);
+            WriteColor1(@"MonoFramework Server", false);
         }
         public void Write(object value, MessageState state = MessageState.INFO)
         {

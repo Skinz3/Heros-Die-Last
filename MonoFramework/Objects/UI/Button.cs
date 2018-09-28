@@ -103,5 +103,7 @@ namespace MonoFramework.Objects.UI
             else
                 CurrentSprite.Draw(Rectangle, Color);
         }
+
+       
     }
 }

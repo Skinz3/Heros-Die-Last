@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoFramework.Collisions;
+using MonoFramework.Objects;
 using MonoFramework.Sprites;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,14 @@ namespace MonoFramework.Geometry
 {
     public static class GeometryExtensions
     {
+        public static bool CellOutflow(this ICell cell, Vector2 center, DirectionEnum direction)
+        {
+            if (direction == DirectionEnum.Right)
+            {
+                return center.X >= cell.Rectangle.Center.X;
+            }
+            return false;
+        }
         public static Point GetOrigin(this Rectangle rectangle, RectangleOrigin origin)
         {
             Point org = new Point();
@@ -83,6 +92,27 @@ namespace MonoFramework.Geometry
             rectangle.Y -= rectangle.Width;
             return rectangle;
         }
+        public static Vector2 NormalizeAbsolute(this Vector2 input)
+        {
+            Vector2 result = new Vector2();
+            if (input.X > 0)
+            {
+                result.X = 1;
+            }
+            if (input.X < -0.5)
+            {
+                result.X = -1;
+            }
+            if (input.Y > 0)
+            {
+                result.Y = 1;
+            }
+            if (input.Y < -0.5)
+            {
+                result.Y = -1;
+            }
+            return result;
+        }
         public static bool NormalizedBand(this Vector2 normalizedInput, Vector2 reference)
         {
             if (normalizedInput.X > 0)
@@ -103,9 +133,61 @@ namespace MonoFramework.Geometry
             }
             return normalizedInput == reference;
         }
-        public static DirectionEnum GetDirection(this Vector2 normalizedInput)
+        public static DirectionEnum GetDirection(this Vector2 input)
         {
+            float tolerance = 20;
+            float angle = MathHelper.ToDegrees((float)Math.Atan2(input.X, -input.Y));
 
+            if (angle < 0)
+            {
+                angle = 360 + angle;
+            }
+
+            if (angle.InBand(0 - tolerance, tolerance))
+            {
+                return DirectionEnum.Up;
+            }
+            if (angle.InBand(tolerance, 90 - tolerance))
+            {
+                return DirectionEnum.Right | DirectionEnum.Up;
+            }
+            if (angle.InBand(90 - tolerance, 90 + tolerance))
+            {
+                return DirectionEnum.Right;
+            }
+            if (angle.InBand(90 + tolerance, 180 - tolerance))
+            {
+                return DirectionEnum.Right | DirectionEnum.Down;
+            }
+            if (angle.InBand(180 - tolerance, 180 + tolerance))
+            {
+                return DirectionEnum.Down;
+            }
+            if (angle.InBand(180 + tolerance, 270 - tolerance))
+            {
+                return DirectionEnum.Left | DirectionEnum.Down;
+            }
+            if (angle.InBand(270 - tolerance, 270 + tolerance))
+            {
+                return DirectionEnum.Left;
+            }
+            if (angle.InBand(270 + tolerance, 360 - tolerance))
+            {
+                return DirectionEnum.Left | DirectionEnum.Up;
+            }
+            if (angle.InBand(360 - tolerance, 360))
+            {
+                return DirectionEnum.Up;
+            }
+            return DirectionEnum.None;
+
+        }
+        public static bool InBand(this float value, float minValue, float maxValue)
+        {
+            return value >= minValue && value <= maxValue;
+        }
+        public static DirectionEnum GetDirectionNormalized(this Vector2 normalizedInput)
+        {
             if (normalizedInput.NormalizedBand(new Vector2(1, 0)))
             {
                 return DirectionEnum.Right;
@@ -161,20 +243,20 @@ namespace MonoFramework.Geometry
                     input.Y++;
                     break;
                 case DirectionEnum.Right | DirectionEnum.Down:
-                    input.X++;
-                    input.Y++;
+                    input.X += 0.5f;
+                    input.Y += 0.5f;
                     break;
                 case DirectionEnum.Right | DirectionEnum.Up:
-                    input.X++;
-                    input.Y--;
+                    input.X += 0.5f;
+                    input.Y -= 0.5f;
                     break;
                 case DirectionEnum.Left | DirectionEnum.Down:
-                    input.X--;
-                    input.Y++;
+                    input.X -= 0.5f;
+                    input.Y += 0.5f;
                     break;
                 case DirectionEnum.Left | DirectionEnum.Up:
-                    input.X--;
-                    input.Y--;
+                    input.X -= 0.5f;
+                    input.Y -= 0.5f;
                     break;
             }
             return input;

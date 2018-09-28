@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Network;
+using Rogue.Network;
 using MonoFramework.Network.Protocol;
-using MonoFramework.Scenes;
+using Rogue.Scenes;
 using MonoFramework.Utils;
 using Rogue.Frames;
 using Rogue.Protocol.Messages.Server;
@@ -12,6 +12,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Network;
+using MonoFramework.Scenes;
 
 namespace Rogue.Network
 {
@@ -36,7 +38,6 @@ namespace Rogue.Network
             get;
             private set;
         }
-        public static bool DiagnosticsEnabled { get; internal set; }
 
         public static void Initialize()
         {
@@ -59,7 +60,6 @@ namespace Rogue.Network
         public static void Connect()
         {
             ClientHost.Client.Connect("127.0.0.1", 555);
-            //     ClientHost.Client.Connect("5.206.225.77", 540);
         }
 
         private static void OnConnectionClosed(AbstractClient obj)

@@ -59,8 +59,9 @@ namespace MonoFramework.Network
         {
             this.EventListener = new EventBasedNetListener();
             this.NetManager = new NetManager(EventListener, 200, "coucou");
-            this.NetManager.UnsyncedEvents = true;
             EndPoint = new IPEndPoint(IPAddress.Any, port);
+
+            NetManager.UnsyncedEvents = true;
 
             if (NetManager.Start(port))
             {
@@ -76,8 +77,11 @@ namespace MonoFramework.Network
 
 
         }
-
-        private void EventListener_NetworkReceiveEvent(NetPeer peer, LiteNetLib.Utils.NetDataReader reader)
+        public void PollEvents()
+        {
+            NetManager.PollEvents();
+        }
+        private void EventListener_NetworkReceiveEvent(NetPeer peer, LiteNetLib.Utils.LittleEndianReader reader)
         {
             Clients[peer.EndPoint].OnDataArrival(reader.Data);
         }

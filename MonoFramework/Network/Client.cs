@@ -60,7 +60,7 @@ namespace MonoFramework.Network
         }
         public void Send(Message message, SendOptions method = SendOptions.ReliableOrdered)
         {
-            NetDataWriter writer = new NetDataWriter();
+            LittleEndianWriter writer = new LittleEndianWriter();
 
             message.Pack(writer);
             var packet = writer.Data;
@@ -86,7 +86,7 @@ namespace MonoFramework.Network
             NetManager.Connect(ip, port);
         }
 
-        private void Listener_NetworkReceiveEvent(NetPeer peer, NetDataReader reader)
+        private void Listener_NetworkReceiveEvent(NetPeer peer, LittleEndianReader reader)
         {
             OnDataArrival(reader.Data);
         }

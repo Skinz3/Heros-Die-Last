@@ -12,6 +12,7 @@ namespace MonoFramework
     {
         public static Point CURSOR_SIZE = new Point(1, 1);
 
+        
         /// <summary>
         /// The texture used when drawing rectangles, lines and other 
         /// primitives. This is a 1x1 white texture created at runtime.
@@ -28,16 +29,30 @@ namespace MonoFramework
                 return SpriteBatch.GraphicsDevice;
             }
         }
-        public static SpriteBatch SpriteBatch
+        private static GameCore GameCore
         {
             get;
-            private set;
+            set;
+        }
+        public static SpriteBatch SpriteBatch
+        {
+            get
+            {
+                return GameCore.SpriteBatch;
+            }
         }
         public static Viewport Viewport
         {
             get
             {
                 return GraphicsDevice.Viewport;
+            }
+        }
+        public static TimeSpan TargetElapsedTime
+        {
+            get
+            {
+                return GameCore.TargetElapsedTime;
             }
         }
         public static Vector2 ScreenSize
@@ -47,14 +62,21 @@ namespace MonoFramework
                 return new Vector2(Viewport.Width, Viewport.Height);
             }
         }
+        public static Rectangle ScreenBounds
+        {
+            get
+            {
+                return Viewport.Bounds;
+            }
+        }
         public static ContentManager Content
         {
             get;
             private set;
         }
-        public static void Initialize(SpriteBatch spritebatch, ContentManager content)
+        public static void Initialize(GameCore gameCore, ContentManager content)
         {
-            SpriteBatch = spritebatch;
+            GameCore = gameCore;
             Content = content;
             DummyTexture = new Texture2D(GraphicsDevice, 1, 1);
             DummyTexture.SetData(new Color[] { Color.White });
@@ -68,10 +90,10 @@ namespace MonoFramework
         }
         public static void DrawRectangle(Rectangle rectangle, Color color, int thickness = 1)
         {
-           SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, thickness), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, thickness), color);
             SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Bottom, rectangle.Width, thickness), color);
-           SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, thickness, rectangle.Height), color);
-           SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Right, rectangle.Top, thickness, rectangle.Height + thickness), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Left, rectangle.Top, thickness, rectangle.Height), color);
+            SpriteBatch.Draw(DummyTexture, new Rectangle(rectangle.Right, rectangle.Top, thickness, rectangle.Height + thickness), color);
         }
         public static void DrawText(Vector2 position, string text, Color color)
         {

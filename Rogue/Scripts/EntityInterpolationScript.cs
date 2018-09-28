@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Geometry;
-using MonoFramework.Objects.Entities;
+using Rogue.Objects;
+using Rogue.Objects.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rogue.Collisions;
+using MonoFramework.Objects;
+using MonoFramework.Objects.Abstract;
 using MonoFramework.Collisions;
 
 namespace Rogue.Scripts
@@ -63,7 +64,7 @@ namespace Rogue.Scripts
         public EntityPositionExtended NextPosition
         {
             get;
-            private set;
+            set;
         }
         /// <summary>
         /// Doit t-on interpoler? 
@@ -80,10 +81,24 @@ namespace Rogue.Scripts
         {
             this.Target = (MovableEntity)gameObject;
         }
+        public void Restore()
+        {
+            NextPosition = default(EntityPositionExtended);
+            PreviousPosition = default(EntityPositionExtended);
+        }
+
+        public void Restore(Vector2 position, DirectionEnum direction)
+        {
+            NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
+            PreviousPosition = NextPosition;
+        }
 
         public void OnPositionReceived(Vector2 position, DirectionEnum direction)
         {
-
+            if (Target.Dashing)
+            {
+                return;
+            }
             if (NextPosition.Position == null) // tout première position reçue. (Previous est donc indéfinie)
             {
                 NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
@@ -107,6 +122,10 @@ namespace Rogue.Scripts
         }
         public void Update(GameTime time)
         {
+            if (Target.Dashing)
+            {
+                return;
+            }
             if (InterpolationRequired)
             {
                 CurrentTime += (TotalTime / MainPlayerScript.PositionUpdateFrameCount);
@@ -124,8 +143,17 @@ namespace Rogue.Scripts
                 }
 
                 Target.Position = result;
-
             }
+        }
+
+        public void Dispose()
+        {
+            Restore();
+        }
+
+        public void OnRemove()
+        {
+
         }
     }
     /// <summary>

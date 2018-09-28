@@ -34,6 +34,15 @@ namespace MonoFramework.Objects.Abstract
 
         public bool MouseIn;
 
+
+        public Vector2 Center
+        {
+            get
+            {
+                return Rectangle.Center.ToVector2();
+            }
+        }
+
         public Rectangle Rectangle
         {
             get
@@ -125,10 +134,18 @@ namespace MonoFramework.Objects.Abstract
 
         public void SetText(string text, Color color, RectangleOrigin origin = RectangleOrigin.Center, float scale = 1f)
         {
-            Text = new GText(Position, SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(),
-                text, color, scale);
-            TextOrigin = origin;
-            Text.Align(Rectangle, origin);
+            SetText(new GText(Position, SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(),
+                text, color, scale), origin);
+        }
+        public void SetText(GText text, RectangleOrigin origin = RectangleOrigin.Center)
+        {
+            Text = text;
+
+            if (origin != RectangleOrigin.None)
+            {
+                TextOrigin = origin;
+                Text.Align(Rectangle, origin);
+            }
         }
 
         public void RemoveText()
@@ -162,7 +179,8 @@ namespace MonoFramework.Objects.Abstract
             }
 
             Text?.Update(time);
-            Text?.Align(Rectangle, TextOrigin);
+            if (TextOrigin != RectangleOrigin.None)
+                Text?.Align(Rectangle, TextOrigin);
 
             if (MouseIsIn())
             {
@@ -192,7 +210,7 @@ namespace MonoFramework.Objects.Abstract
             base.Dispose();
         }
 
-        [InDeveloppement(InDeveloppementState.STARTED,"Handle other RectangleOrigin.")]
+        [InDeveloppement(InDeveloppementState.STARTED, "Handle other RectangleOrigin.")]
         public void Align(Rectangle container, RectangleOrigin origin)
         {
             switch (origin)

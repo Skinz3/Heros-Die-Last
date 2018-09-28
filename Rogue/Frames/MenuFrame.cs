@@ -20,5 +20,6 @@ namespace Rogue.Frames
         {
             LoadFrameMessage.Id,
         };
+
     }
 }

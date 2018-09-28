@@ -1,4 +1,4 @@
-﻿using MonoFramework.Objects.Entities;
+﻿using Rogue.Objects.Entities;
 using MonoFramework.Utils;
 using Rogue.Objects;
 using Rogue.Protocol.Enums;
@@ -22,8 +22,8 @@ namespace Rogue.World.Entities
             {
                 case EntityTypeEnum.PLAYER:
                     return new Player((ProtocolPlayer)protocolEntity);
-                    /*    case EntityTypeEnum.MONSTER:
-                            return new Monster((ProtocolMonster)protocolEntity); */
+                case EntityTypeEnum.MONSTER:
+                    return new Monster((ProtocolMonster)protocolEntity);
 
             }
 

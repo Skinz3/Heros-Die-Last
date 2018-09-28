@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Rogue.ORM.Interfaces;
 using Rogue.ORM.Attributes;
+using Rogue;
 using MonoFramework;
 
 namespace Rogue.ORM.IO
@@ -58,7 +59,17 @@ namespace Rogue.ORM.IO
         private void ReadTable(MySqlConnection connection, string parameter)
         {
             var command = new MySqlCommand(parameter, connection);
-            this.m_reader = command.ExecuteReader();
+
+            try
+            {
+                this.m_reader = command.ExecuteReader();
+            }
+            catch
+            {
+                DatabaseManager.GetInstance().CreateTable(typeof(T));
+                ReadTable(connection, parameter);
+                return;
+            }
             while (this.m_reader.Read())
             {
                 var obj = new object[this.m_fields.Length];

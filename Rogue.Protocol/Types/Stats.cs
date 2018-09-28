@@ -16,7 +16,14 @@ namespace Rogue.Protocol.Types
         public int LifePoints
         {
             get;
-            private set;
+            set;
+        }
+        public float LifeRatio
+        {
+            get
+            {
+                return LifePoints / MaxLifePoints;
+            }
         }
         public int MaxLifePoints
         {
@@ -26,7 +33,7 @@ namespace Rogue.Protocol.Types
         public float Speed
         {
             get;
-            private set;
+            set;
         }
         public float DefaultSpeed
         {
@@ -54,7 +61,7 @@ namespace Rogue.Protocol.Types
         }
 
 
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             LifePoints = reader.GetInt();
             MaxLifePoints = reader.GetInt();
@@ -62,7 +69,7 @@ namespace Rogue.Protocol.Types
             DefaultSpeed = reader.GetFloat();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(LifePoints);
             writer.Put(MaxLifePoints);
@@ -70,10 +77,6 @@ namespace Rogue.Protocol.Types
             writer.Put(DefaultSpeed);
         }
 
-        public static Stats GetDefaultStats()
-        {
-            return new Stats(100, 3f);
-        }
 
     }
 }

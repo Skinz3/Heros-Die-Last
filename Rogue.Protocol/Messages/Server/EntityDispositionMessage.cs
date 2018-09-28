@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MonoFramework.Collisions;
 using MonoFramework.Network.Protocol;
+using Rogue.Protocol.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,17 +33,17 @@ namespace Rogue.Protocol.Messages.Server
         {
 
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.entityId = reader.GetInt();
-            this.position = Extensions.DeserializeVector2(reader);
+            this.position = Extensions.GetVector2(reader);
             this.direction = (DirectionEnum)reader.GetByte();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(entityId);
-            position.Serialize(writer);
+            writer.Put(position);
             writer.Put((byte)direction);
         }
     }

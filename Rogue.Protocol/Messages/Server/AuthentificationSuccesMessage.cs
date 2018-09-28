@@ -34,14 +34,12 @@ namespace Rogue.Protocol.Messages.Server
 
         public int[] friendList;
 
-        public bool diagnosticsEnabled;
-
         public AuthentificationSuccesMessage()
         {
 
         }
         public AuthentificationSuccesMessage(int accountId, string characterName, string email, int iron, int gold,
-            float leaveRatio, int[] friendList, bool diagnosticsEnabled)
+            float leaveRatio, int[] friendList)
         {
             this.accountId = accountId;
             this.characterName = characterName;
@@ -50,10 +48,9 @@ namespace Rogue.Protocol.Messages.Server
             this.gold = gold;
             this.leaveRatio = leaveRatio;
             this.friendList = friendList;
-            this.diagnosticsEnabled = diagnosticsEnabled;
         }
 
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.accountId = reader.GetInt();
             this.characterName = reader.GetString();
@@ -70,11 +67,8 @@ namespace Rogue.Protocol.Messages.Server
                 friendList[i] = reader.GetInt();
             }
 
-            this.diagnosticsEnabled = reader.GetBool();
-
-
         }
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(accountId);
             writer.Put(characterName);
@@ -90,8 +84,6 @@ namespace Rogue.Protocol.Messages.Server
             {
                 writer.Put(friend);
             }
-
-            writer.Put(diagnosticsEnabled);
 
         }
     }

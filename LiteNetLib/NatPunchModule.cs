@@ -76,7 +76,7 @@ namespace LiteNetLib
             NetEndPoint clientExternal,
             string additionalInfo)
         {
-            NetDataWriter dw = new NetDataWriter();
+            LittleEndianWriter dw = new LittleEndianWriter();
 
             //First packet (server)
             //send to client
@@ -126,7 +126,7 @@ namespace LiteNetLib
                 return;
 
             //prepare outgoing data
-            NetDataWriter dw = new NetDataWriter();
+            LittleEndianWriter dw = new LittleEndianWriter();
             string networkIp = NetUtils.GetLocalIp(true);
             int networkPort = _netBase.LocalEndPoint.Port;
             NetEndPoint localEndPoint = new NetEndPoint(networkIp, networkPort);
@@ -137,7 +137,7 @@ namespace LiteNetLib
             _netBase.SendRaw(NetPacket.CreateRawPacket(PacketProperty.NatIntroductionRequest, dw), masterServerEndPoint);
         }
 
-        private void HandleNatPunch(NetEndPoint senderEndPoint, NetDataReader dr)
+        private void HandleNatPunch(NetEndPoint senderEndPoint, LittleEndianReader dr)
         {
             byte fromHostByte = dr.GetByte();
             if (fromHostByte != HostByte && fromHostByte != ClientByte)
@@ -157,7 +157,7 @@ namespace LiteNetLib
             }
         }
 
-        private void HandleNatIntroduction(NetDataReader dr)
+        private void HandleNatIntroduction(LittleEndianReader dr)
         {
             // read intro
             byte hostByte = dr.GetByte();
@@ -166,7 +166,7 @@ namespace LiteNetLib
             string token = dr.GetString(MaxTokenLength);
 
             NetUtils.DebugWrite(ConsoleColor.Cyan, "[NAT] introduction received; we are designated " + (hostByte == HostByte ? "host" : "client"));
-            NetDataWriter writer = new NetDataWriter();
+            LittleEndianWriter writer = new LittleEndianWriter();
 
             // send internal punch
             writer.Put(hostByte);
@@ -182,7 +182,7 @@ namespace LiteNetLib
             NetUtils.DebugWrite(ConsoleColor.Cyan, "[NAT] external punch sent to " + remoteExternal);
         }
 
-        private void HandleNatIntroductionRequest(NetEndPoint senderEndPoint, NetDataReader dr)
+        private void HandleNatIntroductionRequest(NetEndPoint senderEndPoint, LittleEndianReader dr)
         {
             NetEndPoint localEp = dr.GetNetEndPoint();
             string token = dr.GetString(MaxTokenLength);
@@ -199,7 +199,7 @@ namespace LiteNetLib
 
         internal void ProcessMessage(NetEndPoint senderEndPoint, PacketProperty property, byte[] data)
         {
-            NetDataReader dr = new NetDataReader(data);
+            LittleEndianReader dr = new LittleEndianReader(data);
 
             switch (property)
             {

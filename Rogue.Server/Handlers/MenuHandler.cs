@@ -1,4 +1,5 @@
-﻿using MonoFramework.DesignPattern;
+﻿using Microsoft.Xna.Framework;
+using MonoFramework.DesignPattern;
 using MonoFramework.Network.Protocol;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
@@ -19,8 +20,9 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandlePlayRequestMessage(PlayRequestMessage message, RogueClient client)
         {
-            client.DefinePlayer(new Player(client, EntityRecord.Players[0]));
-            client.OpenHub();
+            var record = EntityRecord.GetEntity("Default");
+            client.DefinePlayer(new Player(client, record, new Vector2()));
+            client.Player.Teleport("Donjon TEST");
         }
     }
 }

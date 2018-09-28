@@ -45,8 +45,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Editor.cs" />
+    <Compile Include="EditorMenuScene.cs" />
     <Compile Include="EditorScene.cs" />
+    <Compile Include="Forms\GridSizeSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GridSizeSelection.Designer.cs">
+      <DependentUpon>GridSizeSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WinformHelper.cs" />
     <Compile Include="Objects\TileSelectionGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\GridSizeSelection.resx">
+      <DependentUpon>GridSizeSelection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>

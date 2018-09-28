@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using MonoFramework.Animations;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Sprites
 {
+
+
     public class SpriteManager
     {
         public static string[] SPRITE_EXTENSIONS = new string[]
@@ -30,15 +34,32 @@ namespace MonoFramework.Sprites
             {
                 Directory.CreateDirectory(fullPath);
             }
-            foreach (var file in Directory.GetFiles(fullPath))  
+            foreach (var filePath in Directory.GetFiles(fullPath))
             {
-                if (SPRITE_EXTENSIONS.Contains(Path.GetExtension(file)))
-                    Sprites.Add(Path.GetFileNameWithoutExtension(file), new Sprite(file));
+                AddSprite(filePath);
             }
+            foreach (var directoryPath in Directory.GetDirectories(fullPath))
+            {
+                foreach (var filePath in Directory.GetFiles(directoryPath))
+                {
+                    AddSprite(filePath);
+                }
+            }
+
         }
+        private static void AddSprite(string path)
+        {
+            if (SPRITE_EXTENSIONS.Contains(Path.GetExtension(path)))
+                Sprites.Add(Path.GetFileNameWithoutExtension(path), new Sprite(path));
+        }
+
         public static Sprite[] GetSprites()
         {
             return Sprites.Values.ToArray();
+        }
+        public static Sprite[] GetSprites(string folderName)
+        {
+            return Array.FindAll(Sprites.Values.ToArray(), x => Path.GetFileName(Path.GetDirectoryName(x.Path)) == folderName);
         }
         public static int SpritesLenght
         {
@@ -64,6 +85,7 @@ namespace MonoFramework.Sprites
             if (!result.Loaded)
                 result.Load();
 
+           
             return result;
         }
 

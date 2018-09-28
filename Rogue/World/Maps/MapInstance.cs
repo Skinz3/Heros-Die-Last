@@ -1,19 +1,20 @@
-﻿using MonoFramework.Objects;
-using MonoFramework.Objects.Entities;
-using MonoFramework.Scenes;
+﻿using Rogue.Objects;
+using Rogue.Objects.Entities;
+using Rogue.Scenes;
 using MonoFramework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Scenes;
+using MonoFramework.Objects;
 
 namespace Rogue.World.Maps
 {
     public class MapInstance
     {
         Logger logger = new Logger();
-
 
         private Dictionary<int, Entity> Entities
         {
@@ -57,7 +58,6 @@ namespace Rogue.World.Maps
             if (Entities.ContainsKey(entityId))
             {
                 var entity = Entities[entityId];
-
                 SceneManager.CurrentScene.RemoveObject(entity);
                 entity.Dispose();
                 Entities.Remove(entityId);
@@ -69,7 +69,7 @@ namespace Rogue.World.Maps
         }
         public T GetEntity<T>(int entityId) where T : Entity
         {
-            return (Entities[entityId] as T);
+            return GetEntity(entityId) as T;
         }
         public Entity GetEntity(int entityId)
         {

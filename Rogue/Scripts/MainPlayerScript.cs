@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using MonoFramework;
+using MonoFramework.Cameras;
+using MonoFramework.Collisions;
+using MonoFramework.Geometry;
 using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
 using Rogue.Network;
 using Rogue.Objects;
 using Rogue.Protocol.Messages.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rogue.Scripts
 {
@@ -27,6 +27,13 @@ namespace Rogue.Scripts
             get;
             set;
         }
+        private Camera2D Camera
+        {
+            get
+            {
+                return SceneManager.CurrentScene.Camera;
+            }
+        }
         public MainPlayerScript()
         {
             CurrentPositionUpdateFrameCount = 0;
@@ -35,18 +42,37 @@ namespace Rogue.Scripts
         public void Initialize(GameObject target)
         {
             this.Player = (Player)target;
-            SceneManager.CurrentScene.Camera.Target = Player;
+            Camera.Target = Player;
         }
 
+        public void SendOnNextFrame()
+        {
+            CurrentPositionUpdateFrameCount = PositionUpdateFrameCount;
+        }
         public void Update(GameTime time)
         {
             CurrentPositionUpdateFrameCount++;
 
-            if (CurrentPositionUpdateFrameCount == PositionUpdateFrameCount)
+            if (this.Player.Dashing)
+            {
+                return;
+            }
+
+            if (CurrentPositionUpdateFrameCount >= PositionUpdateFrameCount)
             {
                 CurrentPositionUpdateFrameCount = 0;
                 ClientHost.Client.Send(new EntityDispositionRequestMessage(Player.Position, Player.MovementEngine.Direction));
             }
+        }
+
+        public void Dispose()
+        {
+           
+        }
+
+        public void OnRemove()
+        {
+
         }
     }
 }

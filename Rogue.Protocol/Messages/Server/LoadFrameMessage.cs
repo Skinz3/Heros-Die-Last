@@ -23,27 +23,27 @@ namespace Rogue.Protocol.Messages.Server
 
         public FrameEnum frame;
 
-        public string sceneName;
+        public string dataName;
 
         public LoadFrameMessage()
         {
 
         }
-        public LoadFrameMessage(FrameEnum frame, string sceneName = "")
+        public LoadFrameMessage(FrameEnum frame, string dataName = "")
         {
             this.frame = frame;
-            this.sceneName = sceneName;
+            this.dataName = dataName;
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.frame = (FrameEnum)reader.GetByte();
-            this.sceneName = reader.GetString();
+            this.dataName = reader.GetString();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put((byte)frame);
-            writer.Put(sceneName);
+            writer.Put(dataName);
         }
     }
 }

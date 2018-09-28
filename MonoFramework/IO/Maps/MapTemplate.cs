@@ -35,6 +35,7 @@ namespace MonoFramework.IO.Maps
 
             this.Zoom = reader.ReadFloat();
         }
+       
         public override void Serialize(LittleEndianWriter writer)
         {
             writer.WriteInt(Width);
@@ -49,8 +50,11 @@ namespace MonoFramework.IO.Maps
 
             writer.WriteFloat(Zoom);
         }
+        public CellTemplate GetCellTemplate(int id)
+        {
+            return Cells.FirstOrDefault(x => x.Id == id);
+        }
 
-       
     }
     public class CellTemplate
     {

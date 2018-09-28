@@ -21,7 +21,7 @@ namespace Rogue.Protocol.Types
         }
 
         public ProtocolMonster(string name, int entityId, Vector2 position, Point size,
-            Stats stats, DirectionalAnimation[] animations) : base(name, entityId, position, size, stats, animations)
+            Stats stats, StateAnimations[] animations) : base(name, entityId, position, size, stats, animations)
         {
 
         }
@@ -29,12 +29,12 @@ namespace Rogue.Protocol.Types
         {
 
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             base.Deserialize(reader);
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             base.Serialize(writer);
         }

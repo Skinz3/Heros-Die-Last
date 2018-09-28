@@ -24,7 +24,7 @@ namespace MonoFramework
             get;
             private set;
         }
-        protected SpriteBatch SpriteBatch
+        public SpriteBatch SpriteBatch
         {
             get;
             private set;
@@ -35,12 +35,13 @@ namespace MonoFramework
             Content.RootDirectory = "Content";
             SpriteManager.Initialize(@"/Content");
             SceneManager.Initialize(Assembly.GetEntryAssembly());
-
             GraphicsDeviceManager.PreferredBackBufferWidth = 1000;  // largeur de la fenêtre
             GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
             this.IsMouseVisible = true;
 
-           //this.GraphicsDeviceManager.IsFullScreen = true;
+       /*    GraphicsDeviceManager.PreferredBackBufferWidth = 1920;
+            GraphicsDeviceManager.PreferredBackBufferHeight = 1080;
+            this.GraphicsDeviceManager.IsFullScreen = true; */
         }
 
         protected override void Initialize()
@@ -51,9 +52,9 @@ namespace MonoFramework
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice); // Le SpriteBatch permet de dessiner a l'écran
-            Debug.Initialize(SpriteBatch,Content); // Charge toute les variable statiques
+            Debug.Initialize(this, Content); // Charge toute les variable statiques
         }
-        
+
         protected override void UnloadContent()
         {
             SceneManager.Dispose();

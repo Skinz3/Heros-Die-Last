@@ -1,4 +1,4 @@
-﻿using MonoFramework.Network;
+﻿using Rogue.Network;
 using MonoFramework.Network.Protocol;
 using Rogue.Auth;
 using Rogue.Frames;
@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Network;
+using Rogue.Objects.UI;
 
 namespace Rogue.Network
 {
@@ -24,9 +26,14 @@ namespace Rogue.Network
             get;
             private set;
         }
+        public Inventory Inventory
+        {
+            get;
+            private set;
+        }
         public RogueClient(Frame baseFrame) : base(baseFrame)
         {
-
+            this.Inventory = new Inventory();
         }
 
         public bool IsInFrame(FrameEnum frame)

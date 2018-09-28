@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
 using MonoFramework.Network.Protocol;
 using Rogue.Protocol;
+using MonoFramework.Collisions;
 
 namespace Rogue.Protocol.Messages.Client
 {
@@ -35,15 +35,15 @@ namespace Rogue.Protocol.Messages.Client
             this.position = position;
             this.direction = direction;
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
-            this.position = Extensions.DeserializeVector2(reader);
+            this.position = Extensions.GetVector2(reader);
             this.direction = (DirectionEnum)reader.GetByte();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
-            this.position.Serialize(writer);
+            writer.Put(position);
             writer.Put((byte)direction);
         }
     }

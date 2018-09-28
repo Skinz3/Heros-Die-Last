@@ -50,20 +50,20 @@ namespace Rogue.Protocol.Types
             this.Position = position;
             this.Size = size;
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.EntityId = reader.GetInt();
             this.Name = reader.GetString();
-            this.Position = Extensions.DeserializeVector2(reader);
-            this.Size = Extensions.DeserializePoint(reader);
+            this.Position = Extensions.GetVector2(reader);
+            this.Size = Extensions.GetPoint(reader);
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(EntityId);
             writer.Put(Name);
-            Position.Serialize(writer);
-            Size.Serialize(writer);
+            writer.Put(Position);
+            writer.Put(Size);
         }
     }
 }

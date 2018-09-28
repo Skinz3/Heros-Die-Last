@@ -13,21 +13,31 @@ namespace MonoFramework.Input
 
         public static bool RightButtonPressed = false;
 
+        public static bool MiddleButtonPressed = false;
+
         public static event Action OnLeftButtonDown;
         public static event Action OnRightButtonDown;
+        public static event Action OnMiddleButtonDown;
 
         public static event Action OnLeftButtonPressed;
         public static event Action OnRightButtonPressed;
+        public static event Action OnMiddleButtonPressed;
 
         public static void Update()
         {
             var state = Mouse.GetState();
 
-            if (state.RightButton == ButtonState.Pressed && !RightButtonPressed)
+
+            if (state.MiddleButton == ButtonState.Pressed && !MiddleButtonPressed)
+            {
+                MiddleButtonPressed = true;
+                OnMiddleButtonDown?.Invoke();
+            }
+            else if (state.RightButton == ButtonState.Pressed && !RightButtonPressed)
             {
                 RightButtonPressed = true;
                 OnRightButtonDown?.Invoke();
-               
+
             }
             else if (state.RightButton == ButtonState.Released && RightButtonPressed)
             {
@@ -35,11 +45,17 @@ namespace MonoFramework.Input
                 OnRightButtonPressed?.Invoke();
             }
 
-            if (state.LeftButton == ButtonState.Pressed && !LeftButtonPressed)
+
+            if (state.MiddleButton == ButtonState.Released && MiddleButtonPressed)
+            {
+                MiddleButtonPressed = false;
+                OnMiddleButtonPressed?.Invoke();
+            }
+            else if (state.LeftButton == ButtonState.Pressed && !LeftButtonPressed)
             {
                 LeftButtonPressed = true;
                 OnLeftButtonDown?.Invoke();
-              
+
             }
             else if (state.LeftButton == ButtonState.Released && LeftButtonPressed)
             {

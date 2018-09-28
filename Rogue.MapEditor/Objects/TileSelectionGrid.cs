@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Input;
 using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
 using MonoFramework.Sprites;
 using System;
 using System.Collections.Generic;
@@ -67,9 +64,8 @@ namespace Rogue.MapEditor.Objects
 
         public override void OnInitialize()
         {
-            this.Sprites = SpriteManager.GetSprites();
+            this.Sprites = SpriteManager.GetSprites("Tiles");
             this.AddChild(Cursor);
-
             base.OnInitialize();
         }
 
@@ -108,7 +104,8 @@ namespace Rogue.MapEditor.Objects
         {
             if (obj.Sprites.ContainsKey(LayerEnum.First))
             {
-                Cursor.Sprite = obj.Sprites[LayerEnum.First];
+                Cursor.Sprite = obj.GetElement<Sprite>(LayerEnum.First);
+                Console.WriteLine(Cursor.Sprite.Name);
             }
         }
         private void TileSelectionGrid_OnMouseRightClick(GCell obj)

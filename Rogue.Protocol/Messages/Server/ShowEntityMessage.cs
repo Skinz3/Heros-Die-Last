@@ -32,13 +32,13 @@ namespace Rogue.Protocol.Messages.Server
         }
         
 
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.entity = ProtocolTypeManager.GetInstance<ProtocolEntity>(reader.GetShort());
             entity.Deserialize(reader);
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(entity.TypeIdProp);
             this.entity.Serialize(writer);

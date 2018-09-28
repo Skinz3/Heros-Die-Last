@@ -30,12 +30,12 @@ namespace Rogue.Protocol.Messages.Server
         {
             this.reason = reason;
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.reason = (AuthentificationFailureEnum)reader.GetByte();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put((byte)reason);
         }

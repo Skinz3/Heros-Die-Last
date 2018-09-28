@@ -35,7 +35,7 @@ namespace LiteNetLib
         private sealed class NetEvent
         {
             public NetPeer Peer;
-            public NetDataReader DataReader;
+            public LittleEndianReader DataReader;
             public NetEventType Type;
             public NetEndPoint RemoteEndPoint;
             public int AdditionalData;
@@ -305,7 +305,7 @@ namespace LiteNetLib
             }
             if(evt == null)
             {
-                evt = new NetEvent {DataReader = new NetDataReader()};
+                evt = new NetEvent {DataReader = new LittleEndianReader()};
             }
             evt.Type = type;
             return evt;
@@ -673,7 +673,7 @@ namespace LiteNetLib
         /// </summary>
         /// <param name="writer">DataWriter with data</param>
         /// <param name="options">Send options (reliable, unreliable, etc.)</param>
-        public void SendToAll(NetDataWriter writer, SendOptions options)
+        public void SendToAll(LittleEndianWriter writer, SendOptions options)
         {
             SendToAll(writer.Data, 0, writer.Length, options);
         }
@@ -712,7 +712,7 @@ namespace LiteNetLib
         /// <param name="writer">DataWriter with data</param>
         /// <param name="options">Send options (reliable, unreliable, etc.)</param>
         /// <param name="excludePeer">Excluded peer</param>
-        public void SendToAll(NetDataWriter writer, SendOptions options, NetPeer excludePeer)
+        public void SendToAll(LittleEndianWriter writer, SendOptions options, NetPeer excludePeer)
         {
             SendToAll(writer.Data, 0, writer.Length, options, excludePeer);
         }
@@ -794,7 +794,7 @@ namespace LiteNetLib
         /// <param name="writer">Data serializer</param>
         /// <param name="remoteEndPoint">Packet destination</param>
         /// <returns>Operation result</returns>
-        public bool SendUnconnectedMessage(NetDataWriter writer, NetEndPoint remoteEndPoint)
+        public bool SendUnconnectedMessage(LittleEndianWriter writer, NetEndPoint remoteEndPoint)
         {
             return SendUnconnectedMessage(writer.Data, 0, writer.Length, remoteEndPoint);
         }
@@ -815,7 +815,7 @@ namespace LiteNetLib
             return SendRaw(packet, remoteEndPoint);
         }
 
-        public bool SendDiscoveryRequest(NetDataWriter writer, int port)
+        public bool SendDiscoveryRequest(LittleEndianWriter writer, int port)
         {
             return SendDiscoveryRequest(writer.Data, 0, writer.Length, port);
         }
@@ -833,7 +833,7 @@ namespace LiteNetLib
             return _socket.SendBroadcast(packet, 0, packet.Length, port);
         }
 
-        public bool SendDiscoveryResponse(NetDataWriter writer, NetEndPoint remoteEndPoint)
+        public bool SendDiscoveryResponse(LittleEndianWriter writer, NetEndPoint remoteEndPoint)
         {
             return SendDiscoveryResponse(writer.Data, 0, writer.Length, remoteEndPoint);
         }
@@ -1010,7 +1010,7 @@ namespace LiteNetLib
         /// </summary>
         /// <param name="peer">peer to disconnect</param>
         /// <param name="writer">additional data</param>
-        public void DisconnectPeer(NetPeer peer, NetDataWriter writer)
+        public void DisconnectPeer(NetPeer peer, LittleEndianWriter writer)
         {
             DisconnectPeer(peer, writer.Data, 0, writer.Length);
         }

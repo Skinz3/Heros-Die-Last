@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework;
-using MonoFramework.Animations;
-using MonoFramework.Collisions;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Objects.Entities;
-using MonoFramework.PhysX;
-using MonoFramework.Scenes;
+using Rogue;
+using Rogue.Animations;
 using Rogue.Collisions;
+using Rogue.Objects;
+using Rogue.Objects.Entities;
+using Rogue.Scenes;
 using Rogue.Network;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
@@ -22,6 +17,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoFramework.Collisions;
+using MonoFramework;
+using Rogue.Objects.UI;
+using MonoFramework.Sprites;
+using Rogue.World.Items;
+using MonoFramework.Objects;
+using MonoFramework.Scenes;
 
 namespace Rogue.Objects
 {
@@ -32,52 +34,48 @@ namespace Rogue.Objects
             get;
             private set;
         }
+        public bool Aiming
+        {
+            get;
+            set;
+        }
+
+        public override bool CanMove => IsMainPlayer && !Dashing && !Aiming;
 
         public override bool Controlable => IsMainPlayer;
+
+        public override bool UseInterpolation => !IsMainPlayer;
 
         public Player(ProtocolPlayer protocolPlayer) : base(protocolPlayer)
         {
             this.IsMainPlayer = ClientHost.Client.Account.Id == Id;
         }
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+        }
         public override void OnInitializeComplete()
         {
             if (IsMainPlayer)
             {
+                AddScript(new CameraControlScript());
                 AddScript(new MainPlayerScript());
             }
-            else
-            {
-                AddScript(new EntityInterpolationScript());
-            }
-
             base.OnInitializeComplete();
         }
 
         public override void OnDraw(GameTime time)
         {
-            Debug.DrawRectangle(Collider.MovementHitBox, Color.LimeGreen);
             base.OnDraw(time);
         }
-        public void OnPositionReceived(Vector2 position, DirectionEnum direction)
-        {
-            if (EntityInterpolationScript.UseInterpolation)
-            {
-                GetScript<EntityInterpolationScript>().OnPositionReceived(position, direction);
-            }
-            else
-            {
-                Position = position;
-                MovementEngine.Direction = direction;
-            }
 
-        }
         public override Collider2D CreateCollider()
         {
-            return new PlayerCollider(this);
+            return new WonderDotCollider(this);
         }
         public override void OnUpdate(GameTime time)
         {
-            base.OnUpdate(time);
+
         }
         public override void OnDispose()
         {

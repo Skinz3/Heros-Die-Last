@@ -23,12 +23,12 @@ namespace Rogue.Protocol.Messages.Server
         {
 
         }
-        public override void Deserialize(NetDataReader reader)
+        public override void Deserialize(LittleEndianReader reader)
         {
             this.entityId = reader.GetInt();
         }
 
-        public override void Serialize(NetDataWriter writer)
+        public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(entityId);
         }

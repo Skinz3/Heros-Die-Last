@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework;
+using Rogue;
 using MonoFramework.Cameras;
 using MonoFramework.Input;
 using MonoFramework.IO;
@@ -14,13 +14,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MonoFramework.Objects.UI;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MonoFramework.Objects.Abstract;
 using MonoFramework.Collisions;
-using MonoFramework.Geometry;
+using Rogue.MapEditor.Forms;
 
 namespace Rogue.MapEditor
 {
@@ -89,12 +87,22 @@ namespace Rogue.MapEditor
 
         #endregion
 
-        public EditorScene()
+        public EditorScene(int width, int height)
         {
-
+            Map = new GMap(new Point(width, height));
         }
 
+        public EditorScene(MapTemplate targetTemplate)
+        {
+            this.TargetTemplate = targetTemplate;
+            Map = new GMap(new Point(targetTemplate.Width, targetTemplate.Height));
+        }
 
+        private MapTemplate TargetTemplate
+        {
+            get;
+            set;
+        }
 
         #region Scene Initialization
 
@@ -104,11 +112,11 @@ namespace Rogue.MapEditor
 
             KeyboardManager.OnKeyPressed += OnKeyPressed;
 
+            MouseManager.OnMiddleButtonPressed += OnMiddleButtonPressed;
             TileSelectionGrid = new TileSelectionGrid(new Vector2(0, 650), new Point(20, 3), 50, Color.Black, 1);
             AddObject(TileSelectionGrid, LayerEnum.UI);
 
-            Map = new GMap(new Point(40, 40));
-            Map.OnMouseLeftClickCell += Map_OnMouseLeftClick;
+
             Map.OnMouseEnterCell += Map_OnMouseEnter;
             Map.OnMouseLeaveCell += Map_OnMouseLeave;
             Map.OnMouseRightClickCell += Map_OnMouseRightClick;
@@ -120,12 +128,38 @@ namespace Rogue.MapEditor
 
             this.CollisionEditorLabel = TextRenderer.AddText(new Vector2(0, 60f), "Collision Editor :" + CollisionEditor, Color.CornflowerBlue);
 
-        
+
 
 
         }
+
+        private void OnMiddleButtonPressed()
+        {
+            var mousePosition = Mouse.GetState().Position;
+            var cell = (GCell)Map.GetCell(Map.TranslateToScenePosition(mousePosition).ToVector2());
+
+
+            if (cell != null && cell.Sprites.ContainsKey(DrawingLayer))
+            {
+                RaycastZ rayCast = new RaycastZ(mousePosition);
+
+                if (rayCast.Cast() == Map)
+                {
+                    TileSelectionGrid.Cursor.Sprite = cell.GetElement<Sprite>(DrawingLayer);
+                }
+            }
+
+        }
+
         public override void OnInitializeComplete()
         {
+            if (TargetTemplate != null)
+            {
+                Map.Load(TargetTemplate);
+
+
+            }
+            WinformHelper.EnableStyle();
 
         }
         #endregion
@@ -136,37 +170,31 @@ namespace Rogue.MapEditor
             if (obj == Keys.Space)
             {
                 CollisionEditor = !CollisionEditor;
+
+                if (CollisionEditor)
+                {
+                    foreach (var cell in Map.Cells)
+                    {
+                        if (cell.Walkable == false)
+                        {
+                            cell.SetText("Wall", Color.Red);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var cell in Map.Cells)
+                    {
+                        cell.RemoveText();
+                    }
+                }
             }
             if (obj == Keys.F)
             {
                 DisplayGrid = !DisplayGrid;
                 Map.ToogleDrawRectangles(DisplayGrid);
             }
-            if (obj == Keys.O)
-            {
-                System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-                dialog.ShowDialog();
-                dialog.Dispose();
-                if (dialog.FileName != string.Empty)
-                {
-                    LittleEndianReader reader = new LittleEndianReader(File.ReadAllBytes(dialog.FileName));
-                    MapTemplate template = new MapTemplate();
-                    template.Deserialize(reader);
-                    Map.Load(template);
 
-
-                    foreach (var cell in template.Cells)
-                    {
-                        var gCell = Map.GetCell(cell.Id);
-
-                        if (cell.Walkable == false)
-                        {
-                            gCell.SetText("Wall", Color.Red);
-                        }
-                    }
-
-                }
-            }
             if (obj == Keys.LeftShift)
             {
                 TileSelectionGrid.Cursor.Sprite = Sprite.Flip(TileSelectionGrid.Cursor.Sprite, false, true);
@@ -177,15 +205,27 @@ namespace Rogue.MapEditor
             }
             if (obj == Keys.P)
             {
-                System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
-                dialog.ShowDialog();
-                if (dialog.FileName != string.Empty)
-                {
-                    var template = Map.Export(Camera.Zoom);
+                string targetPath = string.Empty;
 
+                if (TargetTemplate == null)
+                {
+                    System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
+                    dialog.Filter = "Map file (.map)|*.map";
+                    dialog.ShowDialog();
+                    targetPath = dialog.FileName;
+                }
+                else
+                {
+                    targetPath = TargetTemplate.Path;
+                }
+                if (targetPath != string.Empty)
+                {
+                    TargetTemplate = Map.Export(Camera.Zoom);
+                    TargetTemplate.Path = targetPath;
                     LittleEndianWriter writer = new LittleEndianWriter();
-                    template.Serialize(writer);
-                    File.WriteAllBytes(dialog.FileName, writer.Data);
+                    TargetTemplate.Serialize(writer);
+                    File.WriteAllBytes(targetPath, writer.Data);
+                    WinformHelper.ShowMessage("Your map has been saved!");
                 }
 
             }
@@ -256,28 +296,34 @@ namespace Rogue.MapEditor
                 }
             }
         }
-
-        private void Map_OnMouseLeftClick(GCell obj)
+        public override void Update(GameTime gameTime)
         {
-            if (Map.DisplayedLayer.HasFlag(DrawingLayer)) // Si on dessine bien sur le layer affiché
-            {
-                RaycastZ rayCast = new RaycastZ(Mouse.GetState().Position);
+            base.Update(gameTime);
 
-                if (rayCast.Cast() == Map) // Si on clique bien sur la carte (et pas sur un élément d'UI par dessus par exemple)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                if (Map.DisplayedLayer.HasFlag(DrawingLayer)) // Si on dessine bien sur le layer affiché
                 {
-                    if (CollisionEditor)
+                    var obj = (GCell)Map.GetCell(Map.TranslateToScenePosition(Mouse.GetState().Position).ToVector2());
+                    RaycastZ rayCast = new RaycastZ(Mouse.GetState().Position);
+
+                    if (rayCast.Cast() == Map) // Si on clique bien sur la carte (et pas sur un élément d'UI par dessus par exemple)
                     {
-                        obj.Walkable = false;
-                        obj.SetText("Wall", Color.Red);
-                    }
-                    else
-                    {
-                        if (TileSelectionGrid.SelectedSprite != null) // Si on a bien séléctionné un sprite
-                            obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                        if (CollisionEditor)
+                        {
+                            obj.Walkable = false;
+                            obj.SetText("Wall", Color.Red);
+                        }
+                        else
+                        {
+                            if (TileSelectionGrid.SelectedSprite != null) // Si on a bien séléctionné un sprite
+                                obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                        }
                     }
                 }
             }
         }
+
         #endregion
 
         #region Scene Disposal

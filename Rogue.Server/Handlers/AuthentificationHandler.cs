@@ -21,6 +21,8 @@ namespace Rogue.Server.Handlers
         {
             AccountRecord account = AccountRecord.GetAccountByUsername(message.Username);
 
+            account = AccountRecord.Accounts.FirstOrDefault(x => Program.Server.IsClientConnected(x.Username) == false);
+
             if (account == null || account.Password != message.Password) // le compte n'existe pas ou, le mot de passe est inccorect
             {
                 client.Send(new AuthentificationFailedMessage(AuthentificationFailureEnum.BAD_CREDENTIALS)); // on envoit une réponse au client
@@ -29,7 +31,7 @@ namespace Rogue.Server.Handlers
             {
                 client.Send(new AuthentificationFailedMessage(AuthentificationFailureEnum.BANNED));
             }
-            else if (Program.Server.IsClientConnected(message.Username))
+            else if (Program.Server.IsClientConnected(account.Username))
             {
                 client.Send(new AuthentificationFailedMessage(AuthentificationFailureEnum.CONNECTED));
             }
@@ -38,7 +40,7 @@ namespace Rogue.Server.Handlers
                 client.DefineAccount(account); // Alors on attribue au client son compte
 
                 client.Send(new AuthentificationSuccesMessage(account.Id, account.CharacterName, account.Email, account.Iron, account.Gold,
-                    account.LeaveRatio, account.FriendList.ToArray(), Configuration.Self.DiagnosticsEnabled)); // on lui fournis le reste des informations de son compte
+                    account.LeaveRatio, account.FriendList.ToArray())); // on lui fournis le reste des informations de son compte
 
                 client.OpenMenu();
             }

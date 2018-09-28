@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiteDB">
+      <HintPath>..\..\..\..\Downloads\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\Cooper Last Revision\Cooper\Sources\Cooper.Server\bin\Debug\MySql.Data.dll</HintPath>
@@ -49,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth\AccountManager.cs" />
+    <Compile Include="Collisions\Collider2D.cs" />
+    <Compile Include="Collisions\WonderDotCollider.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Frames\AuthentificationFrame.cs" />
     <Compile Include="Frames\HubFrame.cs" />
@@ -56,23 +63,46 @@
     <Compile Include="Frames\ServerFrame.cs" />
     <Compile Include="Handlers\FrameHandler.cs" />
     <Compile Include="Handlers\AuthentificationHandler.cs" />
+    <Compile Include="Handlers\InputHandler.cs" />
     <Compile Include="Handlers\MapHandler.cs" />
     <Compile Include="Handlers\MenuHandler.cs" />
+    <Compile Include="INEEDTOBUILD.cs" />
     <Compile Include="Network\RogueClient.cs" />
     <Compile Include="Network\RogueServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Records\AccountRecord.cs" />
+    <Compile Include="Records\ItemRecord.cs" />
+    <Compile Include="Records\MapLightRecord.cs" />
+    <Compile Include="Records\MapObjectRecord.cs" />
     <Compile Include="Records\MapRecord.cs" />
-    <Compile Include="Records\PlayerRecord.cs" />
+    <Compile Include="Records\EntityRecord.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="Utils\StartupManager.cs" />
     <Compile Include="World\Entities\Entity.cs" />
+    <Compile Include="World\Entities\Monster.cs" />
     <Compile Include="World\Entities\MovableEntity.cs" />
     <Compile Include="World\Entities\Player.cs" />
+    <Compile Include="World\Entities\RecordableEntity.cs" />
+    <Compile Include="World\Entities\Scripts\AIMovementScript.cs" />
+    <Compile Include="World\Entities\Scripts\DashScript.cs" />
+    <Compile Include="World\Entities\Scripts\IScript.cs" />
+    <Compile Include="World\Items\Inventory.cs" />
+    <Compile Include="World\Items\Item.cs" />
+    <Compile Include="World\Items\ItemManager.cs" />
+    <Compile Include="World\Items\Models\Heal.cs" />
+    <Compile Include="World\Items\Models\Dash.cs" />
+    <Compile Include="World\Items\Models\SnipePistol.cs" />
     <Compile Include="World\Maps\MapGrid.cs" />
     <Compile Include="World\Maps\MapInstance.cs" />
     <Compile Include="World\Maps\MapsManager.cs" />
+    <Compile Include="World\Maps\Triggers\ChestTrigger.cs" />
+    <Compile Include="World\Maps\Triggers\LockTrigger.cs" />
+    <Compile Include="World\Maps\Triggers\SpikesTrigger.cs" />
+    <Compile Include="World\Maps\Triggers\TeleportTrigger.cs" />
+    <Compile Include="World\Maps\Triggers\Trigger.cs" />
+    <Compile Include="World\Maps\Triggers\TriggerManager.cs" />
+    <Compile Include="World\ServerObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

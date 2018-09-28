@@ -22,7 +22,6 @@ namespace Rogue.Handlers
         public static void HandleAuthentificationSuccesMessage(AuthentificationSuccesMessage message, RogueClient client)
         {
             client.DefineAccount(new Account(message.accountId,message.characterName, message.email, message.iron, message.gold, message.leaveRatio, message.friendList));
-            ClientHost.DiagnosticsEnabled = message.diagnosticsEnabled;
         }
     }
 }

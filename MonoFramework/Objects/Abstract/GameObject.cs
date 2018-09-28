@@ -76,10 +76,25 @@ namespace MonoFramework.Objects.Abstract
         {
             return Scripts.OfType<T>().FirstOrDefault();
         }
+        public T GetParent<T>() where T : GameObject
+        {
+            return Parent as T;
+        }
         public void AddScript(IScript script)
         {
             script.Initialize(this);
             Scripts.Add(script);
+        }
+        public void RemoveFirstScript<T>() where T : IScript
+        {
+            var script = GetScript<T>();
+            RemoveScript(script);
+        }
+        public void RemoveScript(IScript script)
+        {
+
+            script?.OnRemove();
+            Scripts.Remove(script);
         }
         public void AddChild(GameObject child)
         {
@@ -101,11 +116,11 @@ namespace MonoFramework.Objects.Abstract
         {
             OnUpdate(time);
 
-            foreach (var child in Childs)
+            foreach (var child in Childs.ToArray())
             {
                 child.Update(time);
             }
-            foreach (var script in Scripts)
+            foreach (var script in Scripts.ToArray())
             {
                 script.Update(time);
             }
@@ -118,6 +133,11 @@ namespace MonoFramework.Objects.Abstract
 
         public virtual void Dispose()
         {
+            foreach (var script in Scripts.ToArray())
+            {
+                script.Dispose();
+            }
+            Scripts = null;
             OnDispose();
         }
 

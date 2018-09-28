@@ -2,11 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Rogue;
+using Rogue.Scenes;
+using Rogue.Network;
+using System;
 using MonoFramework;
 using MonoFramework.Input;
 using MonoFramework.Scenes;
-using Rogue.Network;
-using Rogue.Scenes;
+using Rogue.Animations;
 
 namespace Rogue
 {
@@ -23,12 +26,14 @@ namespace Rogue
         protected override void LoadContent()
         {
             base.LoadContent();
+            AnimationManager.Initialize();
             SceneManager.LoadScene(new LoginScene());
 
         }
         protected override void Dispose(bool disposing)
         {
             KeyboardManager.OnKeyPressed -= OnKeyPressed;
+            ClientHost.DestroyClient();
             base.Dispose(disposing);
         }
         private void OnKeyPressed(Keys obj)

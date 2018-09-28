@@ -14,7 +14,7 @@ namespace MonoFramework.Scenes
 
         public static void Initialize(Assembly sceneAssembly)
         {
-            foreach (var type in sceneAssembly.GetTypes().Where(x => x.IsAbstract == false && x.BaseType == typeof(Scene) || x.BaseType == typeof(MapScene)))
+            foreach (var type in sceneAssembly.GetTypes().Where(x => x.IsAbstract == false && x.InheritsFrom(typeof(Scene))))
             {
                 Scenes.Add(type.Name, type);
             }
@@ -39,7 +39,8 @@ namespace MonoFramework.Scenes
         }
         public static void LoadScene(string name)
         {
-            LoadScene(GetScene(name));
+            Scene scene = GetScene(name);
+            LoadScene(scene);
         }
         public static void LoadScene(Scene scene)
         {

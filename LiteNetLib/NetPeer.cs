@@ -240,7 +240,7 @@ namespace LiteNetLib
             Send(data, 0, data.Length, options);
         }
 
-        public void Send(NetDataWriter dataWriter, SendOptions options)
+        public void Send(LittleEndianWriter dataWriter, SendOptions options)
         {
             Send(dataWriter.Data, 0, dataWriter.Length, options);
         }

@@ -13,6 +13,40 @@ namespace MonoFramework
 {
     public static class Extensions
     {
+        public static bool InheritsFrom(this Type type, Type baseType)
+        {
+            // null does not have base type
+            if (type == null)
+            {
+                return false;
+            }
+
+            // only interface or object can have null base type
+            if (baseType == null)
+            {
+                return type.IsInterface || type == typeof(object);
+            }
+
+            // check implemented interfaces
+            if (baseType.IsInterface)
+            {
+                return type.GetInterfaces().Contains(baseType);
+            }
+
+            // check all base types
+            var currentType = type;
+            while (currentType != null)
+            {
+                if (currentType.BaseType == baseType)
+                {
+                    return true;
+                }
+
+                currentType = currentType.BaseType;
+            }
+
+            return false;
+        }
         public static string XMLSerialize(this object obj)
         {
             YAXSerializer serializer = new YAXSerializer(obj.GetType());
@@ -47,7 +81,37 @@ namespace MonoFramework
                 if (input.HasFlag(value))
                     yield return value;
         }
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
+        {
+            var rand = new Random();
 
+            T[] elements = enumerable.ToArray();
+            // Note i > 0 to avoid final pointless iteration
+            for (int i = elements.Length - 1; i > 0; i--)
+            {
+                // Swap element "i" with a random earlier element it (or itself)
+                int swapIndex = rand.Next(i + 1);
+                T tmp = elements[i];
+                elements[i] = elements[swapIndex];
+                elements[swapIndex] = tmp;
+            }
+            // Lazily yield (avoiding aliasing issues etc)
+            foreach (T element in elements)
+            {
+                yield return element;
+            }
+        }
+        public static string ByteArrayToString(this byte[] bytes)
+        {
+            var output = new StringBuilder(bytes.Length);
+
+            foreach (var t in bytes)
+            {
+                output.Append(t.ToString("X2"));
+            }
+
+            return output.ToString().ToLower();
+        }
         public static T Random<T>(this IEnumerable<T> enumerable)
         {
             int count = enumerable.Count();
@@ -133,7 +197,11 @@ namespace MonoFramework
         {
             return methodInfo.GetCustomAttributes(false).FirstOrDefault(x => x.GetType() == attributeType);
         }
+        public static T ParseEnum<T>(this string value)
+        {
+            return (T)Enum.Parse(typeof(T), value);
+        }
     }
 
-    
+
 }

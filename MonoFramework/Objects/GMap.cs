@@ -22,10 +22,10 @@ namespace MonoFramework.Objects
 
             foreach (var cell in template.Cells)
             {
-                GCell gCell = GetCell(cell.Id);
+                GCell gCell = (GCell)GetCell(cell.Id);
 
                 gCell.Walkable = cell.Walkable;
-              
+
                 foreach (var sprite in cell.Sprites)
                 {
                     var target = SpriteManager.GetSprite(sprite.SpriteName);
@@ -57,19 +57,21 @@ namespace MonoFramework.Objects
 
                 result.Cells[i].Sprites = new SpriteTemplate[Cells[i].Sprites.Count];
 
-                for (int j = 0; j < Cells[i].Sprites.Count; j++)
+                var sprites = Cells[i].GetElements<Sprite>(); 
+
+                for (int j = 0; j < sprites.Count(); j++)
                 {
                     result.Cells[i].Sprites[j] = new SpriteTemplate();
-                    result.Cells[i].Sprites[j].SpriteName = Cells[i].Sprites.ElementAt(j).Value.Name;
-                    result.Cells[i].Sprites[j].Layer = Cells[i].Sprites.ElementAt(j).Key;
-                    result.Cells[i].Sprites[j].FlippedVertically = Cells[i].Sprites.ElementAt(j).Value.FlippedVertically;
-                    result.Cells[i].Sprites[j].FlippedHorizontally = Cells[i].Sprites.ElementAt(j).Value.FlippedHorizontally;
+                    result.Cells[i].Sprites[j].SpriteName = sprites.ElementAt(j).Value.Name;
+                    result.Cells[i].Sprites[j].Layer = sprites.ElementAt(j).Key;
+                    result.Cells[i].Sprites[j].FlippedVertically = sprites.ElementAt(j).Value.FlippedVertically;
+                    result.Cells[i].Sprites[j].FlippedHorizontally = sprites.ElementAt(j).Value.FlippedHorizontally;
                 }
 
             }
             return result;
         }
-    
+
         public override void OnInitializeComplete()
         {
             // load sprites

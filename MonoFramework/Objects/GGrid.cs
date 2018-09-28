@@ -5,6 +5,7 @@ using MonoFramework.Cameras;
 using MonoFramework.Collisions;
 using MonoFramework.Geometry;
 using MonoFramework.IO.Maps;
+using MonoFramework.Lightning;
 using MonoFramework.Objects.Abstract;
 using MonoFramework.Scenes;
 using MonoFramework.Sprites;
@@ -16,10 +17,52 @@ using System.Threading.Tasks;
 
 namespace MonoFramework.Objects
 {
+    public interface IGrid
+    {
+        Point GridSize
+        {
+            get;
+            set;
+        }
+        ICell GetCell(int x, int y);
+        /// <summary>
+        /// Vector2 = Screen position
+        /// </summary>
+        ICell GetCell(Vector2 position);
+
+        ICell GetCell(int id);
+    }
+    public interface ICell
+    {
+        int Id
+        {
+            get;
+            set;
+        }
+        bool Walkable
+        {
+            get;
+            set;
+        }
+        Point RelativePosition
+        {
+            get;
+            set;
+        }
+        Rectangle Rectangle
+        {
+            get;
+        }
+        ICell[] Adjacents
+        {
+            get;
+            set;
+        }
+    }
     /// <summary>
     /// Représente une grille en 2D , elle est utilisé pour afficher une carte.
     /// </summary>
-    public class GGrid : SingleTextureObject
+    public class GGrid : SingleTextureObject, IGrid
     {
         public event Action<GCell> OnMouseEnterCell;
         public event Action<GCell> OnMouseLeaveCell;
@@ -38,7 +81,7 @@ namespace MonoFramework.Objects
         public Point GridSize
         {
             get;
-            private set;
+            set;
         }
         public int CellSize
         {
@@ -90,22 +133,26 @@ namespace MonoFramework.Objects
         /// (x,y) = Relative Position
         /// Require OnInitializationComplete
         /// </summary>
-        public GCell GetCell(int x, int y)
+        public ICell GetCell(int x, int y)
         {
             return Cells.FirstOrDefault(w => w.RelativePosition == new Point(x, y));
         }
         /// <summary>
         /// Vector2 = Screen position
         /// </summary>
-        public GCell GetCell(Vector2 position)
+        public ICell GetCell(Vector2 position)
         {
             return Cells.FirstOrDefault(x => x.IntersectsPoint(position.ToPoint()));
         }
-        public GCell GetCell(int id)
+        public T GetCell<T>(int id) where T : ICell
         {
-            return Cells.FirstOrDefault(x => x.Id == id);
+            return (T)GetCell(id);
         }
-        public GCell[] GetCells(Rectangle intersectRectangle)
+        public ICell GetCell(int id)
+        {
+            return Cells[id];
+        }
+        public ICell[] GetCells(Rectangle intersectRectangle)
         {
             return Cells.Where(x => x.Rectangle.Intersects(intersectRectangle)).ToArray();
         }
@@ -132,6 +179,7 @@ namespace MonoFramework.Objects
                     Cells[id].OnMouseLeftClick += Cell_OnMouseLeftClick;
                     Cells[id].OnMouseRightClick += Cell_OnMouseRightClick;
                     Cells[id].Initialize();
+
                     id++;
                     relativeY++;
 
@@ -139,6 +187,10 @@ namespace MonoFramework.Objects
                 }
                 relativeX++;
 
+            }
+            foreach (var cell in Cells)
+            {
+                cell.Adjacents = cell.GetAdjacentCells(this);
             }
         }
         public override void OnInitializeComplete()
@@ -196,15 +248,25 @@ namespace MonoFramework.Objects
 
         public override void OnDispose()
         {
-            Cells = null;
+
         }
+
+
     }
-    public class GCell : SingleTextureObject
+    public interface ICellElement
+    {
+        void Draw(Rectangle rectangle, Color color);
+
+        void Update(GameTime time);
+
+        void Dispose();
+    }
+    public class GCell : SingleTextureObject, ICell
     {
         public int Id
         {
             get;
-            private set;
+            set;
         }
         private int CellSize
         {
@@ -229,7 +291,7 @@ namespace MonoFramework.Objects
         public Point RelativePosition
         {
             get;
-            private set;
+            set;
         }
         public bool Walkable
         {
@@ -240,7 +302,6 @@ namespace MonoFramework.Objects
         public Color FillColor;
 
         public Color BackColor;
-
 
         public int Thickness
         {
@@ -257,17 +318,42 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public Dictionary<LayerEnum, Sprite> Sprites
+        public Dictionary<LayerEnum, ICellElement> Sprites
         {
             get;
             private set;
+        }
+        public PointLight Light
+        {
+            get;
+            private set;
+        }
+        public ICell[] Adjacents
+        {
+            get;
+            set;
+        }
+        public Dictionary<LayerEnum, T> GetElements<T>() where T : ICellElement
+        {
+            return Sprites.Where(x => x.Value is T).ToDictionary(x => x.Key, x => (T)x.Value);
+        }
+        public T GetElement<T>(LayerEnum layer) where T : ICellElement
+        {
+            var value = Sprites[layer];
+
+            if (value is T)
+            {
+                return (T)value;
+            }
+            else
+                return default(T);
         }
         public GCell(Vector2 position, Point relativePosition, int id, int size, Color color, LayerEnum layer, int thickness) : base(position, new Point((int)size, (int)size), color)
         {
             this.Id = id;
             this.CellSize = size;
             this.RelativePosition = relativePosition;
-            this.Sprites = new Dictionary<LayerEnum, Sprite>();
+            this.Sprites = new Dictionary<LayerEnum, ICellElement>();
             this.FillColor = Color.Transparent;
             this.BackColor = Color.Transparent;
             this.Thickness = thickness;
@@ -293,7 +379,14 @@ namespace MonoFramework.Objects
         {
             return Debug.DummyTexture;
         }
-
+        public void SetLight(Color color, int radius, float sharpness)
+        {
+            this.Light = new PointLight(this, radius, color, sharpness);
+        }
+        public void RemoveLight()
+        {
+            this.Light = null;
+        }
 
         public override void OnDraw(GameTime time)
         {
@@ -325,6 +418,10 @@ namespace MonoFramework.Objects
             }
             if (layer == LayerEnum.Third)
             {
+                if (Light != null)
+                {
+                    Light.Draw(time);
+                }
                 Fill(FillColor);
 
                 if (DrawRectangle)
@@ -340,7 +437,7 @@ namespace MonoFramework.Objects
             if (color != Color.Transparent)
                 Debug.FillRectangle(GRectangle.Rectangle, color);
         }
-        public void AddSprite(Sprite sprite, LayerEnum layer)
+        public void AddSprite(ICellElement sprite, LayerEnum layer)
         {
             if (Sprites.ContainsKey(layer))
                 this.Sprites[layer] = sprite;
@@ -370,23 +467,34 @@ namespace MonoFramework.Objects
             {
                 Text.Update(time);
             }
+
+            foreach (var pair in Sprites)
+            {
+                if (pair.Value != null)
+                {
+                    pair.Value.Update(time);
+                }
+            }
         }
-        public GCell[] GetAdjacentCells(GGrid grid)
+        public ICell[] GetAdjacentCells(GGrid grid)
         {
-            GCell[] cells = new GCell[4];
+            ICell[] cells = new ICell[4];
 
             cells[0] = grid.GetCell(RelativePosition.X + 1, RelativePosition.Y);
             cells[1] = grid.GetCell(RelativePosition.X - 1, RelativePosition.Y);
             cells[2] = grid.GetCell(RelativePosition.X, RelativePosition.Y + 1);
             cells[3] = grid.GetCell(RelativePosition.X, RelativePosition.Y - 1);
 
-            return cells;
+            return cells.Where(x => x != null).ToArray();
         }
-        public GCell[] GetNextCells(GGrid grid, DirectionEnum direction, int length)
+        public ICell[] GetNextCells(GGrid grid, DirectionEnum direction, int length)
         {
-            List<GCell> cells = new List<GCell>();
+            List<ICell> cells = new List<ICell>();
 
             var vector = direction.GetInputVector().ToPoint();
+
+            vector.X = vector.X == 0.5f ? 1 : vector.X;
+            vector.Y = vector.Y == 0.5f ? 1 : vector.Y;
 
             for (int i = 1; i < length + 1; i++)
             {
@@ -402,6 +510,10 @@ namespace MonoFramework.Objects
             BackColor = Color.Transparent;
             FillColor = Color.Transparent;
         }
+        public Vector2 GetCenterPosition(int width, int height)
+        {
+            return new Vector2(Rectangle.Center.X - width / 2, Rectangle.Center.Y - height / 2);
+        }
         public override string ToString()
         {
             return GetType().Name + " Id:" + Id + " Relative Position:" + RelativePosition;
@@ -416,5 +528,7 @@ namespace MonoFramework.Objects
                 sprite.Value.Dispose();
             }
         }
+
+
     }
 }
