@@ -49,7 +49,13 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
-
+        private bool Disposed
+        {
+            get
+            {
+                return Scripts == null;
+            }
+        }
         public GameObject()
         {
             this.Childs = new List<GameObject>();
@@ -116,14 +122,19 @@ namespace MonoFramework.Objects.Abstract
         {
             OnUpdate(time);
 
-            foreach (var child in Childs.ToArray())
-            {
-                child.Update(time);
-            }
-            foreach (var script in Scripts.ToArray())
-            {
-                script.Update(time);
-            }
+            if (!Disposed)
+                foreach (var child in Childs.ToArray())
+                {
+                    child.Update(time);
+                }
+
+            if (!Disposed)
+                foreach (var script in Scripts.ToArray())
+                {
+                    script.Update(time);
+                }
+
+
         }
 
         public abstract void OnInitialize();
@@ -137,6 +148,7 @@ namespace MonoFramework.Objects.Abstract
             {
                 script.Dispose();
             }
+            Childs = null;
             Scripts = null;
             OnDispose();
         }

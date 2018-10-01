@@ -54,7 +54,10 @@ namespace Rogue.Scenes
         { 
             base.Update(gameTime);
         }
-
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+        }
         public override void OnDispose()
         {
 

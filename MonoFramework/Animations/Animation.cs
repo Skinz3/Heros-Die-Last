@@ -113,7 +113,7 @@ namespace MonoFramework.Animations
                 }
             }
         }
-        public void Draw(Rectangle rectangle, Color color)
+        public void Draw(Rectangle rectangle, Color color, float rotation = 0)
         {
             Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, rectangle, color);
         }

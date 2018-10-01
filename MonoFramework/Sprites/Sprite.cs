@@ -95,7 +95,7 @@ namespace MonoFramework.Sprites
                         break;
                     }
                 }
-                catch 
+                catch
                 {
                     if (numTries > 10)
                     {
@@ -116,9 +116,18 @@ namespace MonoFramework.Sprites
             Texture = Texture2D.FromStream(Debug.GraphicsDevice, stream);
             stream.Dispose();
         }
-        public void Draw(Rectangle rect, Color color)
+        public void Draw(Rectangle rect, Color color, float rotation = 0.0f)
         {
-            Debug.SpriteBatch.Draw(Texture, rect, color);
+            if (rotation == 0)
+            {
+                Debug.SpriteBatch.Draw(Texture, rect, null, color, MathHelper.ToRadians(rotation),
+                    new Vector2(0.0f, 0.0f), SpriteEffects.None, 0.0f);
+            }
+            else
+            {
+                Debug.SpriteBatch.Draw(Texture, rect, null, color, MathHelper.ToRadians(rotation),
+                    new Vector2(rect.Width / 2.0f, rect.Height / 2.0f), SpriteEffects.None, 0.0f);
+            }
         }
         public static Sprite Flip(Sprite input, bool vertical, bool horizontal)
         {

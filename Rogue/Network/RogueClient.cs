@@ -41,8 +41,6 @@ namespace Rogue.Network
             return this.GetFrame<ClientFrame>().FrameEnum == frame;
         }
 
-        
-
         public override void OnDataArrival(byte[] buffer)
         {
             base.OnDataArrival(buffer);

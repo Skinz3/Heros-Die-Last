@@ -14,6 +14,21 @@
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +63,7 @@
     <Compile Include="Animations\AnimationManager.cs" />
     <Compile Include="Animations\Animator.cs" />
     <Compile Include="Auth\Account.cs" />
+    <Compile Include="Collisions\ProjectileCollider2D.cs" />
     <Compile Include="Collisions\WonderDotCollider.cs" />
     <Compile Include="Frames\ClientFrame.cs" />
     <Compile Include="Frames\AuthentificationFrame.cs" />
@@ -86,6 +102,8 @@
     <Compile Include="Scripts\MOFadeOutScript.cs" />
     <Compile Include="Scripts\MainPlayerScript.cs" />
     <Compile Include="World\Entities\EntityManager.cs" />
+    <Compile Include="World\Entities\Projectiles\KunaiProjectile.cs" />
+    <Compile Include="World\Entities\Projectiles\Projectile.cs" />
     <Compile Include="World\Items\Item.cs" />
     <Compile Include="World\Maps\MapInstance.cs" />
     <Compile Include="World\Maps\MapObjectManager.cs" />
@@ -166,6 +184,13 @@
       <Project>{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}</Project>
       <Name>Rogue.Protocol</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

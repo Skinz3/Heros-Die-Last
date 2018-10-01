@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Enums\AnimationEnum.cs" />
     <Compile Include="Enums\ClickTypeEnum.cs" />
+    <Compile Include="Enums\CollisionMask.cs" />
     <Compile Include="Enums\EntityStateEnum.cs" />
     <Compile Include="Enums\AccountCreationResultEnum.cs" />
     <Compile Include="Enums\AuthentificationFailureEnum.cs" />

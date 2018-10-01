@@ -19,7 +19,7 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
-        public ColorableObject(Vector2 position, Point size, Color color) : base(position, size)
+        public ColorableObject(Vector2 position, Point size, Color color, float rotation = 0) : base(position, size, rotation)
         {
             this.Color = color;
             this.DefaultColor = color;

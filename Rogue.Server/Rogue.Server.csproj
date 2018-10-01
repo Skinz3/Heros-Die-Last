@@ -83,6 +83,7 @@
     <Compile Include="World\Entities\Monster.cs" />
     <Compile Include="World\Entities\MovableEntity.cs" />
     <Compile Include="World\Entities\Player.cs" />
+    <Compile Include="World\Entities\Projectiles\Projectile.cs" />
     <Compile Include="World\Entities\RecordableEntity.cs" />
     <Compile Include="World\Entities\Scripts\AIMovementScript.cs" />
     <Compile Include="World\Entities\Scripts\DashScript.cs" />

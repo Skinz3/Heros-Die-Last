@@ -255,7 +255,7 @@ namespace MonoFramework.Objects
     }
     public interface ICellElement
     {
-        void Draw(Rectangle rectangle, Color color);
+        void Draw(Rectangle rectangle, Color color,float rotation = 0f);
 
         void Update(GameTime time);
 

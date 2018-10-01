@@ -16,6 +16,7 @@ using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Rogue.Server.World.Maps.Triggers;
 using MonoFramework.Collisions;
+using Rogue.Server.World.Entities.Projectiles;
 
 namespace Rogue.Server.World.Maps
 {
@@ -33,9 +34,10 @@ namespace Rogue.Server.World.Maps
         public event Action<Entity> OnEntityLeave;
 
         protected Dictionary<int, Entity> Entities = new Dictionary<int, Entity>();
+        protected Dictionary<int, Projectile> Projectiles = new Dictionary<int, Projectile>();
 
         private ReversedUniqueIdProvider uniqueIdProvider = new ReversedUniqueIdProvider(0);
-
+        private ReversedUniqueIdProvider uniqueIdProviderProjectile = new ReversedUniqueIdProvider(0);
 
         public int Id
         {

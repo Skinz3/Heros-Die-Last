@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MonoFramework.Scenes;
 using MonoFramework.Objects;
+using Rogue.World.Entities.Projectiles;
 
 namespace Rogue.World.Maps
 {
@@ -21,10 +22,15 @@ namespace Rogue.World.Maps
             get;
             set;
         }
-
+        private Dictionary<int, Projectile> Projectiles
+        {
+            get;
+            set;
+        }
         public MapInstance()
         {
             Entities = new Dictionary<int, Entity>();
+            Projectiles = new Dictionary<int, Projectile>();
         }
         public Entity[] GetEntities()
         {
@@ -66,6 +72,29 @@ namespace Rogue.World.Maps
             {
                 logger.Write("Unable to remove entity " + entityId + " from the scene, the entity is unknown.", MessageState.WARNING);
             }
+
+        }
+
+        public void RemoveProjectile(int id)
+        {
+            if (Projectiles.ContainsKey(id))
+            {
+                var projectile = Projectiles[id];
+                SceneManager.CurrentScene.RemoveObject(projectile);
+                projectile.Dispose();
+              
+                Projectiles.Remove(id);
+            }
+            else
+            {
+                logger.Write("Unable to remove projectile, unknown projectile...", MessageState.WARNING);
+            }
+        }
+        public void AddProjectile(Projectile projectile)
+        {
+            projectile.Initialize();
+            Projectiles.Add(projectile.Id, projectile);
+            SceneManager.CurrentScene.AddObject(projectile, LayerEnum.Second);
         }
         public T GetEntity<T>(int entityId) where T : Entity
         {
@@ -91,6 +120,8 @@ namespace Rogue.World.Maps
                 SceneManager.CurrentScene.AddObject(entity, LayerEnum.Second);
             }
         }
+
+
         public override string ToString()
         {
             return string.Join(",", Array.ConvertAll(Entities.Values.ToArray(), x => x.ToString()));

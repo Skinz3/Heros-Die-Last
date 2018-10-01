@@ -5,7 +5,6 @@ using Rogue.Scenes;
 using MonoFramework.Utils;
 using Rogue.Frames;
 using Rogue.Protocol.Messages.Server;
-using Rogue.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +47,6 @@ namespace Rogue.Network
         }
 
 
-
         public static void DestroyClient()
         {
             if (Client != null)
@@ -59,7 +57,7 @@ namespace Rogue.Network
         }
         public static void Connect()
         {
-            ClientHost.Client.Connect("127.0.0.1", 555);
+            ClientHost.Client.Connect("130.211.97.242", 555);
         }
 
         private static void OnConnectionClosed(AbstractClient obj)

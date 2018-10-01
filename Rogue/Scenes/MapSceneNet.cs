@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoFramework;
 using MonoFramework.Animations;
+using MonoFramework.DesignPattern;
 using MonoFramework.Geometry;
 using MonoFramework.Input;
 using MonoFramework.Objects;
@@ -19,6 +20,7 @@ using Rogue.Objects;
 using Rogue.Objects.UI;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
+using Rogue.World.Entities.Projectiles;
 
 namespace Rogue.Scenes
 {
@@ -62,7 +64,25 @@ namespace Rogue.Scenes
         private void OnLeftClick()
         {
             SendClick(ClickTypeEnum.Left);
+
+
+            var mousePosition = Map.TranslateToScenePosition(Mouse.GetState().Position);
+            var playerCenter = ClientHost.Client.Player.Rectangle.Center;
+
+            var relativePosition = (mousePosition - playerCenter).ToVector2();
+            relativePosition.Normalize();
+
+
+
+            var kunai = new KunaiProjectile(id++, new Vector2(ClientHost.Client.Player.Center.X, ClientHost.Client.Player.Center.Y),
+                new Point(32), Color.White, relativePosition, ClientHost.Client.Player);
+
+            ClientHost.Client.Player.MapInstance.AddProjectile(kunai);
         }
+
+        [InDeveloppement]
+        private int id = 0;
+
         private void OnRightClick()
         {
             SendClick(ClickTypeEnum.Right);

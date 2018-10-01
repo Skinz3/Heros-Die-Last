@@ -65,16 +65,23 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
+
+        public float Rotation
+        {
+            get;
+            set;
+        }
         public bool IntersectsPoint(Point point)
         {
             return Rectangle.Intersects(new Rectangle(point, new Point(1)));
         }
-        public PositionableObject(Vector2 position, Point size)
+        public PositionableObject(Vector2 position, Point size, float rotation = 0)
         {
             this.Position = position;
             this.Size = size;
             this.MouseIn = false;
             this.Forces = new List<Force2D>();
+            this.Rotation = rotation;
             MouseManager.OnLeftButtonPressed += OnLeftButtonPressed;
             MouseManager.OnRightButtonPressed += OnRightButtonPressed;
             MouseManager.OnLeftButtonDown += OnLeftButtonDown;
