@@ -62,7 +62,7 @@ namespace Rogue.Collisions
 
                         Projectile.OnCollide(wall, CollisionMask.WALL);
 
-                        if (!Projectile.CrossWalls)
+                        if (Projectile.DestroyOnWalls)
                         {
                             ClientHost.Client.Player.MapInstance.RemoveProjectile(Projectile.Id);
                             break;

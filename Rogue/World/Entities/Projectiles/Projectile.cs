@@ -69,7 +69,7 @@ namespace Rogue.World.Entities.Projectiles
         {
             get;
         }
-        public abstract bool CrossWalls
+        public abstract bool DestroyOnWalls
         {
             get;
         }
@@ -106,7 +106,7 @@ namespace Rogue.World.Entities.Projectiles
 
         public override void OnDraw(GameTime time)
         {
-            Sprite.Draw(Rectangle, Color.White, Rotation);
+            Sprite.Draw(Rectangle, Color, Rotation);
         }
 
         public abstract void OnCollide(GameObject obj, CollisionMask mask);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoFramework;
+using MonoFramework.Objects;
 using MonoFramework.Objects.Abstract;
 using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;
@@ -39,23 +40,19 @@ namespace Rogue.World.Entities.Projectiles
 
             if (mask == CollisionMask.WALL)
             {
-                Console.WriteLine("collide");
-                Direction = -Direction;
-                Direction = new Vector2(Direction.X, -Direction.Y);
-                UpdateRotation();
+                // inverser direction?
             }
         }
         public override void OnDraw(GameTime time)
         {
-            Debug.DrawRectangle(Rectangle, Color.PaleVioletRed);
+       
             base.OnDraw(time);
         }
         protected override string SpriteName => "108_cast";
         public override CollisionMask CollisionMask => CollisionMask.ENTITIES | CollisionMask.WALL;
-        public override float Speed => 5.0f;
+        public override float Speed => 10.0f;
         public override bool CrossEntities => false;
         protected override float Offset => 25.0f;
-
-        public override bool CrossWalls => true;
+        public override bool DestroyOnWalls => true;
     }
 }
