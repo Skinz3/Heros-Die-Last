@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Scenes;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
 using Rogue.Server.World.Entities;
 using Rogue.Server.World.Maps;
 using Rogue.ServerView.Objects;

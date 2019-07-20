@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Geometry;
+using Rogue.Core.Geometry;
 using Rogue.Server.World;
 using Rogue.Server.World.Entities;
 using System;

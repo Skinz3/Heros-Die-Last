@@ -1,5 +1,5 @@
 ﻿using LiteNetLib.Utils;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
 using System;
 using System.Collections.Generic;

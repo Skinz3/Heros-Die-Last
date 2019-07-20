@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Geometry;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core;
+using Rogue.Core.Geometry;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
 using Rogue.World.Items;
 using System;
 using System.Collections.Generic;

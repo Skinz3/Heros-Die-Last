@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
 using System;
@@ -18,6 +19,11 @@ namespace Rogue.Server.World.Items
                 return Record.Id;
             }
         }
+        protected Player Owner
+        {
+            get;
+            private set;
+        }
         public ItemRecord Record
         {
             get;
@@ -33,13 +39,48 @@ namespace Rogue.Server.World.Items
             get;
             set;
         }
-        public Item(ItemRecord record, int count)
+        public float Cooldown
+        {
+            get;
+            set;
+        }
+        public Item(ItemRecord record, Player owner, int count)
         {
             this.Record = record;
+            this.Owner = owner;
             this.Quantity = count;
         }
+        public void Update(long deltaTime)
+        {
+            if (Cooldown > 0)
+            {
+                Cooldown -= deltaTime / 1000f;
 
-        public abstract bool Use(Player owner, Vector2 position);
+                if (Cooldown <= 0)
+                {
+                    Cooldown = 0;
+                }
+            }
+        }
+        public bool Use(Vector2 position)
+        {
+            if (Cooldown == 0)
+            {
+                NotifyCooldown();
+                Cooldown = Record.Cooldown;
+                return OnUse(position);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void NotifyCooldown()
+        {
+            Owner.Client.Send(new NotifyItemCooldownMessage((byte)Slot, Record.Cooldown));
+        }
+        public abstract void OnAcquired();
+        protected abstract bool OnUse(Vector2 position);
 
     }
 }

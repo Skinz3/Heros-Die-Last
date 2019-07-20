@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.Cameras;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.Cameras;
+using Rogue.Core.Objects.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects
+namespace Rogue.Core.Objects
 {
     public class GRectangle : SingleTextureObject
     {

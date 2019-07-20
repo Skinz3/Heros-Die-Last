@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Collisions;
-using MonoFramework.DesignPattern;
-using MonoFramework.Geometry;
-using MonoFramework.Objects.Abstract;
+using Rogue.Animations;
+using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using Rogue.Objects.Entities;
 using System;
 using System.Collections.Generic;
@@ -44,6 +47,7 @@ namespace Rogue.Inputs
             this.Collider = collider;
             this.Target = target;
             this.Speed = speed;
+            this.Direction = DirectionEnum.Down;
         }
         public void Move(Vector2 input)
         {
@@ -56,6 +60,11 @@ namespace Rogue.Inputs
 
             Direction = input.GetDirectionNormalized();
 
+            var a = (SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(MouseManager.State.Position).ToVector2() - Target.Center);
+            a.Normalize();
+
+            Direction = a.GetDirection();
+
             if (Direction == (DirectionEnum.Right | DirectionEnum.Left) || Direction == (DirectionEnum.Up | DirectionEnum.Down))
             {
                 Direction = DirectionEnum.None;
@@ -64,6 +73,14 @@ namespace Rogue.Inputs
             {
                 OnDirectionChanged?.Invoke(oldDirection, Direction);
             }
+
+            AnimationController.OnMoveUpdated(input, Target);
+
+            if (Direction == DirectionEnum.None)
+            {
+                Direction = oldDirection; // we can setup animation here?
+            }
+
             if (input != new Vector2(0, 0))
             {
                 input.Normalize();

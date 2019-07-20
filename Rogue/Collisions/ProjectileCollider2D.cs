@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.Objects.Abstract;
 using Rogue.Network;
 using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;

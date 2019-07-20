@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Rogue.ORM.Interfaces;
 using Rogue.Server.World.Maps;
-using MonoFramework.IO.Maps;
-using MonoFramework;
+using Rogue.Core.IO.Maps;
+using Rogue.Core;
 using Rogue.Protocol.Types;
 
 namespace Rogue.Server.Records
@@ -41,10 +41,7 @@ namespace Rogue.Server.Records
         public MapGrid Grid;
 
         [Ignore]
-        public MapObjectRecord[] MapObjects;
-
-        [Ignore]
-        public MapLightRecord[] MapLights;
+        public MapInteractiveRecord[] MapObjects;
 
         public MapRecord(int id, string mapName, FrameEnum frame, bool lonlyInstance, List<int> spawnPositions)
         {
@@ -57,25 +54,19 @@ namespace Rogue.Server.Records
 
         public void Initialize()
         {
+          
             Template = new MapTemplate();
             Template.Load(Environment.CurrentDirectory + MAPS_DIRECTORY + MapName + ".map");
-
             Grid = new MapGrid(Template);
             Grid.Load();
+            this.MapObjects = MapInteractiveRecord.GetMapObjects(Id);
 
-            this.MapObjects = MapObjectRecord.GetMapObjects(Id);
-            this.MapLights = MapLightRecord.GetMapLights(Id);
-
+           
         }
 
         public int RandomSpawnCellId()
         {
             return SpawnPositions.Random();
-        }
-
-        public ProtocolMapLight[] GetProtocolMapLights()
-        {
-            return Array.ConvertAll(MapLights, x => x.GetProtocolObject());
         }
 
         public Vector2 RandomSpawnPosition(int width, int height)

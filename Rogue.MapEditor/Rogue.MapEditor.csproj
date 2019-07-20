@@ -123,9 +123,9 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonoFramework\MonoFramework.csproj">
+    <ProjectReference Include="..\MonoFramework\Rogue.Core.csproj">
       <Project>{45584c6d-311e-4bb4-b5b8-88a1423f90cc}</Project>
-      <Name>MonoFramework</Name>
+      <Name>Rogue.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

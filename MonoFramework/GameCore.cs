@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.Input;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core.Input;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework
+namespace Rogue.Core
 {
     /// <summary>
     /// Représente une fenêtre de jeu, vide.
@@ -39,9 +39,9 @@ namespace MonoFramework
             GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
             this.IsMouseVisible = true;
 
-       /*    GraphicsDeviceManager.PreferredBackBufferWidth = 1920;
-            GraphicsDeviceManager.PreferredBackBufferHeight = 1080;
-            this.GraphicsDeviceManager.IsFullScreen = true; */
+            /* GraphicsDeviceManager.PreferredBackBufferWidth = 1920;
+             GraphicsDeviceManager.PreferredBackBufferHeight = 1080;
+             this.GraphicsDeviceManager.IsFullScreen = true; */
         }
 
         protected override void Initialize()
@@ -69,8 +69,10 @@ namespace MonoFramework
         }
         protected override void Draw(GameTime gameTime)
         {
+
             SceneManager.Draw(gameTime);
             base.Draw(gameTime);
+
         }
     }
 }

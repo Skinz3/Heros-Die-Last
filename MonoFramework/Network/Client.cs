@@ -1,14 +1,14 @@
 ﻿using LiteNetLib;
 using LiteNetLib.Utils;
-using MonoFramework.Network.Protocol;
-using MonoFramework.Utils;
+using Rogue.Core.Network.Protocol;
+using Rogue.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Network
+namespace Rogue.Core.Network
 {
     public abstract class Client : AbstractClient
     {

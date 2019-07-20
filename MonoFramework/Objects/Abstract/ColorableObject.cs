@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Rogue.Core.Lightning;
 
-namespace MonoFramework.Objects.Abstract
+namespace Rogue.Core.Objects.Abstract
 {
     public abstract class ColorableObject : PositionableObject
     {
@@ -19,16 +20,35 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
+        private ColorGradiant Gradiant
+        {
+            get;
+            set;
+        }
         public ColorableObject(Vector2 position, Point size, Color color, float rotation = 0) : base(position, size, rotation)
         {
             this.Color = color;
             this.DefaultColor = color;
         }
+        public void DefineGradiant(Color startColor, Color endColor,int speed)
+        {
+            this.Gradiant = new ColorGradiant(this, startColor, endColor,speed);
+        }
         public void SetTransparency(float value)
         {
-            if (value < 0 || value > 1)
-                throw new Exception("Invalid transparency value :" + value + ", (0 < transparency < 1)");
+            if (value > 1)
+                value = 1;
+            if (value < 0)
+                value = 0;
             this.Color = new Color(Color, value);
+        }
+        public override void OnUpdate(GameTime time)
+        {
+            Gradiant?.Update(time);
+        }
+        public float GetTransparency()
+        {
+            return (Color.A / 255f);
         }
 
 

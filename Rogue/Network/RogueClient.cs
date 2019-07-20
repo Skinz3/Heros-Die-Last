@@ -1,5 +1,5 @@
 ﻿using Rogue.Network;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using Rogue.Auth;
 using Rogue.Frames;
 using Rogue.Objects;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Network;
+using Rogue.Core.Network;
 using Rogue.Objects.UI;
 
 namespace Rogue.Network

@@ -1,21 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Cameras;
-using MonoFramework.Collisions;
-using MonoFramework.Geometry;
-using MonoFramework.IO.Maps;
-using MonoFramework.Lightning;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core.Cameras;
+using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Lightning;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects
+namespace Rogue.Core.Objects
 {
     public interface IGrid
     {
@@ -103,12 +104,22 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public GGrid(Vector2 position, Point gridSize, int cellSize, Color color, int thickness) : base(position, new Point((int)(gridSize.X * cellSize), (int)(gridSize.Y * cellSize)), color)
+        /// <summary>
+        /// A 2D Tiled Grid
+        /// </summary>
+        /// <param name="position">The position (top,left) of the grid</param>
+        /// <param name="gridSize">The grid relative size (Width,Height)</param>
+        /// <param name="cellSize">The cell size in pixel</param>
+        /// <param name="color">The grid stroke color</param>
+        /// <param name="thickness">The grid stroke thickness</param>
+        /// <param name="ignoreMouseEvents">optimize?</param>
+        public GGrid(Vector2 position, Point gridSize, int cellSize, Color color, int thickness, bool ignoreMouseEvents) : base(position, new Point((int)(gridSize.X * cellSize), (int)(gridSize.Y * cellSize)), color)
         {
             this.GridSize = gridSize;
             this.CellSize = cellSize;
             this.Thickness = thickness;
             this.DisplayedLayer = LayerEnum.First | LayerEnum.Second | LayerEnum.Third;
+            this.IgnoreMouseEvents = ignoreMouseEvents;
         }
         /// <summary>
         /// Require OnInitializationComplete
@@ -148,9 +159,12 @@ namespace MonoFramework.Objects
         {
             return (T)GetCell(id);
         }
-        public ICell GetCell(int id)
+        public ICell GetCell(int cellId)
         {
-            return Cells[id];
+            if (cellId >= Cells.Length || cellId < 0)
+                return null;
+            else
+                return Cells[cellId];
         }
         public ICell[] GetCells(Rectangle intersectRectangle)
         {
@@ -174,10 +188,16 @@ namespace MonoFramework.Objects
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
                     Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Layer, Thickness);
-                    Cells[id].OnMouseEnter += Cell_OnMouseEnter;
-                    Cells[id].OnMouseLeave += Cell_OnMouseLeave;
-                    Cells[id].OnMouseLeftClick += Cell_OnMouseLeftClick;
-                    Cells[id].OnMouseRightClick += Cell_OnMouseRightClick;
+                    Cells[id].IgnoreMouseEvents = this.IgnoreMouseEvents;
+
+                    if (this.IgnoreMouseEvents == false)
+                    {
+                        Cells[id].OnMouseEnter += Cell_OnMouseEnter;
+                        Cells[id].OnMouseLeave += Cell_OnMouseLeave;
+                        Cells[id].OnMouseLeftClick += Cell_OnMouseLeftClick;
+                        Cells[id].OnMouseRightClick += Cell_OnMouseRightClick;
+                    }
+
                     Cells[id].Initialize();
 
                     id++;
@@ -224,6 +244,14 @@ namespace MonoFramework.Objects
                 cell.DrawLayer(time, layer);
             }
         }
+        public void DrawLights(GameTime time)
+        {
+            foreach (var cell in Cells)
+            {
+                cell.DrawLight(time);
+            }
+        }
+
         public override void OnDraw(GameTime time)
         {
             foreach (var cell in Cells)
@@ -253,9 +281,9 @@ namespace MonoFramework.Objects
 
 
     }
-    public interface ICellElement
+    public interface ILayerElement
     {
-        void Draw(Rectangle rectangle, Color color,float rotation = 0f);
+        void Draw(Rectangle rectangle, Color color, float rotation = 0f, Vector2 origin = new Vector2());
 
         void Update(GameTime time);
 
@@ -318,7 +346,7 @@ namespace MonoFramework.Objects
             get;
             private set;
         }
-        public Dictionary<LayerEnum, ICellElement> Sprites
+        public Dictionary<LayerEnum, ILayerElement> Sprites
         {
             get;
             private set;
@@ -333,11 +361,11 @@ namespace MonoFramework.Objects
             get;
             set;
         }
-        public Dictionary<LayerEnum, T> GetElements<T>() where T : ICellElement
+        public Dictionary<LayerEnum, T> GetElements<T>() where T : ILayerElement
         {
             return Sprites.Where(x => x.Value is T).ToDictionary(x => x.Key, x => (T)x.Value);
         }
-        public T GetElement<T>(LayerEnum layer) where T : ICellElement
+        public T GetElement<T>(LayerEnum layer) where T : ILayerElement
         {
             var value = Sprites[layer];
 
@@ -353,7 +381,7 @@ namespace MonoFramework.Objects
             this.Id = id;
             this.CellSize = size;
             this.RelativePosition = relativePosition;
-            this.Sprites = new Dictionary<LayerEnum, ICellElement>();
+            this.Sprites = new Dictionary<LayerEnum, ILayerElement>();
             this.FillColor = Color.Transparent;
             this.BackColor = Color.Transparent;
             this.Thickness = thickness;
@@ -418,10 +446,7 @@ namespace MonoFramework.Objects
             }
             if (layer == LayerEnum.Third)
             {
-                if (Light != null)
-                {
-                    Light.Draw(time);
-                }
+
                 Fill(FillColor);
 
                 if (DrawRectangle)
@@ -429,15 +454,23 @@ namespace MonoFramework.Objects
 
                 if (Text != null)
                     Text.Draw(time);
+
+
             }
         }
-
+        public void DrawLight(GameTime time)
+        {
+            if (Light != null)
+            {
+                Light.Draw(time);
+            }
+        }
         private void Fill(Color color)
         {
             if (color != Color.Transparent)
                 Debug.FillRectangle(GRectangle.Rectangle, color);
         }
-        public void AddSprite(ICellElement sprite, LayerEnum layer)
+        public void SetSprite(ILayerElement sprite, LayerEnum layer)
         {
             if (Sprites.ContainsKey(layer))
                 this.Sprites[layer] = sprite;
@@ -459,14 +492,16 @@ namespace MonoFramework.Objects
         {
             this.Sprites.Remove(layer);
         }
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+        }
         public override void OnUpdate(GameTime time)
         {
             GRectangle.Position = Position;
 
-            if (Text != null)
-            {
-                Text.Update(time);
-            }
+            Light?.Update(time);
+            Text?.Update(time);
 
             foreach (var pair in Sprites)
             {
@@ -480,10 +515,10 @@ namespace MonoFramework.Objects
         {
             ICell[] cells = new ICell[4];
 
-            cells[0] = grid.GetCell(RelativePosition.X + 1, RelativePosition.Y);
-            cells[1] = grid.GetCell(RelativePosition.X - 1, RelativePosition.Y);
-            cells[2] = grid.GetCell(RelativePosition.X, RelativePosition.Y + 1);
-            cells[3] = grid.GetCell(RelativePosition.X, RelativePosition.Y - 1);
+            cells[0] = grid.GetCell(Id + grid.GridSize.Y);
+            cells[1] = grid.GetCell(Id - grid.GridSize.Y);
+            cells[2] = grid.GetCell(Id + 1);
+            cells[3] = grid.GetCell(Id - 1);
 
             return cells.Where(x => x != null).ToArray();
         }

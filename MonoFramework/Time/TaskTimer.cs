@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Time
+namespace Rogue.Core.Time
 {
     public class TaskTimer
     {

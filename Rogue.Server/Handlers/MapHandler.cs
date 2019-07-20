@@ -1,4 +1,4 @@
-﻿using MonoFramework.Network.Protocol;
+﻿using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
@@ -20,7 +20,6 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleGameEntitiesRequestMessage(GameEntitiesRequestMessage message, RogueClient client)
         {
-            client.Send(new MapInformationMessage(client.Player.MapInstance.GetProtocolMapObjects(),client.Player.MapInstance.Record.GetProtocolMapLights()));
             client.Send(client.Player.MapInstance.GetGameEntitiesMessage());
         }
         [MessageHandler]
@@ -33,7 +32,7 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleEntityDispositionRequestMessage(EntityDispositionRequestMessage message, RogueClient client)
         {
-            client.Player.OnReceivePosition(message.position, message.direction);
+            client.Player.OnReceivePosition(message.position, message.direction,message.mouseRotation);
         }
     }
 }

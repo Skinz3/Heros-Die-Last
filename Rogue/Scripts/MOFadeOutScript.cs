@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;

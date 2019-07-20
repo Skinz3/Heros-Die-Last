@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
 using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;
 using System;

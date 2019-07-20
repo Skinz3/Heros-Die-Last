@@ -8,15 +8,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Utils;
-using MonoFramework.Network.Protocol;
-using MonoFramework.Time;
+using Rogue.Core.Utils;
+using Rogue.Core.Network.Protocol;
+using Rogue.Core.Time;
 using System.Diagnostics;
 using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Rogue.Server.World.Maps.Triggers;
-using MonoFramework.Collisions;
+using Rogue.Core.Collisions;
 using Rogue.Server.World.Entities.Projectiles;
+using Rogue.Core.Objects;
 
 namespace Rogue.Server.World.Maps
 {
@@ -87,7 +88,7 @@ namespace Rogue.Server.World.Maps
             get;
             set;
         }
-        private List<MapObjectRecord> MapObjects
+        private List<MapInteractiveRecord> MapObjects
         {
             get;
             set;
@@ -107,41 +108,37 @@ namespace Rogue.Server.World.Maps
 
             foreach (var mapObject in MapObjects)
             {
-                Record.Grid.GetCell(mapObject.CellId).Walkable = mapObject.Walkable;
                 mapObject.Trigger = TriggerManager.GetTrigger(this, mapObject);
 
             }
         }
-        public void AddMapObject(MapObjectRecord mapObject)
+        public void AddMapElement(int cellId, LayerEnum layer, bool walkable, string visualData, MapObjectType type)
         {
-            var cell = Record.Grid.GetCell(mapObject.CellId);
-            cell.Walkable = mapObject.Walkable;
-            MapObjects.Add(mapObject);
-            Send(new AddMapObjectMessage(mapObject.GetProtocolObject()));
+            var cell = Record.Grid.GetCell(cellId);
+            Send(new AddLayerElementMessage(new ProtocolLayerElement(cellId, layer, type, visualData, walkable)));
         }
-        public void UpdateMapObject(MapObjectRecord obj, string visualData)
+        public void RemoveMapElement(int cellId, LayerEnum layer, bool isCellWalkable)
         {
-            obj.VisualData = visualData;
-            Send(new AddMapObjectMessage(obj.GetProtocolObject()));
+            var cell = Record.Grid.GetCell(cellId);
+            cell.Walkable = isCellWalkable;
+            Send(new RemoveLayerElementMessage(cell.Id, layer, isCellWalkable));
+        }
+        public void UpdateElementVisual(int cellId, LayerEnum layer, string visualData, MapObjectType type, bool walkable)
+        {
+            Send(new AddLayerElementMessage(new ProtocolLayerElement(cellId, layer, type, visualData, walkable)));
         }
         /// <summary>
         /// Care about layer!
         /// </summary>
-        public MapObjectRecord GetFirstMapObject(int cellId)
+        public MapInteractiveRecord GetFirstMapObject(int cellId)
         {
             return MapObjects.FirstOrDefault(x => x.CellId == cellId);
         }
-        public MapObjectRecord GetMapObject(int id)
+        public MapInteractiveRecord GetMapObject(int id)
         {
             return MapObjects.FirstOrDefault(x => x.Id == id);
         }
-        public void RemoveMapObject(MapObjectRecord mapObject)
-        {
-            var cell = Record.Grid.GetCell(mapObject.CellId);
-            cell.Walkable = Record.Template.GetCellTemplate(mapObject.CellId).Walkable;
-            MapObjects.Remove(mapObject);
-            Send(new RemoveMapObjectMessage(cell.Id, mapObject.LayerEnum));
-        }
+
         public void StartCallback()
         {
             Stopwatch = Stopwatch.StartNew();
@@ -171,10 +168,6 @@ namespace Rogue.Server.World.Maps
                 if (ray.Intersects(entity.GetHitBox()))
                     yield return entity;
             }
-        }
-        public ProtocolMapObject[] GetProtocolMapObjects()
-        {
-            return MapObjects.ConvertAll(x => x.GetProtocolObject()).ToArray();
         }
 
         public void Dispose()

@@ -1,6 +1,6 @@
 ﻿using Rogue.Network;
 using Rogue.Scenes;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
 using System;
@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Network;
-using MonoFramework.Scenes;
+using Rogue.Core.Network;
+using Rogue.Core.Scenes;
 
 namespace Rogue.Frames
 {

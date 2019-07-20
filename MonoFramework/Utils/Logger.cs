@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Utils
+namespace Rogue.Core.Utils
 {
     public class Logger
     {
@@ -36,7 +36,7 @@ namespace MonoFramework.Utils
         };
         private void Logo()
         {
-            WriteColor1(@"MonoFramework Server", false);
+            WriteColor1(@"Rogue.Core Server", false);
         }
         public void Write(object value, MessageState state = MessageState.INFO)
         {

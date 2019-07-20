@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.IO
+namespace Rogue.Core.IO
 {
     public class LittleEndianReader : IDisposable
     {

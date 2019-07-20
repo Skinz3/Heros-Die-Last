@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Collisions;
-using MonoFramework.Geometry;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
+using Rogue.Animations;
+using Rogue.Core;
+using Rogue.Core.Collisions;
+using Rogue.Core.Geometry;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using Rogue.Objects;
 using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;
@@ -74,11 +75,17 @@ namespace Rogue.Scripts
             get;
             set;
         }
-        public DashScript(float dashSpeed, int distance,DirectionEnum direction)
+        private string Animation
+        {
+            get;
+            set;
+        }
+        public DashScript(float dashSpeed, int distance, DirectionEnum direction, string animation)
         {
             this.DashSpeed = dashSpeed;
             this.Distance = distance;
             this.Direction = direction;
+            this.Animation = animation;
         }
 
         public void Initialize(GameObject target)
@@ -86,8 +93,10 @@ namespace Rogue.Scripts
             this.Target = (MovableEntity)target;
             this.InitialPosition = Target.Rectangle.Center.ToVector2();
             this.Target.State = EntityStateEnum.DASHING;
-          //  this.Target.MovementEngine.Direction = Direction;// (TargetPosition - InitialPosition).GetDirection();
+            //  this.Target.MovementEngine.Direction = Direction;// (TargetPosition - InitialPosition).GetDirection();
             this.TargetPosition = InitialPosition + (Target.MovementEngine.Direction.GetInputVector() * Distance);
+
+            this.Target.Animator.CurrentAnimation = this.Animation;
 
         }
         private void OnEnd()
@@ -95,6 +104,7 @@ namespace Rogue.Scripts
             Target.GetScript<EntityInterpolationScript>()?.Restore(Target.Position, Direction);
             Target.RemoveScript(this);
             Target.State = EntityStateEnum.MOVING;
+            AnimationController.OnDashEnd(Target);
         }
         public void Update(GameTime time)
         {
@@ -127,7 +137,7 @@ namespace Rogue.Scripts
 
         public void OnRemove()
         {
-           
+
         }
     }
 }

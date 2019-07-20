@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
+using Rogue.Core.Collisions;
+using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
@@ -14,22 +15,28 @@ namespace Rogue.Server.World.Items.Models
     [ItemHandler(103)]
     public class SnipePistol : Item
     {
-        public SnipePistol(ItemRecord record, int count) : base(record, count)
+        public SnipePistol(ItemRecord record, Player owner, int count) : base(record, owner, count)
         {
         }
 
-        public override bool Use(Player owner, Vector2 position)
+        public override void OnAcquired()
         {
-            owner.MapInstance.Send(new HitscanHitMessage(owner.Id, position));
+            Owner.DefineWeaponAnimation("item103");
 
-            var results = owner.MapInstance.Raycast<MovableEntity>(new Ray2D(owner.Position, position));
+        }
+
+        protected override bool OnUse(Vector2 position)
+        {
+            Owner.MapInstance.Send(new HitscanHitMessage(Owner.Id, position));
+
+            var results = Owner.MapInstance.Raycast<MovableEntity>(new Ray2D(Owner.Position, position));
 
             foreach (var target in results)
             {
-                var distance = owner.GetDistance(target);
-                target.InflictDamage(owner, (int)distance * 2);
+                var distance = Owner.GetDistance(target);
+                target.InflictDamage(Owner, 800);
             }
-          
+
             return true;
         }
     }

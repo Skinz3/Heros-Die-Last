@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Collisions;
-using MonoFramework.Objects;
-using MonoFramework.Pathfinding;
-using MonoFramework.Scenes;
-using MonoFramework.Utils;
+using Rogue.Core;
+using Rogue.Core.Collisions;
+using Rogue.Core.Objects;
+using Rogue.Core.Pathfinding;
+using Rogue.Core.Scenes;
+using Rogue.Core.Utils;
 using Rogue.Collisions;
 using Rogue.Network;
 using Rogue.Protocol.Types;
@@ -23,7 +23,12 @@ namespace Rogue.Objects.Entities
         {
             AddScript(new AIMovementScript());
         }
-
+        public override void OnInitialize()
+        {
+            Animator.SetIdleAnimation();
+            DefineAura(new Color(Color.Purple, 80), 200, 0.05f);
+            base.OnInitialize();
+        }
 
         public override Collider2D CreateCollider()
         {

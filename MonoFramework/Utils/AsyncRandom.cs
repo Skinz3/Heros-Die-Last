@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Utils
+namespace Rogue.Core.Utils
 {
     public sealed class AsyncRandom : Random
     {

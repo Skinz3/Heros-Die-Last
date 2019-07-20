@@ -1,6 +1,6 @@
 ﻿using LiteNetLib;
-using MonoFramework.Network.Protocol;
-using MonoFramework.Utils;
+using Rogue.Core.Network.Protocol;
+using Rogue.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Network
+namespace Rogue.Core.Network
 {
     public abstract class Server<T> where T : Client
     {

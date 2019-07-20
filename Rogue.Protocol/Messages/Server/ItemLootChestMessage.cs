@@ -1,5 +1,5 @@
 ﻿using LiteNetLib.Utils;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Types;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,8 @@ namespace Rogue.Protocol.Messages.Server
 
         public int itemId;
 
+        public string icon;
+
         public int cellId;
 
         public int quantity;
@@ -31,9 +33,10 @@ namespace Rogue.Protocol.Messages.Server
         {
 
         }
-        public ItemLootChestMessage(int itemId, int cellId, int quantity)
+        public ItemLootChestMessage(int itemId, string icon, int cellId, int quantity)
         {
             this.itemId = itemId;
+            this.icon = icon;
             this.cellId = cellId;
             this.quantity = quantity;
         }
@@ -41,12 +44,14 @@ namespace Rogue.Protocol.Messages.Server
         public override void Deserialize(LittleEndianReader reader)
         {
             this.itemId = reader.GetInt();
+            this.icon = reader.GetString();
             this.cellId = reader.GetInt();
             this.quantity = reader.GetInt();
         }
         public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(itemId);
+            writer.Put(icon);
             writer.Put(cellId);
             writer.Put(quantity);
         }

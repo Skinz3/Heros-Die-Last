@@ -10,6 +10,7 @@
     <AssemblyName>Rogue.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,11 +35,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiteDB">
-      <HintPath>..\..\..\..\Downloads\LiteDB.dll</HintPath>
+      <HintPath>..\bin\LiteDB.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data">
-      <HintPath>..\..\..\Cooper Last Revision\Cooper\Sources\Cooper.Server\bin\Debug\MySql.Data.dll</HintPath>
+      <HintPath>..\bin\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +50,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="YAXLib">
-      <HintPath>..\..\..\Cooper Last Revision\Cooper\Sources\Cooper.Server\bin\Debug\YAXLib.dll</HintPath>
+      <HintPath>..\bin\YAXLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -73,8 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Records\AccountRecord.cs" />
     <Compile Include="Records\ItemRecord.cs" />
-    <Compile Include="Records\MapLightRecord.cs" />
-    <Compile Include="Records\MapObjectRecord.cs" />
+    <Compile Include="Records\MapInteractiveRecord.cs" />
     <Compile Include="Records\MapRecord.cs" />
     <Compile Include="Records\EntityRecord.cs" />
     <Compile Include="Utils\Singleton.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="World\Items\Models\Heal.cs" />
     <Compile Include="World\Items\Models\Dash.cs" />
     <Compile Include="World\Items\Models\SnipePistol.cs" />
+    <Compile Include="World\Items\Models\Sword.cs" />
     <Compile Include="World\Maps\MapGrid.cs" />
     <Compile Include="World\Maps\MapInstance.cs" />
     <Compile Include="World\Maps\MapsManager.cs" />
@@ -113,9 +114,9 @@
       <Project>{B0A014E4-0392-4E35-AA42-8FB5A40417E0}</Project>
       <Name>LiteNetLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonoFramework\MonoFramework.csproj">
+    <ProjectReference Include="..\MonoFramework\Rogue.Core.csproj">
       <Project>{45584c6d-311e-4bb4-b5b8-88a1423f90cc}</Project>
-      <Name>MonoFramework</Name>
+      <Name>Rogue.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rogue.ORM\Rogue.ORM.csproj">
       <Project>{3943BF9C-E641-4E48-B362-156F2A66D19F}</Project>

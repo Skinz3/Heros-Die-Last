@@ -2,13 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Rogue;
-using MonoFramework.Cameras;
-using MonoFramework.Input;
-using MonoFramework.IO;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core.Cameras;
+using Rogue.Core.Input;
+using Rogue.Core.IO;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using Rogue.MapEditor.Objects;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MonoFramework.Collisions;
+using Rogue.Core.Collisions;
 using Rogue.MapEditor.Forms;
 
 namespace Rogue.MapEditor
@@ -317,11 +317,12 @@ namespace Rogue.MapEditor
                         else
                         {
                             if (TileSelectionGrid.SelectedSprite != null) // Si on a bien séléctionné un sprite
-                                obj.AddSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
+                                obj.SetSprite(TileSelectionGrid.SelectedSprite, DrawingLayer);
                         }
                     }
                 }
             }
+
         }
 
         #endregion

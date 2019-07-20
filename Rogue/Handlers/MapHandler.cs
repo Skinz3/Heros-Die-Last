@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using Rogue.Objects.Entities;
 using Rogue.Frames;
 using Rogue.Network;
@@ -15,13 +15,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rogue.Objects.UI;
-using MonoFramework.Scenes;
-using MonoFramework.DesignPattern;
-using MonoFramework.Objects;
+using Rogue.Core.Scenes;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Objects;
 using Rogue.Animations;
 using Rogue.Protocol.Enums;
-using MonoFramework;
-using MonoFramework.Sprites;
+using Rogue.Core;
+using Rogue.Core.Sprites;
 using Rogue.World.Items;
 using Rogue.Objects.Items;
 using System.Threading;
@@ -31,14 +31,27 @@ namespace Rogue.Handlers
     class MapHandler
     {
         [MessageHandler]
+        public static void HandleDefinePlayerWeaponMessage(DefinePlayerWeaponMessage message, RogueClient client)
+        {
+            var entity = client.Player?.MapInstance?.GetEntity<Player>(message.targetId);
+            entity.DefineWeapon(message.animationName);
+        }
+        [MessageHandler]
+        public static void HandleDefineEntityAuraMessage(DefineEntityAuraMessage message, RogueClient client)
+        {
+            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.targetId);
+            entity.DefineAura(message.aura.Color, message.aura.Radius, message.aura.Sharpness);
+        }
+        [MessageHandler]
         public static void HandleHitscanHitMessage(HitscanHitMessage message, RogueClient client)
         {
-            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.sourceId);
 
+            var entity = client.Player?.MapInstance?.GetEntity<Player>(message.sourceId);
+            entity.Animator.CurrentAnimation = "item103";
             var dir = (message.targetPoint - entity.Center);
             dir.Normalize();
             var target = entity.Center + dir * 1000;
-            var line = new HitScanShot(entity.Center, target, Color.Red * 0.5f, 3f);
+            var line = new HitScanShot(entity.Center, target, Color.LightBlue * 0.8f, 3f);
             line.Initialize();
             SceneManager.CurrentScene.AddObject(line, LayerEnum.First);
         }
@@ -72,7 +85,7 @@ namespace Rogue.Handlers
 
             if (entity != null)
             {
-                entity.Dash(message.speed, message.distance, message.direction);
+                entity.Dash(message.speed, message.distance, message.direction, message.animation);
             }
         }
         [MessageHandler]
@@ -88,7 +101,7 @@ namespace Rogue.Handlers
         [MessageHandler]
         public static void HandleItemLootChestMessage(ItemLootChestMessage message, RogueClient client)
         {
-            var item = Item.CreateInstance(message.itemId, message.quantity);
+            var item = Item.CreateInstance(message.itemId, message.icon, message.quantity);
             var cell = SceneManager.GetCurrentScene<MapScene>().Map.GetCell<GCell>(message.cellId);
             SceneManager.CurrentScene.AddObject(new LootItem(item, cell, Color.White), LayerEnum.Third);
         }
@@ -99,7 +112,7 @@ namespace Rogue.Handlers
 
             if (entity != null)
             {
-                entity.OnPositionReceived(message.position, message.direction);
+                entity.OnPositionReceived(message.position, message.direction, message.mouseRotation);
             }
         }
         [MessageHandler]

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Cameras;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
+using Rogue.Core.Cameras;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using Rogue.Objects;
 using System;
 using System.Collections.Generic;
@@ -65,7 +65,7 @@ namespace Rogue.Scripts
                 Player.Aiming = true;
                 Camera.Target = null;
 
-                var mousePosOnWorld = SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(Mouse.GetState().Position);
+                var mousePosOnWorld = SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(MouseManager.State.Position);
                 InputVector = mousePosOnWorld.ToVector2() - Player.Center;
                 InputVector = InputVector.GetDirection().GetInputVector();
             }

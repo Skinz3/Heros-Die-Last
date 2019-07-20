@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework;
-using MonoFramework.Utils;
+using Rogue.Core;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
+using Rogue.Core.Utils;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
 
 namespace Rogue.Server.World.Maps.Triggers
 {
+    /// <summary>
+    /// Value1 = ChestOpen
+    /// </summary>
     public class ChestTrigger : Trigger
     {
         private bool Loot
@@ -23,18 +28,22 @@ namespace Rogue.Server.World.Maps.Triggers
             get;
             set;
         }
-        public ChestTrigger(MapInstance mapInstance, MapObjectRecord mapObject) : base(mapInstance, mapObject)
+        private SpriteTemplate DefaultSprite
         {
-
+            get;
+            set;
+        }
+        public ChestTrigger(MapInstance mapInstance, MapInteractiveRecord interactiveElement) : base(mapInstance, interactiveElement)
+        {
+            DefaultSprite = MapInstance.Record.Template.GetSpriteTemplate(interactiveElement.CellId, interactiveElement.LayerEnum);
         }
 
         private void LootItem(Player player)
         {
             var targetItem = ItemRecord.Items.Random();
-
-            var quantity = new AsyncRandom().Next(1, 20);
+            var quantity = new AsyncRandom().Next(1, 200);
             player.Inventory.AddItem(targetItem.Id, quantity);
-            player.MapInstance.Send(new ItemLootChestMessage(targetItem.Id, MapObjectRecord.CellId, quantity));
+            player.MapInstance.Send(new ItemLootChestMessage(targetItem.Id, targetItem.Icon, InteractiveElement.CellId, quantity));
         }
         public override void OnClicked(Player player)
         {
@@ -43,9 +52,9 @@ namespace Rogue.Server.World.Maps.Triggers
             this.Open = !Open;
 
             if (Open)
-                MapInstance.UpdateMapObject(this.MapObjectRecord, MapObjectRecord.Value1);
+                MapInstance.UpdateElementVisual(InteractiveElement.CellId, InteractiveElement.LayerEnum, InteractiveElement.Value1, DefaultSprite.Type, false);
             else
-                MapInstance.UpdateMapObject(this.MapObjectRecord, MapObjectRecord.DefaultVisualData);
+                MapInstance.UpdateElementVisual(InteractiveElement.CellId, InteractiveElement.LayerEnum, DefaultSprite.VisualData, DefaultSprite.Type, false);
 
             if (!Loot && Open)
             {

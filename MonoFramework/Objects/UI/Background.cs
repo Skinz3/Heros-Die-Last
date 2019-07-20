@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework.Sprites;
+using Rogue.Core.Sprites;
 
-namespace MonoFramework.Objects.UI
+namespace Rogue.Core.Objects.UI
 {
     public class Background : UIObject
     {

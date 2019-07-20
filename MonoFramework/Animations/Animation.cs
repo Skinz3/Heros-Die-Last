@@ -1,16 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Sprites;
+using Microsoft.Xna.Framework.Graphics;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Animations
+namespace Rogue.Core.Animations
 {
-    public class Animation : ICellElement
+    public class Animation : ILayerElement
     {
         private int CurrentIndex
         {
@@ -47,6 +48,7 @@ namespace MonoFramework.Animations
             get;
             private set;
         }
+
         private bool FlipVertical
         {
             get;
@@ -113,9 +115,14 @@ namespace MonoFramework.Animations
                 }
             }
         }
-        public void Draw(Rectangle rectangle, Color color, float rotation = 0)
+        public string[] GetSpritesNames()
         {
-            Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, rectangle, color);
+            return SpritesNames;
+        }
+        public void Draw(Rectangle rectangle, Color color, float rotation = 0, Vector2 origin = new Vector2())
+        {
+            if (Sprites.Length > 0)
+                Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, rectangle, null, color, rotation, origin, SpriteEffects.None, 0f);
         }
 
         public Animation Clone()

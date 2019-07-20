@@ -1,7 +1,7 @@
 ﻿using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Collisions;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
 using System;
 using System.Collections.Generic;

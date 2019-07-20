@@ -1,17 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects.UI
+namespace Rogue.Core.Objects.UI
 {
     public class InputText : UIObject
     {

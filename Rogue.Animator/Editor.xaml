@@ -1,0 +1,45 @@
+﻿<Window x:Class="Rogue.Animator.Editor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rogue.Animator"
+        mc:Ignorable="d"
+        Title="Editor" Height="400.743" Width="456.953" ResizeMode="NoResize">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="23">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="NewClick" />
+                <MenuItem Header="_Open" Click="OpenClick"  />
+                <MenuItem Header="_Save" Click="SaveClick"/>
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Delay:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,172,0,0" Grid.Column="1" Height="28" Width="42"/>
+            <TextBox TextChanged="OnDelayInputChange"  x:Name="delay" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="108" Margin="67,176,0,0" Grid.Column="1"/>
+            <CheckBox Click="Loop_Click"  IsChecked="True" x:Name="loop" Content="Loop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="53" Margin="125,128,0,0" Grid.Column="1" Height="15"/>
+            <CheckBox Click="Fvertical_Click" x:Name="fvertical" Content="Flip Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="102" Margin="18,148,0,0" Grid.Column="1" Height="15"/>
+            <CheckBox Click="Fhorizontal_Click" x:Name="fhorizontal" Content="Flip Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Width="102" Margin="18,128,0,0" Grid.Column="1" Height="15"/>
+            <Rectangle x:Name="preview" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="200" Margin="230,131,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Grid.Column="1"/>
+            <ComboBox SelectionChanged="Directions_SelectionChanged" Name="directions" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="173,53,0,0" VerticalAlignment="Top" Width="120"/>
+            <Label Grid.ColumnSpan="2" Content="Direction:" HorizontalAlignment="Left" Margin="67,49,0,0" VerticalAlignment="Top" Width="67"/>
+            <ListBox Name="frames" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="90" Margin="20,241,0,0" VerticalAlignment="Top" Width="155"/>
+            <Label Content="Animation Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="67,13,0,0" Grid.Column="1" Height="26" Width="108" RenderTransformOrigin="0.91,1.383"/>
+            <TextBox  x:Name="animationName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="myAnimation" VerticalAlignment="Top" Width="120" Margin="173,16,0,0" Grid.Column="1"/>
+            <Button Grid.ColumnSpan="2" Content="Define Frames" HorizontalAlignment="Left" Margin="20,204,0,0" VerticalAlignment="Top" Width="155" Height="32" Click="Button_Click"/>
+            <Separator Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="20" Margin="2,88,0,0" VerticalAlignment="Top" Width="467"/>
+            <Label Content="Preview:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="302,110,0,0" Grid.Column="1" Height="26" Width="55"/>
+
+            <Button Click="Button_Click_1" FontFamily="Marlett" FontSize="20" Content="5" Grid.ColumnSpan="2"  HorizontalAlignment="Left" Margin="180,256,0,0" VerticalAlignment="Top" Width="24" Height="24" />
+            <Button Click="Button_Click_2" FontFamily="Marlett" FontSize="20" Content="6" Grid.ColumnSpan="2"  HorizontalAlignment="Left" Margin="180,285,0,0" VerticalAlignment="Top" Width="24" Height="24" />
+        </Grid>
+
+    </DockPanel>
+
+</Window>

@@ -1,18 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Cameras;
-using MonoFramework.DesignPattern;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.PhysX;
-using MonoFramework.Scenes;
+using Rogue.Core.Cameras;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.PhysX;
+using Rogue.Core.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects.Abstract
+namespace Rogue.Core.Objects.Abstract
 {
     public abstract class PositionableObject : GameObject
     {
@@ -34,6 +34,10 @@ namespace MonoFramework.Objects.Abstract
 
         public bool MouseIn;
 
+        /// <summary>
+        /// A really good optimisation for big amount of objects (ex : 40 000 cells)
+        /// </summary>
+        public bool IgnoreMouseEvents;
 
         public Vector2 Center
         {
@@ -60,11 +64,7 @@ namespace MonoFramework.Objects.Abstract
             get;
             set;
         }
-        private List<Force2D> Forces
-        {
-            get;
-            set;
-        }
+
 
         public float Rotation
         {
@@ -80,7 +80,7 @@ namespace MonoFramework.Objects.Abstract
             this.Position = position;
             this.Size = size;
             this.MouseIn = false;
-            this.Forces = new List<Force2D>();
+            this.IgnoreMouseEvents = false;
             this.Rotation = rotation;
             MouseManager.OnLeftButtonPressed += OnLeftButtonPressed;
             MouseManager.OnRightButtonPressed += OnRightButtonPressed;
@@ -159,10 +159,7 @@ namespace MonoFramework.Objects.Abstract
         {
             Text = null;
         }
-        public void AddForce(Force2D force)
-        {
-            Forces.Add(force);
-        }
+
         public override void Draw(GameTime time)
         {
             base.Draw(time);
@@ -170,7 +167,7 @@ namespace MonoFramework.Objects.Abstract
         }
         private bool MouseIsIn()
         {
-            var state = Mouse.GetState();
+            var state = MouseManager.State;
 
             Point location = new Point(state.Position.X, state.Position.Y);
 
@@ -180,30 +177,30 @@ namespace MonoFramework.Objects.Abstract
         }
         public override void Update(GameTime time)
         {
-            foreach (var force in Forces)
-            {
-                force.Apply(this);
-            }
-
             Text?.Update(time);
+
             if (TextOrigin != RectangleOrigin.None)
                 Text?.Align(Rectangle, TextOrigin);
 
-            if (MouseIsIn())
+            if (!IgnoreMouseEvents)
             {
-                OnMouseIn?.Invoke(this);
-
-                if (!MouseIn)
+                if (MouseIsIn())
                 {
-                    OnMouseEnter?.Invoke(this);
-                }
-                this.MouseIn = true;
+                    OnMouseIn?.Invoke(this);
 
-            }
-            else if (this.MouseIn)
-            {
-                OnMouseLeave?.Invoke(this);
-                this.MouseIn = false;
+                    if (!MouseIn)
+                    {
+                        OnMouseEnter?.Invoke(this);
+                    }
+                    this.MouseIn = true;
+
+                }
+
+                else if (this.MouseIn)
+                {
+                    OnMouseLeave?.Invoke(this);
+                    this.MouseIn = false;
+                }
             }
 
             base.Update(time);

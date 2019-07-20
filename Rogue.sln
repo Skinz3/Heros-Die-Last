@@ -5,11 +5,9 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue", "Rogue\Rogue.csproj", "{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoFramework", "MonoFramework\MonoFramework.csproj", "{45584C6D-311E-4BB4-B5B8-88A1423F90CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.Core", "MonoFramework\Rogue.Core.csproj", "{45584C6D-311E-4BB4-B5B8-88A1423F90CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteNetLib", "LiteNetLib\LiteNetLib.csproj", "{B0A014E4-0392-4E35-AA42-8FB5A40417E0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.MapEditor", "Rogue.MapEditor\Rogue.MapEditor.csproj", "{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.Server", "Rogue.Server\Rogue.Server.csproj", "{A6583598-6032-477E-A9F9-B2A1B6226458}"
 EndProject
@@ -18,6 +16,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.ORM", "Rogue.ORM\Rogue.ORM.csproj", "{3943BF9C-E641-4E48-B362-156F2A66D19F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.ServerView", "Rogue.ServerView\Rogue.ServerView.csproj", "{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.WorldEditor", "Rogue.WorldEditor\Rogue.WorldEditor.csproj", "{64546447-D4A8-4535-83AA-AEDAA241261B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rogue.Animator", "Rogue.Animator\Rogue.Animator.csproj", "{457CBABF-C225-47F5-8881-6C8BB8ED6A34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60E9B85C-04AE-417E-B85B-61D037A573AA}"
+	ProjectSection(SolutionItems) = preProject
+		A Faire.txt = A Faire.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +44,6 @@ Global
 		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0A014E4-0392-4E35-AA42-8FB5A40417E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E5BF3C1-06C0-481F-B60C-01C26FAAD01C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6583598-6032-477E-A9F9-B2A1B6226458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6583598-6032-477E-A9F9-B2A1B6226458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6583598-6032-477E-A9F9-B2A1B6226458}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +60,14 @@ Global
 		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DA1BCD0-E1CA-4220-A547-596A49D1CB57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64546447-D4A8-4535-83AA-AEDAA241261B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64546447-D4A8-4535-83AA-AEDAA241261B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64546447-D4A8-4535-83AA-AEDAA241261B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64546447-D4A8-4535-83AA-AEDAA241261B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457CBABF-C225-47F5-8881-6C8BB8ED6A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457CBABF-C225-47F5-8881-6C8BB8ED6A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457CBABF-C225-47F5-8881-6C8BB8ED6A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457CBABF-C225-47F5-8881-6C8BB8ED6A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

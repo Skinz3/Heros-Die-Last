@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Animations;
-using MonoFramework.Collisions;
+using Rogue.Core.Animations;
+using Rogue.Core.Collisions;
 using Rogue.Collisions;
 using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;
@@ -10,43 +10,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rogue.Core.Geometry;
 
 namespace Rogue.Animations
 {
     public class Animator
     {
-        private Dictionary<EntityStateEnum, Dictionary<DirectionEnum, Animation>> Animations
+        private Dictionary<string, Dictionary<DirectionEnum, Animation>> Animations
         {
             get;
             set;
         }
-        public Animator(StateAnimations[] animations)
+        public string CurrentAnimation
         {
-            Animations = new Dictionary<EntityStateEnum, Dictionary<DirectionEnum, Animation>>();
-
-            foreach (var animation in animations)
-            {
-                Animations.Add(animation.State, GetDirectionableAnimationsDictionary(animation.Animations));
-            }
+            get;
+            set;
         }
-        private Dictionary<DirectionEnum, Animation> GetDirectionableAnimationsDictionary(DirectionalAnimation[] animations)
+        private string IdleAnimation
         {
-            Dictionary<DirectionEnum, Animation> result = new Dictionary<DirectionEnum, Animation>();
-
-            foreach (var animation in animations)
-            {
-                result.Add(animation.Direction, AnimationManager.GetAnimation(animation.AnimationEnum));
-            }
-
-            return result;
+            get;
+            set;
+        }
+        private string MovementAnimation
+        {
+            get;
+            set;
+        }
+        public Animator(string[] animations, string idleAnimation, string movementAnimation)
+        {
+            Animations = new Dictionary<string, Dictionary<DirectionEnum, Animation>>();
+            IdleAnimation = idleAnimation;
+            MovementAnimation = movementAnimation;
+            Animations = AnimationManager.GetAnimations(animations);
         }
         public void Update(GameTime time, MovableEntity entity)
         {
-            if (Animations.ContainsKey(entity.State))
+            DirectionEnum direction = entity.MovementEngine.Direction.Restrict4Direction();
+
+            if (Animations.ContainsKey(CurrentAnimation))
             {
-                if (Animations[entity.State].ContainsKey(entity.MovementEngine.Direction))
+                if (Animations[CurrentAnimation].ContainsKey(direction))
                 {
-                    Animations[entity.State][entity.MovementEngine.Direction].Update(time);
+                    Animations[CurrentAnimation][direction].Update(time);
                 }
 
             }
@@ -65,13 +70,23 @@ namespace Rogue.Animations
 
         public void Draw(GameTime time, MovableEntity entity)
         {
-            if (Animations.ContainsKey(entity.State))
+            DirectionEnum direction = entity.MovementEngine.Direction.Restrict4Direction();
+
+            if (Animations.ContainsKey(CurrentAnimation))
             {
-                if (Animations[entity.State].ContainsKey(entity.MovementEngine.Direction))
-                    Animations[entity.State][entity.MovementEngine.Direction].Draw(entity.Rectangle, entity.Color);
+                if (Animations[CurrentAnimation].ContainsKey(direction))
+                    Animations[CurrentAnimation][direction].Draw(entity.Rectangle, entity.Color);
             }
         }
 
+        public void SetMovementAnimation()
+        {
+            CurrentAnimation = MovementAnimation;
+        }
+        public void SetIdleAnimation() // check aiming?
+        {
+            CurrentAnimation = IdleAnimation;
+        }
         public void Dispose()
         {
             foreach (var dic in Animations.Values)

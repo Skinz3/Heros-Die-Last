@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -29,6 +29,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -60,7 +61,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Animations\AnimationManager.cs" />
+    <Compile Include="Animations\AnimationController.cs" />
     <Compile Include="Animations\Animator.cs" />
     <Compile Include="Auth\Account.cs" />
     <Compile Include="Collisions\ProjectileCollider2D.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="Handlers\FramesHandler.cs" />
     <Compile Include="Handlers\InventoryHandler.cs" />
     <Compile Include="Handlers\MapHandler.cs" />
-    <Compile Include="Handlers\MapObjectsHandler.cs" />
+    <Compile Include="Handlers\MapElementHandler.cs" />
     <Compile Include="Inputs\MovementEngine.cs" />
     <Compile Include="Objects\Entities\Entity.cs" />
     <Compile Include="Objects\Entities\Monster.cs" />
@@ -104,9 +105,9 @@
     <Compile Include="World\Entities\EntityManager.cs" />
     <Compile Include="World\Entities\Projectiles\KunaiProjectile.cs" />
     <Compile Include="World\Entities\Projectiles\Projectile.cs" />
+    <Compile Include="World\Entities\Weapons\Weapon.cs" />
     <Compile Include="World\Items\Item.cs" />
     <Compile Include="World\Maps\MapInstance.cs" />
-    <Compile Include="World\Maps\MapObjectManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -165,6 +166,7 @@
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="app.config" />
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
@@ -172,13 +174,9 @@
       <Project>{b0a014e4-0392-4e35-aa42-8fb5a40417e0}</Project>
       <Name>LiteNetLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonoFramework\MonoFramework.csproj">
+    <ProjectReference Include="..\MonoFramework\Rogue.Core.csproj">
       <Project>{45584c6d-311e-4bb4-b5b8-88a1423f90cc}</Project>
-      <Name>MonoFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Rogue.MapEditor\Rogue.MapEditor.csproj">
-      <Project>{4e5bf3c1-06c0-481f-b60c-01c26faad01c}</Project>
-      <Name>Rogue.MapEditor</Name>
+      <Name>Rogue.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rogue.Protocol\Rogue.Protocol.csproj">
       <Project>{27F5D5D3-5817-4A64-A9D8-5B6E6D75E77B}</Project>

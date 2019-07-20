@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Lightning;
+using Rogue.Core.Objects.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects
+namespace Rogue.Core.Objects
 {
+    [InDeveloppement(InDeveloppementState.THINK_ABOUT_IT,"Light interactions with environment")]
     public class GCircle : SingleTextureObject
     {
         public float Radius
@@ -34,6 +37,7 @@ namespace MonoFramework.Objects
             get;
             set;
         }
+   
         public GCircle(Vector2 position, float radius, Color color, float sharpness = 1f, int thickness = -1) : base(position,new Point((int)radius,(int)radius),color)
         {
             this.Radius = radius;
@@ -42,7 +46,7 @@ namespace MonoFramework.Objects
             if (thickness == -1)
                 Thickness = Radius;
         }
-
+       
         public override Texture2D CreateTexture(GraphicsDevice graphicsDevice)
         {
             Texture2D circleTexture = new Texture2D(graphicsDevice, (int)Diameter, (int)Diameter, false, SurfaceFormat.Color);
@@ -50,12 +54,13 @@ namespace MonoFramework.Objects
             Vector2 center = new Vector2(Radius);
             for (int colIndex = 0; colIndex < circleTexture.Width; colIndex++)
             {
+           
                 for (int rowIndex = 0; rowIndex < circleTexture.Height; rowIndex++)
                 {
                     Vector2 position = new Vector2(colIndex, rowIndex);
                     float distance = Vector2.Distance(center, position);
 
-                    // hermite iterpolation
+                    // hermite interpolation
                     float x = distance / Diameter;
                     float edge0 = (Radius * Sharpness) / Diameter;
                     float edge1 = Radius / Diameter;
@@ -64,7 +69,7 @@ namespace MonoFramework.Objects
 
                     if (distance >= Radius - Thickness)
                     {
-                        colorData[rowIndex * circleTexture.Width + colIndex] = Color * (1f - result);
+                        colorData[rowIndex * circleTexture.Width + colIndex] = Color.White * (1f - result);
                     }
                     else
                     {
@@ -77,17 +82,14 @@ namespace MonoFramework.Objects
             return circleTexture;
         }
 
-
-        public override void OnUpdate(GameTime time)
+        public override void Draw(GameTime time)
         {
-
+            base.Draw(time);
         }
-
         public override void OnDispose()
         {
             Texture.Dispose();
         }
 
-      
     }
 }

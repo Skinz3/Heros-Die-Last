@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Geometry;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Pathfinding;
-using MonoFramework.Scenes;
+using Rogue.Core.Collisions;
+using Rogue.Core.Geometry;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Pathfinding;
+using Rogue.Core.Scenes;
 using Rogue.Objects;
 using Rogue.Objects.Entities;
 using System;
@@ -152,6 +152,16 @@ namespace Rogue.Scripts
                         CalculateNextCell();
                     }
                 }
+
+                if (dir == DirectionEnum.None)
+                {
+                    Entity.Animator.SetIdleAnimation();
+                }
+                else
+                {
+                    Entity.Animator.SetMovementAnimation();
+                }
+
 
             }
 

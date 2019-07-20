@@ -1,11 +1,11 @@
-﻿using MonoFramework.Network.Protocol;
+﻿using Rogue.Core.Network.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Network
+namespace Rogue.Core.Network
 {
     public abstract class Frame
     {

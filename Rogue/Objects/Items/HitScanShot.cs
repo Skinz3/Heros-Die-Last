@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
+using Rogue.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

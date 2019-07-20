@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 
 namespace Rogue.Server.World.Maps
 {
@@ -36,7 +36,7 @@ namespace Rogue.Server.World.Maps
         [StartupInvoke("Spawning Monsters", StartupInvokePriority.Ninth)]
         public static void SpawnMonsters()
         {
-            MapRecord targetMap = MapRecord.GetMap("Donjon TEST");
+            MapRecord targetMap = MapRecord.GetMap("donjon");
 
             if (targetMap != null)
             {
@@ -48,6 +48,28 @@ namespace Rogue.Server.World.Maps
 
 
                 monster = new Monster(EntityRecord.GetEntity("Slime"), (MapCell)targetMap.Grid.GetCell(7, 17));
+                MapsManager.JoinFreeMapInstance(monster, targetMap);
+
+            }
+
+            targetMap = MapRecord.GetMap("Map de test 1");
+
+            if (targetMap != null)
+            {
+               
+                var monster = new Monster(EntityRecord.GetEntity("Slime"), (MapCell)targetMap.Grid.GetCell(306));
+                MapsManager.JoinFreeMapInstance(monster, targetMap);
+
+                monster = new Monster(EntityRecord.GetEntity("Slime"), (MapCell)targetMap.Grid.GetCell(288));
+                MapsManager.JoinFreeMapInstance(monster, targetMap);
+
+                monster = new Monster(EntityRecord.GetEntity("Slime"), (MapCell)targetMap.Grid.GetCell(234));
+                MapsManager.JoinFreeMapInstance(monster, targetMap);
+
+                monster = new Monster(EntityRecord.GetEntity("Slime"), (MapCell)targetMap.Grid.GetCell(93));
+                MapsManager.JoinFreeMapInstance(monster, targetMap);
+
+                monster = new Monster(EntityRecord.GetEntity("Slime"), (MapCell)targetMap.Grid.GetCell(109));
                 MapsManager.JoinFreeMapInstance(monster, targetMap);
 
             }

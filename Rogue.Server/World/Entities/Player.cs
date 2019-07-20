@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Utils;
-using MonoFramework.Collisions;
+using Rogue.Core.Utils;
+using Rogue.Core.Collisions;
 using Rogue.Server.World.Entities.Scripts;
 using Rogue.Server.Collisions;
 using Rogue.Server.World.Items;
@@ -52,6 +52,11 @@ namespace Rogue.Server.World.Entities
         {
             get;
             private set;
+        }
+        private string WeaponAnimation
+        {
+            get;
+            set;
         }
         public override string Name => Account.CharacterName;
 
@@ -112,7 +117,7 @@ namespace Rogue.Server.World.Entities
             TeleportOnMap(targetMap, cellId);
         }
 
-        public void OnReceivePosition(Vector2 position, DirectionEnum direction)
+        public void OnReceivePosition(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
             if (Teleporting)
             {
@@ -122,7 +127,7 @@ namespace Rogue.Server.World.Entities
             Position = position;
             Direction = direction;
 
-            SendPosition();
+            SendPosition(mouseRotation);
 
             if (CurrentCell != null && CurrentCell.Id == 286)
             {
@@ -132,12 +137,12 @@ namespace Rogue.Server.World.Entities
         }
         public override ProtocolEntity GetProtocolObject()
         {
-            return new ProtocolPlayer(Name, Id, Position, new Point(Record.Width, Record.Height), Stats, Record.Animations);
+            return new ProtocolPlayer(Name, Id, Position, new Point(Record.Width, Record.Height), Stats, Record.Animations.ToArray(), Record.IdleAnimation, Record.MovementAnimation, Aura, WeaponAnimation);
         }
 
         public override void OnUpdate(long deltaTime)
         {
-           
+            Inventory.Update(deltaTime);
         }
 
 
@@ -154,6 +159,12 @@ namespace Rogue.Server.World.Entities
         public override Rectangle GetHitBox()
         {
             return Collider.EntityHitBox;
+        }
+
+        public void DefineWeaponAnimation(string animationName)
+        {
+            WeaponAnimation = animationName;
+            MapInstance.Send(new DefinePlayerWeaponMessage(Id, "item103"));
         }
     }
 }

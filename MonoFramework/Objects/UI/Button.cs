@@ -1,16 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Sprites;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects.UI
+namespace Rogue.Core.Objects.UI
 {
     public class Button : ColorableObject
     {

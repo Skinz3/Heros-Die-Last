@@ -1,14 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
+using Rogue.Core.Input;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Cameras
+namespace Rogue.Core.Cameras
 {
     /// <summary>
     /// Todo add method:  Follow(GameObject target);
@@ -120,7 +121,7 @@ namespace MonoFramework.Cameras
                 Camera2D.MainCamera.Position.Y += speed;
             }
 
-            var scrollWheelValue = Mouse.GetState().ScrollWheelValue;
+            var scrollWheelValue = MouseManager.State.ScrollWheelValue;
 
             if (scrollWheelValue > OldMouseScrollWhellValue)
             {

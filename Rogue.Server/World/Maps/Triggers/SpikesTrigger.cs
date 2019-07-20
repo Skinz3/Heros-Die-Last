@@ -9,7 +9,7 @@ using Rogue.Server.World.Entities;
 
 namespace Rogue.Server.World.Maps.Triggers
 {
-    /// <summary>
+   /* /// <summary>
     /// Value1 : VisualDataActive
     /// Value2 : Trigger Delay
     /// Value3 : DamageInflicted
@@ -103,5 +103,5 @@ namespace Rogue.Server.World.Maps.Triggers
                 }
             }
         }
-    }
+    } */
 }

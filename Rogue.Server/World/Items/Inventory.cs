@@ -33,7 +33,7 @@ namespace Rogue.Server.World.Items
         {
             if (Items[slot] != null)
             {
-                bool success = Items[slot].Use(Player, position);
+                bool success = Items[slot].Use(position);
 
                 if (success)
                 {
@@ -71,6 +71,13 @@ namespace Rogue.Server.World.Items
         {
             return Items.Where(x => x != null).FirstOrDefault(x => x.ItemId == itemId);
         }
+        public void Update(long deltaTime)
+        {
+            foreach (var item in Items)
+            {
+                item?.Update(deltaTime);
+            }
+        }
         public bool AddItem(Item item)
         {
             var item2 = GetItem(item.ItemId);
@@ -87,6 +94,7 @@ namespace Rogue.Server.World.Items
             {
                 Items[freeSlot] = item;
                 item.Slot = freeSlot;
+                item.OnAcquired();
                 NotifyItemAdded(item, freeSlot);
                 return true;
             }
@@ -96,7 +104,7 @@ namespace Rogue.Server.World.Items
 
         public Item AddItem(int itemId, int quantity)
         {
-            var item = ItemManager.GetItemInstance(ItemRecord.GetItem(itemId), quantity);
+            var item = ItemManager.GetItemInstance(Player, ItemRecord.GetItem(itemId), quantity);
 
             if (item.Record.InstantUse)
             {
@@ -104,7 +112,7 @@ namespace Rogue.Server.World.Items
                 {
                     throw new Exception("InstantUse? => Quantity = 1");
                 }
-                item.Use(Player, new Vector2());
+                item.Use(new Vector2());
                 return null;
             }
             AddItem(item);
@@ -121,7 +129,7 @@ namespace Rogue.Server.World.Items
         }
         private void NotifyItemAdded(Item item, int slot)
         {
-            Player.Client.Send(new InventoryAddItemMessage(item.Record.Id, item.Quantity, (byte)slot));
+            Player.Client.Send(new InventoryAddItemMessage(item.Record.Id, item.Record.Icon, item.Quantity, (byte)slot));
         }
         private void NotifyItemRemoved(int slot)
         {

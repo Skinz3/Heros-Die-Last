@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Sprites;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,16 @@ namespace Rogue.World.Items
             get;
             set;
         }
+        public float CooldownCurrent
+        {
+            get;
+            set;
+        }
+        public float CooldownTotal
+        {
+            get;
+            set;
+        }
         public Item(Sprite sprite, int quantity)
         {
             this.Sprite = sprite;
@@ -29,9 +39,9 @@ namespace Rogue.World.Items
         {
             Sprite.Draw(rectangle, color);
         }
-        public static Item CreateInstance(int itemId, int quantity)
+        public static Item CreateInstance(int itemId, string icon, int quantity)
         {
-            var sprite = SpriteManager.GetSprite("item_" + itemId);
+            var sprite = SpriteManager.GetSprite(icon);
             return new Item(sprite, quantity);
         }
     }

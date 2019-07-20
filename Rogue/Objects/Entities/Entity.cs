@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
 using Rogue.Protocol.Types;
 using Rogue.World.Maps;
 using System;

@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework.IO.Maps;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core.Animations;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 
-namespace MonoFramework.Objects
+namespace Rogue.Core.Objects
 {
     public class GMap : GGrid
     {
-        public GMap(Point size) : base(new Vector2(), size, MapTemplate.MAP_CELL_SIZE, Color.Black, 1)
+        public GMap(Point size, bool ignoreMouseEvents) : base(new Vector2(), size, MapTemplate.MAP_CELL_SIZE, Color.Black, 1, ignoreMouseEvents)
         {
 
         }
@@ -28,16 +30,29 @@ namespace MonoFramework.Objects
 
                 foreach (var sprite in cell.Sprites)
                 {
-                    var target = SpriteManager.GetSprite(sprite.SpriteName);
-
-                    if (sprite.FlippedVertically || sprite.FlippedHorizontally)
+                    if (sprite.IsAnimation)
                     {
-                        target = Sprite.Flip(target, sprite.FlippedVertically, sprite.FlippedHorizontally);
+                        gCell.SetSprite(AnimationManager.GetAnimation(sprite.VisualData), sprite.Layer);
                     }
-                    gCell.AddSprite(target, sprite.Layer);
+                    else
+                    {
+                        var target = SpriteManager.GetSprite(sprite.VisualData);
+
+                        if (sprite.FlippedVertically || sprite.FlippedHorizontally)
+                        {
+                            target = Sprite.Flip(target, sprite.FlippedVertically, sprite.FlippedHorizontally);
+                        }
+                        gCell.SetSprite(target, sprite.Layer);
+                    }
+                }
+
+                if (cell.Light != null)
+                {
+                    gCell.SetLight(new Color(cell.Light.R, cell.Light.G, cell.Light.B, cell.Light.A), cell.Light.Radius, cell.Light.Sharpness);
                 }
             }
         }
+        [InDeveloppement(InDeveloppementState.TEMPORARY, "Not updated since new map editor")]
         public MapTemplate Export(float zoom)
         {
             MapTemplate result = new MapTemplate();
@@ -57,12 +72,12 @@ namespace MonoFramework.Objects
 
                 result.Cells[i].Sprites = new SpriteTemplate[Cells[i].Sprites.Count];
 
-                var sprites = Cells[i].GetElements<Sprite>(); 
+                var sprites = Cells[i].GetElements<Sprite>();
 
                 for (int j = 0; j < sprites.Count(); j++)
                 {
                     result.Cells[i].Sprites[j] = new SpriteTemplate();
-                    result.Cells[i].Sprites[j].SpriteName = sprites.ElementAt(j).Value.Name;
+                    result.Cells[i].Sprites[j].VisualData = sprites.ElementAt(j).Value.Name;
                     result.Cells[i].Sprites[j].Layer = sprites.ElementAt(j).Key;
                     result.Cells[i].Sprites[j].FlippedVertically = sprites.ElementAt(j).Value.FlippedVertically;
                     result.Cells[i].Sprites[j].FlippedHorizontally = sprites.ElementAt(j).Value.FlippedHorizontally;
@@ -71,6 +86,8 @@ namespace MonoFramework.Objects
             }
             return result;
         }
+
+
 
         public override void OnInitializeComplete()
         {

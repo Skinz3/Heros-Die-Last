@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Network.Protocol
+namespace Rogue.Core.Network.Protocol
 {
     public abstract class Message
     {

@@ -1,4 +1,4 @@
-﻿using MonoFramework.Network;
+﻿using Rogue.Core.Network;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Network;

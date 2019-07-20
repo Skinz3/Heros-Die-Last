@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Input
+namespace Rogue.Core.Input
 {
     public class KeyboardManager
     {

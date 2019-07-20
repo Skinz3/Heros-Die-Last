@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework;
-using MonoFramework.Geometry;
-using MonoFramework.Objects;
-using MonoFramework.Scenes;
+using Rogue.Core;
+using Rogue.Core.Geometry;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

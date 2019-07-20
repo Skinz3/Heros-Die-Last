@@ -19,21 +19,31 @@ namespace Rogue.Protocol.Types
                 return Id;
             }
         }
-
+        public string WeaponAnimation
+        {
+            get;
+            set;
+        }
         public ProtocolPlayer()
         {
 
         }
-        public ProtocolPlayer(string name, int entityId, Vector2 position, Point size, Stats stats, StateAnimations[] animations) : base(name, entityId, position, size, stats, animations)
+        public ProtocolPlayer(string name, int entityId, Vector2 position, Point size, Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolEntityAura aura, string weaponAnimation)
+            : base(name, entityId, position, size, stats, animations, idleAnimation, movementAnimation, aura)
         {
+            this.WeaponAnimation = weaponAnimation;
         }
         public override void Deserialize(LittleEndianReader reader)
         {
+            this.WeaponAnimation = reader.GetString();
+
             base.Deserialize(reader);
         }
 
         public override void Serialize(LittleEndianWriter writer)
         {
+            writer.Put(WeaponAnimation);
+
             base.Serialize(writer);
         }
     }

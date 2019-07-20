@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.Objects.Abstract;
 
-namespace MonoFramework.Objects.UI
+namespace Rogue.Core.Objects.UI
 {
     public class SimpleButton : UIObject
     {

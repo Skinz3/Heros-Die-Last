@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.DesignPattern
+namespace Rogue.Core.DesignPattern
 {
     public class DevelopmentManager
     {

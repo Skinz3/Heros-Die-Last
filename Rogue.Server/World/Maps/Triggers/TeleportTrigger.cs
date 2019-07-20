@@ -10,18 +10,18 @@ namespace Rogue.Server.World.Maps.Triggers
 {
     public class TeleportTrigger : Trigger
     {
-        public TeleportTrigger(MapInstance mapInstance, MapObjectRecord mapObject) : base(mapInstance, mapObject)
+        public TeleportTrigger(MapInstance mapInstance, MapInteractiveRecord mapObject) : base(mapInstance, mapObject)
         {
         }
 
         public override void OnClicked(Player player)
         {
-            player.Teleport(MapObjectRecord.Value1);
+            player.Teleport(InteractiveElement.Value1);
         }
 
         public override void Update(long deltaTime)
         {
-           
+
         }
     }
 }

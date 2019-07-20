@@ -10,7 +10,7 @@ using Rogue.ORM.IO;
 using Rogue.ORM.Interfaces;
 using Rogue.ORM.Attributes;
 using Rogue.ORM.Addon;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 
 namespace Rogue.ORM
 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Rogue.Core.DesignPattern;
 using Rogue.ORM.Attributes;
 using Rogue.ORM.Interfaces;
 using Rogue.Protocol.Types;
@@ -21,15 +22,27 @@ namespace Rogue.Server.Records
 
         public int Height;
 
-        [Xml]
-        public StateAnimations[] Animations;
+        public List<string> Animations;
 
-        public EntityRecord(string name, int width, int height, StateAnimations[] animations)
+        public string IdleAnimation;
+
+        public string MovementAnimation;
+
+        public float DefaultSpeed;
+
+        public int DefaultLife;
+
+        public EntityRecord(string name, int width, int height, List<string> animations, string idleAnimation, string movementAnimation,
+            float defaultSpeed, int defaultLife)
         {
             this.Name = name;
             this.Width = width;
             this.Height = height;
             this.Animations = animations;
+            this.IdleAnimation = idleAnimation;
+            this.MovementAnimation = movementAnimation;
+            this.DefaultSpeed = defaultSpeed;
+            this.DefaultLife = defaultLife;
         }
         public Vector2 Center(Vector2 position)
         {
@@ -39,14 +52,9 @@ namespace Rogue.Server.Records
         {
             return Entities.FirstOrDefault(x => x.Name == name);
         }
-
         public Stats GetStats()
         {
-            if (Name == "Default")
-            {
-                return new Stats(8500, 3f);
-            }
-            return new Stats(5500, 1.5f);
+            return new Stats(DefaultLife, DefaultSpeed);
         }
     }
 }

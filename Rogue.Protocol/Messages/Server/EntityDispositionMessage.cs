@@ -1,7 +1,7 @@
 ﻿using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Collisions;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
 using System;
 using System.Collections.Generic;
@@ -23,10 +23,13 @@ namespace Rogue.Protocol.Messages.Server
 
         public DirectionEnum direction;
 
-        public EntityDispositionMessage(int entityId, Vector2 position, DirectionEnum direction)
+        public float mouseRotation;
+
+        public EntityDispositionMessage(int entityId, Vector2 position, DirectionEnum direction, float mouseRotation)
         {
             this.entityId = entityId;
             this.position = position;
+            this.mouseRotation = mouseRotation;
             this.direction = direction;
         }
         public EntityDispositionMessage()
@@ -38,6 +41,7 @@ namespace Rogue.Protocol.Messages.Server
             this.entityId = reader.GetInt();
             this.position = Extensions.GetVector2(reader);
             this.direction = (DirectionEnum)reader.GetByte();
+            this.mouseRotation = reader.GetFloat();
         }
 
         public override void Serialize(LittleEndianWriter writer)
@@ -45,6 +49,7 @@ namespace Rogue.Protocol.Messages.Server
             writer.Put(entityId);
             writer.Put(position);
             writer.Put((byte)direction);
+            writer.Put(mouseRotation);
         }
     }
 }

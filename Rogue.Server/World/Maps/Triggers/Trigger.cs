@@ -16,15 +16,15 @@ namespace Rogue.Server.World.Maps.Triggers
             get;
             private set;
         }
-        protected MapObjectRecord MapObjectRecord
+        protected MapInteractiveRecord InteractiveElement
         {
             get;
             private set;
         }
-        public Trigger(MapInstance mapInstance, MapObjectRecord mapObject)
+        public Trigger(MapInstance mapInstance, MapInteractiveRecord interactiveElement)
         {
             this.MapInstance = mapInstance;
-            this.MapObjectRecord = mapObject;
+            this.InteractiveElement = interactiveElement;
         }
 
         public abstract void OnClicked(Player player);

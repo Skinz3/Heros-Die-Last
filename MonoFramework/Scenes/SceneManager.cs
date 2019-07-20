@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace MonoFramework.Scenes
+namespace Rogue.Core.Scenes
 {
     public class SceneManager
     {
@@ -40,7 +41,9 @@ namespace MonoFramework.Scenes
         public static void LoadScene(string name)
         {
             Scene scene = GetScene(name);
+            scene.BeforeLoad();
             LoadScene(scene);
+
         }
         public static void LoadScene(Scene scene)
         {

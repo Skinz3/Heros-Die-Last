@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Network.Protocol;
-using MonoFramework.Utils;
+using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Network.Protocol;
+using Rogue.Core.Utils;
 using Rogue.ORM;
 using Rogue.Protocol;
 using Rogue.Protocol.Enums;
@@ -16,6 +18,7 @@ using Rogue.Server.World.Maps;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -25,6 +28,9 @@ using System.Timers;
 
 namespace Rogue.Server
 {
+    /// <summary>
+    /// Server should also Poll network events? threadsafely? one timer for all the server???
+    /// </summary>
     public class Program
     {
         public static Assembly SERVER_ASSEMBLY = Assembly.GetExecutingAssembly();
@@ -65,13 +71,28 @@ namespace Rogue.Server
                Configuration.Self.MySQLHost, Configuration.Self.DatabaseName,
                Configuration.Self.MySQLUser, Configuration.Self.MySQLPassword);
 
-            DatabaseManager.GetInstance().CreateTable(typeof(EntityRecord));
-
             manager.UseProvider();
             manager.LoadTables();
-
-
         }
+
+        [InDeveloppement(InDeveloppementState.TEMPORARY)]
+        [StartupInvoke("Synchronize Map", StartupInvokePriority.Primitive)]
+        public static void SynchronizeMaps()
+        {
+            string path = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Maps";
+
+            foreach (var file in Directory.GetFiles(Environment.CurrentDirectory + MapRecord.MAPS_DIRECTORY))
+            {
+                File.Delete(file);
+            }
+
+            foreach (var file in Directory.GetFiles(path))
+            {
+                var dest = Environment.CurrentDirectory + MapRecord.MAPS_DIRECTORY + Path.GetFileName(file);
+                File.Copy(file, dest);
+            }
+        }
+
         [StartupInvoke("Server", StartupInvokePriority.Last)]
         public static void StartServer()
         {

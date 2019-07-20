@@ -1,0 +1,8 @@
+
+Monstres (Améliorer)
+Intérpolation joueur (fix)
+Inventaire Cooldown sur les armes
+Lightnings map templates
+Aura joueur, fade out?
+Faire glisser le joueur, collisions
+bien gérer l'aura coté serveur (stoquer un objet, envoyer dans movableEntityProtocol)

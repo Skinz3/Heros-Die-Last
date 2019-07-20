@@ -1,5 +1,5 @@
 ﻿using Rogue.Objects.Entities;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using Rogue.Objects;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Types;

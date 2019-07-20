@@ -1,0 +1,5 @@
+Press Left Shift + Right Click on a cell to edit content
+Press G to display/hide grid
+Press C to edit collider
+Space to change layer
+T to focus/open tile selection

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework;
-using MonoFramework.Scenes;
+using Rogue.Core;
+using Rogue.Core.Scenes;
 using Rogue.ServerView.Scenes;
 
 namespace Rogue.ServerView

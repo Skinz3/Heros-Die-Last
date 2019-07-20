@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace Rogue.ServerView.Objects
             set;
         }
         public MapRepresentation(MapTemplate template) : base(new Vector2(), new Point(template.Width,
-            template.Height), MapTemplate.MAP_CELL_SIZE, Color.Black, 1)
+            template.Height), MapTemplate.MAP_CELL_SIZE, Color.Black, 1, true)
         {
             this.Template = template;
         }

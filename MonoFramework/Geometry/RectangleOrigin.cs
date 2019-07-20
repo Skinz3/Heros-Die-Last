@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Geometry
+namespace Rogue.Core.Geometry
 {
     public enum RectangleOrigin
     {

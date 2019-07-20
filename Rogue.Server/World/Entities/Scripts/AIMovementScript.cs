@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.DesignPattern;
-using MonoFramework.Geometry;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
-using MonoFramework.Pathfinding;
+using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
+using Rogue.Core.Pathfinding;
 using Rogue.Protocol.Messages.Server;
 using System;
 using System.Collections.Generic;
@@ -102,7 +102,6 @@ namespace Rogue.Server.World.Entities.Scripts
                     return;
                 }
             }
-
             var nextCellCenter = NextCell.Rectangle.Center.ToVector2();
 
             var entityCenter = Entity.Center;

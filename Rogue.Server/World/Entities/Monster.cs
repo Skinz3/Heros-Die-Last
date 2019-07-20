@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Pathfinding;
-using MonoFramework.Scenes;
+using Rogue.Core.Objects;
+using Rogue.Core.Pathfinding;
+using Rogue.Core.Scenes;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Protocol.Types;
 using Rogue.Server.Collisions;
@@ -55,7 +55,7 @@ namespace Rogue.Server.World.Entities
 
         public override ProtocolEntity GetProtocolObject()
         {
-            return new ProtocolMonster(Name, Id, Position, Size, Stats, Record.Animations);
+            return new ProtocolMonster(Name, Id, Position, Size, Stats, Record.Animations.ToArray(), Record.IdleAnimation, Record.MovementAnimation, Aura);
         }
         public void MoveOnTarget(Entity target)
         {
@@ -81,7 +81,6 @@ namespace Rogue.Server.World.Entities
                 MoveOnCell((MapCell)targetCell);
             }
         }
-        float delay = 300;
 
         bool d = false;
         public override void OnUpdate(long deltaTime)
@@ -95,21 +94,6 @@ namespace Rogue.Server.World.Entities
                 d = true;
             }
 
-            delay--;
-            if (delay <= 0)
-            {
-                var monsters = MapInstance.GetEntities<Player>();
-
-                foreach (var pl in monsters)
-                {
-                    if (pl.GetDistance(this) <= 200)
-                    {
-                        pl.InflictDamage(this, 500);
-                        delay = 300;
-                    }
-                }
-
-            }
 
 
         }

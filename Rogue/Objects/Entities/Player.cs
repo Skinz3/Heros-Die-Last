@@ -17,13 +17,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Collisions;
-using MonoFramework;
+using Rogue.Core.Collisions;
+using Rogue.Core;
 using Rogue.Objects.UI;
-using MonoFramework.Sprites;
+using Rogue.Core.Sprites;
 using Rogue.World.Items;
-using MonoFramework.Objects;
-using MonoFramework.Scenes;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Animations;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.World.Entities.Weapons;
 
 namespace Rogue.Objects
 {
@@ -34,11 +39,18 @@ namespace Rogue.Objects
             get;
             private set;
         }
+
         public bool Aiming
         {
             get;
             set;
         }
+        public float MouseRotation
+        {
+            get;
+            set;
+        }
+        public bool HoldingWeapon => Weapon != null;
 
         public override bool CanMove => IsMainPlayer && !Dashing && !Aiming;
 
@@ -46,9 +58,24 @@ namespace Rogue.Objects
 
         public override bool UseInterpolation => !IsMainPlayer;
 
+        private Weapon Weapon
+        {
+            get;
+            set;
+        }
+        public void DefineWeapon(string animationName)
+        {
+            this.Weapon = new Weapon(animationName, this);
+        }
         public Player(ProtocolPlayer protocolPlayer) : base(protocolPlayer)
         {
             this.IsMainPlayer = ClientHost.Client.Account.Id == Id;
+
+            if (protocolPlayer.WeaponAnimation != string.Empty)
+            {
+                DefineWeapon(protocolPlayer.WeaponAnimation);
+            }
+            
         }
         public override void OnInitialize()
         {
@@ -66,16 +93,41 @@ namespace Rogue.Objects
 
         public override void OnDraw(GameTime time)
         {
-            base.OnDraw(time);
+            if (Weapon != null)
+            {
+                if (Weapon.OverCharacter)
+                {
+                    base.OnDraw(time);
+                    Weapon.OnDraw(time);
+                }
+                else
+                {
+                    Weapon.OnDraw(time);
+                    base.OnDraw(time);
+                }
+            }
+            else
+            {
+                base.OnDraw(time);
+            }
         }
 
         public override Collider2D CreateCollider()
         {
             return new WonderDotCollider(this);
         }
+        public override void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
+        {
+            MouseRotation = mouseRotation;
+            base.OnPositionReceived(position, direction, mouseRotation);
+        }
         public override void OnUpdate(GameTime time)
         {
-
+            if (this.IsMainPlayer)
+            {
+                MouseRotation = Center.GetMouseRotation();
+            }
+            base.OnUpdate(time);
         }
         public override void OnDispose()
         {

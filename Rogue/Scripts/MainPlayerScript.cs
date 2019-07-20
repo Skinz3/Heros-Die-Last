@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework;
-using MonoFramework.Cameras;
-using MonoFramework.Collisions;
-using MonoFramework.Geometry;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
+using Rogue.Core;
+using Rogue.Core.Cameras;
+using Rogue.Core.Collisions;
+using Rogue.Core.Geometry;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using Rogue.Network;
 using Rogue.Objects;
 using Rogue.Protocol.Messages.Client;
@@ -61,13 +61,13 @@ namespace Rogue.Scripts
             if (CurrentPositionUpdateFrameCount >= PositionUpdateFrameCount)
             {
                 CurrentPositionUpdateFrameCount = 0;
-                ClientHost.Client.Send(new EntityDispositionRequestMessage(Player.Position, Player.MovementEngine.Direction));
+                ClientHost.Client.Send(new EntityDispositionRequestMessage(Player.Position, Player.MovementEngine.Direction, Player.MouseRotation));
             }
         }
 
         public void Dispose()
         {
-           
+
         }
 
         public void OnRemove()

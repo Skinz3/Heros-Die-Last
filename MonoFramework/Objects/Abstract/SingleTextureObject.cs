@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects.Abstract
+namespace Rogue.Core.Objects.Abstract
 {
     public abstract class SingleTextureObject : ColorableObject
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rogue.Protocol.Types
 {
-    public class ProtocolMovableEntity : ProtocolEntity
+    public abstract class ProtocolMovableEntity : ProtocolEntity
     {
         public new const short Id = 5;
 
@@ -25,19 +25,39 @@ namespace Rogue.Protocol.Types
             get;
             private set;
         }
-        public StateAnimations[] Animations
+        public string[] Animations
         {
             get;
-            private set;
+            set;
         }
+        public string IdleAnimation
+        {
+            get;
+            set;
+        }
+
+        public string MovementAnimation
+        {
+            get;
+            set;
+        }
+        public ProtocolEntityAura Aura
+        {
+            get;
+            set;
+        }
+
         public ProtocolMovableEntity()
         {
 
         }
-        public ProtocolMovableEntity(string name, int entityId, Vector2 position, Point size, Stats stats, StateAnimations[] animations) : base(name, entityId, position, size)
+        public ProtocolMovableEntity(string name, int entityId, Vector2 position, Point size, Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolEntityAura aura) : base(name, entityId, position, size)
         {
             this.Stats = stats;
             this.Animations = animations;
+            this.IdleAnimation = idleAnimation;
+            this.MovementAnimation = movementAnimation;
+            this.Aura = aura;
         }
 
         public override void Deserialize(LittleEndianReader reader)
@@ -45,12 +65,20 @@ namespace Rogue.Protocol.Types
             this.Stats = new Stats();
             this.Stats.Deserialize(reader);
 
-            this.Animations = new StateAnimations[reader.GetInt()];
+            this.Animations = new string[reader.GetInt()];
 
             for (int i = 0; i < Animations.Length; i++)
             {
-                Animations[i] = new StateAnimations();
-                Animations[i].Deserialize(reader);
+                Animations[i] = reader.GetString();
+            }
+
+            this.IdleAnimation = reader.GetString();
+            this.MovementAnimation = reader.GetString();
+
+            if (reader.GetBool())
+            {
+                this.Aura = new ProtocolEntityAura();
+                this.Aura.Deserialize(reader);
             }
             base.Deserialize(reader);
         }
@@ -63,7 +91,18 @@ namespace Rogue.Protocol.Types
 
             foreach (var animation in Animations)
             {
-                animation.Serialize(writer);
+                writer.Put(animation);
+            }
+            writer.Put(IdleAnimation);
+            writer.Put(MovementAnimation);
+
+            bool flag = Aura != null;
+
+            writer.Put(flag);
+
+            if (flag)
+            {
+                Aura.Serialize(writer);
             }
             base.Serialize(writer);
         }

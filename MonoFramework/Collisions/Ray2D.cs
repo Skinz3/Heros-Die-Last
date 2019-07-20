@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Collisions
+namespace Rogue.Core.Collisions
 {
     public struct Ray2D
     {

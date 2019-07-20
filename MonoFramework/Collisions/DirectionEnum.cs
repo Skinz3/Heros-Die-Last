@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Collisions
+namespace Rogue.Core.Collisions
 {
     [Flags]
     public enum DirectionEnum
@@ -16,3 +16,4 @@ namespace MonoFramework.Collisions
         Down = 0x8,
     }
 }
+

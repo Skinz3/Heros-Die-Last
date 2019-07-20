@@ -1,5 +1,5 @@
-﻿using MonoFramework.Network.Protocol;
-using MonoFramework.Utils;
+﻿using Rogue.Core.Network.Protocol;
+using Rogue.Core.Utils;
 using Rogue.Frames;
 using Rogue.Network;
 using Rogue.Protocol.Enums;

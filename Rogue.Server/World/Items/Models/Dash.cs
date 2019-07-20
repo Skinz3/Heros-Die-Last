@@ -4,24 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
 
 namespace Rogue.Server.World.Items.Models
 {
-    [ItemHandler(405)]
+    [ItemHandler(282)]
     public class Dash : Item
     {
-        public Dash(ItemRecord record, int count) : base(record, count)
+        public Dash(ItemRecord record, Player owner, int count) : base(record, owner, count)
         {
 
         }
 
-        public override bool Use(Player owner, Vector2 position)
+        public override void OnAcquired()
         {
-            if (!owner.Dashing)
+            Owner.DefineAura(new Color(Color.DarkOrange, 80), 200F, 0.05f);
+        }
+
+        protected override bool OnUse(Vector2 position)
+        {
+            if (!Owner.Dashing)
             {
-                owner.Dash(position, 10f, 300);
+                Owner.Dash(position, 10f, 500, "item282");
                 return true;
             }
             else

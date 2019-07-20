@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using Rogue.World.Items;
 using System;
 using System.Collections.Generic;
@@ -49,6 +49,12 @@ namespace Rogue.Objects.UI
             this.Items[slot] = null;
         }
 
+        public void NotifyCooldown(byte slotId, float cooldown)
+        {
+            Items[slotId].CooldownTotal = cooldown;
+            Items[slotId].CooldownCurrent = cooldown;
+        }
+
         private void GenerateSlots()
         {
             Slots = new Rectangle[SLOTS];
@@ -73,6 +79,15 @@ namespace Rogue.Objects.UI
                 {
                     Items[i].Draw(Slots[i], Color.White);
                     Debug.DrawText(Slots[i].Location.ToVector2(), Items[i].Quantity.ToString(), Color.White);
+
+                    var rectangle = Slots[i];
+
+                    if (Items[i].CooldownCurrent > 0)
+                    {
+                        int height = (int)((Items[i].CooldownCurrent / Items[i].CooldownTotal) * rectangle.Height);
+                        rectangle = new Rectangle(rectangle.X , rectangle.Y+(rectangle.Height-height), rectangle.Width, height);
+                        Debug.FillRectangle(rectangle, new Color(Color.Black, 120));
+                    }
                 }
             }
         }
@@ -97,7 +112,16 @@ namespace Rogue.Objects.UI
 
         public override void OnUpdate(GameTime time)
         {
+            for (int i = 0; i < Items.Length; i++)
+            {
+                if (Items[i] != null)
+                {
+                    Items[i].CooldownCurrent -= (time.ElapsedGameTime.Milliseconds / 1000f);
 
+                    if (Items[i].CooldownCurrent < 0)
+                        Items[i].CooldownCurrent = 0;
+                }
+            }
         }
         public override void Dispose()
         {

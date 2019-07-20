@@ -8,7 +8,7 @@ using Rogue.Network;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
-using MonoFramework.Scenes;
+using Rogue.Core.Scenes;
 
 namespace Rogue.Frames
 {
@@ -37,17 +37,16 @@ namespace Rogue.Frames
             DashMessage.Id,
             InflictDamageMessage.Id,
             AIMoveMessage.Id,
-            MapInformationMessage.Id,
-            AddMapObjectMessage.Id,
-            RemoveMapObjectMessage.Id,
-
+            AddLayerElementMessage.Id,
+            RemoveLayerElementMessage.Id,
             InventoryAddItemMessage.Id,
             InventoryRemoveItemMessage.Id,
             InventoryUpdateQuantityMessage.Id,
-
+            NotifyItemCooldownMessage.Id,
             ItemLootChestMessage.Id,
-
             HitscanHitMessage.Id,
+            DefineEntityAuraMessage.Id,
+            DefinePlayerWeaponMessage.Id,
         };
 
 

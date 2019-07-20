@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Objects.UI;
-using MonoFramework.Scenes;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Objects.UI;
+using Rogue.Core.Scenes;
 using Rogue.MapEditor.Forms;
 using System;
 using System.Collections.Generic;

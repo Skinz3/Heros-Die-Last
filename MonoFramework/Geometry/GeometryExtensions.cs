@@ -1,18 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.Collisions;
-using MonoFramework.Objects;
-using MonoFramework.Sprites;
+using Rogue.Core.Collisions;
+using Rogue.Core.Input;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Geometry
+namespace Rogue.Core.Geometry
 {
     public static class GeometryExtensions
     {
+        public static float GetMouseRotation(this Vector2 relativeTo)
+        {
+            var vector = (SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(MouseManager.State.Position).ToVector2() - relativeTo);
+            vector.Normalize();
+            return (float)Math.Atan2(vector.X, -vector.Y);
+        }
+        public static DirectionEnum Restrict4Direction(this DirectionEnum direction)
+        {
+            switch (direction)
+            {
+                case DirectionEnum.None:
+                    break;
+                case DirectionEnum.Right | DirectionEnum.Up:
+                    return DirectionEnum.Right;
+                case DirectionEnum.Left | DirectionEnum.Up:
+                    return DirectionEnum.Left;
+                case DirectionEnum.Right | DirectionEnum.Down:
+                    return DirectionEnum.Right;
+                case DirectionEnum.Left | DirectionEnum.Down:
+                    return DirectionEnum.Left;
+            }
+            return direction;
+        }
+
         public static bool CellOutflow(this ICell cell, Vector2 center, DirectionEnum direction)
         {
             if (direction == DirectionEnum.Right)
@@ -135,6 +161,10 @@ namespace MonoFramework.Geometry
         }
         public static DirectionEnum GetDirection(this Vector2 input)
         {
+            if (input == Vector2.Zero)
+            {
+                return DirectionEnum.None;
+            }
             float tolerance = 20;
             float angle = MathHelper.ToDegrees((float)Math.Atan2(input.X, -input.Y));
 

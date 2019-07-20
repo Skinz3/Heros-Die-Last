@@ -1,4 +1,4 @@
-﻿using MonoFramework.Utils;
+﻿using Rogue.Core.Utils;
 using Rogue.Server.Records;
 using Rogue.Server.Utils;
 using Rogue.Server.World.Entities;
@@ -30,14 +30,14 @@ namespace Rogue.Server.World.Items
                 }
             }
         }
-        public static Item GetItemInstance(ItemRecord record, int quantity)
+        public static Item GetItemInstance(Player owner, ItemRecord record, int quantity)
         {
             if (!Classes.ContainsKey(record.Id))
             {
                 logger.Write(record.Name + " is not handled", MessageState.WARNING);
                 return null;
             }
-            return (Item)Activator.CreateInstance(Classes[record.Id], new object[] { record, quantity });
+            return (Item)Activator.CreateInstance(Classes[record.Id], new object[] { record, owner, quantity });
         }
     }
 

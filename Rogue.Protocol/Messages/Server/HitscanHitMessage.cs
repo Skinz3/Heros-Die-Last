@@ -1,6 +1,6 @@
 ﻿using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;

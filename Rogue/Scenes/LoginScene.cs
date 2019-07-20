@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using Rogue.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Objects.UI;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Objects.UI;
 using Rogue.Scenes;
-using Rogue.MapEditor;
 using Rogue.Network;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
@@ -15,8 +14,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Objects;
-using MonoFramework.Scenes;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
 
 namespace Rogue.Scenes
 {
@@ -37,14 +36,6 @@ namespace Rogue.Scenes
 
             AddObject(new SimpleButton(new Vector2(400, 400), new Point(200, 50), "Simulate Login", OnConnectClicked), LayerEnum.UI);
 
-            AddObject(new SimpleButton(new Vector2(400, 450), new Point(200, 50), "Map Editor", LoadMapEditor), LayerEnum.UI);
-
-
-        }
-
-        private void LoadMapEditor(PositionableObject obj)
-        {
-            SceneManager.LoadScene(new EditorMenuScene());
         }
 
         private void OnConnectClicked(PositionableObject obj)

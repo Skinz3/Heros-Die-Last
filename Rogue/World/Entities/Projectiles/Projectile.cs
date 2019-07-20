@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using Rogue.Collisions;
 using Rogue.Network;
 using Rogue.Objects.Entities;

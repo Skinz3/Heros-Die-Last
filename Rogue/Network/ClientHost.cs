@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Rogue.Network;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 using Rogue.Scenes;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using Rogue.Frames;
 using Rogue.Protocol.Messages.Server;
 using System;
@@ -11,8 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Network;
-using MonoFramework.Scenes;
+using Rogue.Core.Network;
+using Rogue.Core.Scenes;
 
 namespace Rogue.Network
 {
@@ -57,7 +57,7 @@ namespace Rogue.Network
         }
         public static void Connect()
         {
-            ClientHost.Client.Connect("130.211.97.242", 555);
+            ClientHost.Client.Connect("localhost", 555);
         }
 
         private static void OnConnectionClosed(AbstractClient obj)

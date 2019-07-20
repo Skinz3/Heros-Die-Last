@@ -1,4 +1,4 @@
-﻿using MonoFramework.Objects;
+﻿using Rogue.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.IO.Maps
+namespace Rogue.Core.IO.Maps
 {
     public class MapTemplate : Template
     {
@@ -35,7 +35,7 @@ namespace MonoFramework.IO.Maps
 
             this.Zoom = reader.ReadFloat();
         }
-       
+
         public override void Serialize(LittleEndianWriter writer)
         {
             writer.WriteInt(Width);
@@ -50,17 +50,23 @@ namespace MonoFramework.IO.Maps
 
             writer.WriteFloat(Zoom);
         }
+        public SpriteTemplate GetSpriteTemplate(int cellId, LayerEnum layer)
+        {
+            var cell = Cells.FirstOrDefault(x => x.Id == cellId);
+            return cell.Sprites.FirstOrDefault(x => x.Layer == layer);
+        }
         public CellTemplate GetCellTemplate(int id)
         {
             return Cells.FirstOrDefault(x => x.Id == id);
         }
-
     }
     public class CellTemplate
     {
         public int Id;
 
         public SpriteTemplate[] Sprites;
+
+        public LightTemplate Light;
 
         public bool Walkable;
 
@@ -74,6 +80,10 @@ namespace MonoFramework.IO.Maps
             {
                 sprite.Serialize(writer);
             }
+
+            writer.WriteBoolean(Light != null);
+
+            Light?.Serialize(writer);
 
             writer.WriteBoolean(Walkable);
 
@@ -90,12 +100,51 @@ namespace MonoFramework.IO.Maps
                 Sprites[i].Deserialize(reader);
             }
 
+            if (reader.ReadBoolean())
+            {
+                Light = new LightTemplate();
+                Light.Deserialize(reader);
+            }
+
             Walkable = reader.ReadBoolean();
+        }
+    }
+    public class LightTemplate
+    {
+        public short Radius;
+
+        public byte A;
+
+        public byte R;
+
+        public byte G;
+
+        public byte B;
+
+        public float Sharpness;
+
+        public void Serialize(LittleEndianWriter writer)
+        {
+            writer.WriteShort(Radius);
+            writer.WriteByte(A);
+            writer.WriteByte(R);
+            writer.WriteByte(G);
+            writer.WriteByte(B);
+            writer.WriteFloat(Sharpness);
+        }
+        public void Deserialize(LittleEndianReader reader)
+        {
+            this.Radius = reader.ReadShort();
+            this.A = reader.ReadByte();
+            this.R = reader.ReadByte();
+            this.G = reader.ReadByte();
+            this.B = reader.ReadByte();
+            this.Sharpness = reader.ReadFloat();
         }
     }
     public class SpriteTemplate
     {
-        public string SpriteName;
+        public string VisualData;
 
         public LayerEnum Layer;
 
@@ -103,21 +152,32 @@ namespace MonoFramework.IO.Maps
 
         public bool FlippedHorizontally;
 
+        public bool IsAnimation;
 
+        public MapObjectType Type
+        {
+            get
+            {
+                return IsAnimation ? MapObjectType.Animation : MapObjectType.Sprite;
+            }
+        }
         public void Serialize(LittleEndianWriter writer)
         {
-            writer.WriteUTF(SpriteName);
+            writer.WriteUTF(VisualData);
             writer.WriteByte((byte)Layer);
             writer.WriteBoolean(FlippedVertically);
             writer.WriteBoolean(FlippedHorizontally);
+            writer.WriteBoolean(IsAnimation);
         }
         public void Deserialize(LittleEndianReader reader)
         {
-            this.SpriteName = reader.ReadUTF();
+            this.VisualData = reader.ReadUTF();
             this.Layer = (LayerEnum)reader.ReadByte();
             this.FlippedVertically = reader.ReadBoolean();
             this.FlippedHorizontally = reader.ReadBoolean();
+            this.IsAnimation = reader.ReadBoolean();
         }
 
     }
+
 }

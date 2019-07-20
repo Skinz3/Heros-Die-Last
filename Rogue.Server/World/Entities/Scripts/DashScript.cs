@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.DesignPattern;
-using MonoFramework.Geometry;
-using MonoFramework.Utils;
+using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.Utils;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.World.Maps;

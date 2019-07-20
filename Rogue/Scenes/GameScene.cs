@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using Rogue.Collisions;
 using Rogue.Scenes;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using Rogue.Frames;
 using Rogue.Network;
 using Rogue.Protocol.Messages.Client;
@@ -12,11 +12,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Input;
+using Rogue.Core.Input;
 using Rogue.Objects.UI;
-using MonoFramework.Objects;
-using MonoFramework.Sprites;
-using MonoFramework;
+using Rogue.Core.Objects;
+using Rogue.Core.Sprites;
+using Rogue.Core;
 using Rogue.World.Items;
 
 namespace Rogue.Scenes

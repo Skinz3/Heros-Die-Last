@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Network.Protocol
+namespace Rogue.Core.Network.Protocol
 {
     public static class ProtocolTypeManager
     {
@@ -36,6 +36,8 @@ namespace MonoFramework.Network.Protocol
         {
             foreach (var type in assembly.GetTypes().Where(x => !x.IsSubclassOf(typeof(Message))))
             {
+                if (type.IsAbstract == true)
+                    continue;
                 FieldInfo field = type.GetField("Id");
                 if (field != null)
                 {

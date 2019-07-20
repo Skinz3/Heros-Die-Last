@@ -1,5 +1,5 @@
-﻿using MonoFramework.DesignPattern;
-using MonoFramework.Network.Protocol;
+﻿using Rogue.Core.DesignPattern;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;

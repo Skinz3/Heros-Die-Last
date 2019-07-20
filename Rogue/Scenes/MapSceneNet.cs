@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework;
-using MonoFramework.Animations;
-using MonoFramework.DesignPattern;
-using MonoFramework.Geometry;
-using MonoFramework.Input;
-using MonoFramework.Objects;
-using MonoFramework.Pathfinding;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core;
+using Rogue.Core.Animations;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.Input;
+using Rogue.Core.Objects;
+using Rogue.Core.Pathfinding;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using Rogue.Animations;
 using Rogue.Network;
 using Rogue.Objects;
@@ -54,7 +54,7 @@ namespace Rogue.Scenes
         }
         private void SendClick(ClickTypeEnum clickType)
         {
-            var targetPoint = Map.TranslateToScenePosition(Mouse.GetState().Position);
+            var targetPoint = Map.TranslateToScenePosition(MouseManager.State.Position);
 
             if (ClientHost.Client != null && ClientHost.Client.Player != null)
             {
@@ -66,22 +66,12 @@ namespace Rogue.Scenes
             SendClick(ClickTypeEnum.Left);
 
 
-            var mousePosition = Map.TranslateToScenePosition(Mouse.GetState().Position);
+            var mousePosition = Map.TranslateToScenePosition(MouseManager.State.Position);
             var playerCenter = ClientHost.Client.Player.Rectangle.Center;
 
             var relativePosition = (mousePosition - playerCenter).ToVector2();
             relativePosition.Normalize();
-
-
-
-            var kunai = new KunaiProjectile(id++, new Vector2(ClientHost.Client.Player.Center.X, ClientHost.Client.Player.Center.Y),
-                new Point(32), Color.White, relativePosition, ClientHost.Client.Player);
-
-            ClientHost.Client.Player.MapInstance.AddProjectile(kunai);
         }
-
-        [InDeveloppement]
-        private int id = 0;
 
         private void OnRightClick()
         {
@@ -109,6 +99,7 @@ namespace Rogue.Scenes
             if (NetworkReady)
             {
                 base.Draw(gameTime);
+
             }
             else
             {

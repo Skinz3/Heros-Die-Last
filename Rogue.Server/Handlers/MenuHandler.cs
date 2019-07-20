@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.DesignPattern;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Network;
@@ -20,9 +20,10 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandlePlayRequestMessage(PlayRequestMessage message, RogueClient client)
         {
-            var record = EntityRecord.GetEntity("Default");
+            var record = EntityRecord.GetEntity("Blue");
             client.DefinePlayer(new Player(client, record, new Vector2()));
-            client.Player.Teleport("Donjon TEST");
+            client.Player.Teleport("Map de test 1");
+           // client.Player.Teleport("big");
         }
     }
 }

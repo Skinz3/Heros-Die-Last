@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using LiteNetLib.Utils;
 using Rogue.Protocol.Types;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Network.Protocol;
 
 namespace Rogue.Protocol.Messages.Server
 {

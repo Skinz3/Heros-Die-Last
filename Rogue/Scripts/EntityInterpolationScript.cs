@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rogue.Collisions;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Collisions;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Collisions;
+using Rogue.Animations;
 
 namespace Rogue.Scripts
 {
@@ -104,12 +105,18 @@ namespace Rogue.Scripts
                 NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
             }
 
+            var input = position - NextPosition.Position.Value;
+            AnimationController.OnMoveUpdated(input, Target);
+
+
             this.Target.MovementEngine.Direction = direction;// (position - Target.Position).GetDirection();
 
             this.Target.Position = NextPosition.Position.Value; // Quoi qu'il arrive avec l'interpolation, l'entitée est téléportée au point d'arrivée
             CurrentTime = 0; // Le compteur de temps repart a 0
             PreviousPosition = NextPosition; // La position précédente devient l'ancienne.
             NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
+
+
             /*  var pos = message.position - entity.Position;
 
               if (entity.Position != message.position)

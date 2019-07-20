@@ -18,16 +18,22 @@ namespace Rogue.Server.Records
 
         public string Name;
 
+        public string Icon;
+
         public ItemTypeEnum Type;
 
         public bool InstantUse;
 
-        public ItemRecord(int id, string name, ItemTypeEnum type, bool instantUse)
+        public float Cooldown;
+
+        public ItemRecord(int id, string name, string icon, ItemTypeEnum type, bool instantUse, float cooldown)
         {
             this.Id = id;
             this.Name = name;
+            this.Icon = icon;
             this.Type = type;
             this.InstantUse = instantUse;
+            this.Cooldown = cooldown;
         }
 
         public static ItemRecord GetItem(int itemId)

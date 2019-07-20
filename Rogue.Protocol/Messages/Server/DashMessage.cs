@@ -1,7 +1,7 @@
 ﻿using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Network.Protocol;
+using Rogue.Core.Collisions;
+using Rogue.Core.Network.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,16 +30,19 @@ namespace Rogue.Protocol.Messages.Server
 
         public DirectionEnum direction;
 
+        public string animation;
+
         public DashMessage()
         {
 
         }
-        public DashMessage(int entityId, float speed, DirectionEnum direction, int distance)
+        public DashMessage(int entityId, float speed, DirectionEnum direction, int distance, string animation)
         {
             this.entityId = entityId;
             this.direction = direction;
             this.speed = speed;
             this.distance = distance;
+            this.animation = animation;
         }
         public override void Deserialize(LittleEndianReader reader)
         {
@@ -47,6 +50,7 @@ namespace Rogue.Protocol.Messages.Server
             this.speed = reader.GetFloat();
             this.distance = reader.GetInt();
             this.direction = (DirectionEnum)reader.GetByte();
+            this.animation = reader.GetString();
         }
 
         public override void Serialize(LittleEndianWriter writer)
@@ -55,6 +59,7 @@ namespace Rogue.Protocol.Messages.Server
             writer.Put(speed);
             writer.Put(distance);
             writer.Put((byte)direction);
+            writer.Put(animation);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects.Abstract
+namespace Rogue.Core.Objects.Abstract
 {
     /// <summary>
     /// Représente un objet de scene.
@@ -20,23 +20,8 @@ namespace MonoFramework.Objects.Abstract
             get;
             private set;
         }
-        /// <summary>
-        /// Objets enfants (seront dessinés sous le parent)
-        /// </summary>
-        public List<GameObject> Childs
-        {
-            get;
-            private set;
-        }
+      
         private List<IScript> Scripts
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Objet parent
-        /// </summary>
-        public GameObject Parent
         {
             get;
             set;
@@ -58,7 +43,6 @@ namespace MonoFramework.Objects.Abstract
         }
         public GameObject()
         {
-            this.Childs = new List<GameObject>();
             this.Scripts = new List<IScript>();
         }
         /// <summary>
@@ -82,10 +66,6 @@ namespace MonoFramework.Objects.Abstract
         {
             return Scripts.OfType<T>().FirstOrDefault();
         }
-        public T GetParent<T>() where T : GameObject
-        {
-            return Parent as T;
-        }
         public void AddScript(IScript script)
         {
             script.Initialize(this);
@@ -102,39 +82,24 @@ namespace MonoFramework.Objects.Abstract
             script?.OnRemove();
             Scripts.Remove(script);
         }
-        public void AddChild(GameObject child)
-        {
-            child.Parent = this;
-            child.Initialize();
-            Childs.Add(child);
-        }
         public virtual void Draw(GameTime time)
         {
             OnDraw(time);
-
-            foreach (var child in Childs)
-            {
-                child.Draw(time);
-            }
         }
 
         public virtual void Update(GameTime time)
         {
             OnUpdate(time);
 
-            if (!Disposed)
-                foreach (var child in Childs.ToArray())
-                {
-                    child.Update(time);
-                }
+            if (Scripts.Count > 0)
+            {
+                if (!Disposed)
+                    foreach (var script in Scripts.ToArray())
+                    {
+                        script.Update(time);
+                    }
 
-            if (!Disposed)
-                foreach (var script in Scripts.ToArray())
-                {
-                    script.Update(time);
-                }
-
-
+            }
         }
 
         public abstract void OnInitialize();
@@ -148,7 +113,6 @@ namespace MonoFramework.Objects.Abstract
             {
                 script.Dispose();
             }
-            Childs = null;
             Scripts = null;
             OnDispose();
         }

@@ -1,16 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
-using MonoFramework.Sprites;
+using Rogue.Core.Input;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Objects
+namespace Rogue.Core.Objects
 {
     public class GCursor : SingleTextureObject
     {
@@ -44,7 +45,7 @@ namespace MonoFramework.Objects
         {
             if (Active)
             {
-                var mousePosition = Mouse.GetState().Position.ToVector2();
+                var mousePosition = MouseManager.State.Position.ToVector2();
                 this.Position = new Vector2(mousePosition.X - Size.X / 2, mousePosition.Y - Size.Y / 2);
             }
         }

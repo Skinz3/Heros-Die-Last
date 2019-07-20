@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Geometry;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core;
+using Rogue.Core.Geometry;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
 using Rogue.Objects.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,18 +15,24 @@ namespace Rogue.Objects.UI
     public class EntityInformations : PositionableObject
     {
         public static Point SIZE = new Point(60, 5);
-        public EntityInformations() : base(new Vector2(), SIZE)
-        {
 
+        public MovableEntity Entity
+        {
+            get;
+            set;
+        }
+        public EntityInformations(MovableEntity entity) : base(new Vector2(), SIZE)
+        {
+            this.Entity = entity;
         }
         public override void OnInitialize()
         {
-            SetText(GetParent<Entity>().Name, new Color(Color.White, 0.9f), RectangleOrigin.CenterTop, 1);
+            SetText(Entity.Name, new Color(Color.White, 0.9f), RectangleOrigin.CenterTop, 1);
         }
 
         public override void OnDraw(GameTime time)
         {
-            if (GetParent<MovableEntity>().Stats.LifeRatio >= 1)
+            if (Entity.Stats.LifeRatio >= 1)
             {
                 return;
             }
@@ -37,7 +43,7 @@ namespace Rogue.Objects.UI
             var rect = new Rectangle((int)Center.X - width / 2, (int)(Center.Y - height / 2) + 15, width, height);
             Debug.DrawRectangle(rect, new Color(Color.Black, 0.4f), thick);
 
-            var stats = GetParent<MovableEntity>().Stats;
+            var stats = Entity.Stats;
             float ratio = (float)stats.LifePoints / (float)stats.MaxLifePoints;
 
             rect.Width = (int)(width * ratio);
@@ -59,10 +65,10 @@ namespace Rogue.Objects.UI
 
         public override void OnUpdate(GameTime time)
         {
-            var rect = GetParent<MovableEntity>().Collider.EntityHitBox;
+            var rect = Entity.Collider.EntityHitBox;
             rect.Location -= new Point(0, rect.Height / 2);
             this.Align(rect, RectangleOrigin.CenterTop);
-            Text.Position.Y -= 10/2;
+            Text.Position.Y -= 10 / 2;
         }
 
         public override void OnDispose()

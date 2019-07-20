@@ -1,5 +1,5 @@
-﻿using MonoFramework.Network.Protocol;
-using MonoFramework.Sprites;
+﻿using Rogue.Core.Network.Protocol;
+using Rogue.Core.Sprites;
 using Rogue.Network;
 using Rogue.Protocol.Messages.Server;
 using Rogue.World.Items;
@@ -16,7 +16,7 @@ namespace Rogue.Handlers
         [MessageHandler]
         public static void HandleInventoryAddItemMessage(InventoryAddItemMessage message, RogueClient client)
         {
-            client.Inventory.AddItem(Item.CreateInstance(message.itemId, message.quantity), message.slot);
+            client.Inventory.AddItem(Item.CreateInstance(message.itemId, message.icon, message.quantity), message.slot);
         }
         [MessageHandler]
         public static void HandleInventoryUpdateQuantityMessage(InventoryUpdateQuantityMessage message, RogueClient client)
@@ -27,6 +27,11 @@ namespace Rogue.Handlers
         public static void HandleInventoryRemoveItemMessage(InventoryRemoveItemMessage message, RogueClient client)
         {
             client.Inventory.RemoveItem(message.slot);
+        }
+        [MessageHandler]
+        public static void HandleNotifyItemCooldownMessage(NotifyItemCooldownMessage message, RogueClient client)
+        {
+            client.Inventory.NotifyCooldown(message.slotId, message.cooldown);
         }
     }
 }

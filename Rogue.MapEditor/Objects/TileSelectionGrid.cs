@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Objects;
-using MonoFramework.Sprites;
+using Rogue.Core.Objects;
+using Rogue.Core.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +83,7 @@ namespace Rogue.MapEditor.Objects
                         Sprites[i].Load();
 
                     Cells[i - SpriteIndex].BackColor = Color.White;
-                    Cells[i - SpriteIndex].AddSprite(Sprites[i], LayerEnum.First);
+                    Cells[i - SpriteIndex].SetSprite(Sprites[i], LayerEnum.First);
 
                 }
                 else

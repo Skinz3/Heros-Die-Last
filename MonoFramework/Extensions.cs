@@ -1,4 +1,4 @@
-﻿using MonoFramework.Utils;
+﻿using Rogue.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YAXLib;
 
-namespace MonoFramework
+namespace Rogue.Core
 {
     public static class Extensions
     {

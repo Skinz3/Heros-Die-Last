@@ -6,10 +6,11 @@ using Rogue;
 using Rogue.Scenes;
 using Rogue.Network;
 using System;
-using MonoFramework;
-using MonoFramework.Input;
-using MonoFramework.Scenes;
+using Rogue.Core;
+using Rogue.Core.Input;
+using Rogue.Core.Scenes;
 using Rogue.Animations;
+using Rogue.Core.Animations;
 
 namespace Rogue
 {

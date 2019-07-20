@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Animations;
+using Rogue.Core.Animations;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Sprites
+namespace Rogue.Core.Sprites
 {
 
 
@@ -34,17 +34,13 @@ namespace MonoFramework.Sprites
             {
                 Directory.CreateDirectory(fullPath);
             }
-            foreach (var filePath in Directory.GetFiles(fullPath))
+           
+            foreach (string file in Directory.EnumerateFiles(fullPath, "*.*", SearchOption.AllDirectories))
             {
-                AddSprite(filePath);
+                AddSprite(file);
             }
-            foreach (var directoryPath in Directory.GetDirectories(fullPath))
-            {
-                foreach (var filePath in Directory.GetFiles(directoryPath))
-                {
-                    AddSprite(filePath);
-                }
-            }
+
+           
 
         }
         private static void AddSprite(string path)
@@ -85,7 +81,7 @@ namespace MonoFramework.Sprites
             if (!result.Loaded)
                 result.Load();
 
-           
+
             return result;
         }
 

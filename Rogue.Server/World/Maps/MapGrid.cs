@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Collisions;
-using MonoFramework.DesignPattern;
-using MonoFramework.Geometry;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
-using MonoFramework.Pathfinding;
+using Rogue.Core;
+using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Geometry;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
+using Rogue.Core.Pathfinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +70,7 @@ namespace Rogue.Server.World.Maps
         }
         public void Load()
         {
+
             Cells = new MapCell[GridSize.X * GridSize.Y];
 
             int id = 0;
@@ -88,10 +89,13 @@ namespace Rogue.Server.World.Maps
                 relativeX++;
 
             }
+
+
             foreach (var cell in Cells)
             {
                 cell.Adjacents = cell.GetAdjacentCells(this);
             }
+
         }
 
         public T GetCell<T>(int cellId) where T : ICell
@@ -100,7 +104,10 @@ namespace Rogue.Server.World.Maps
         }
         public ICell GetCell(int cellId)
         {
-            return Cells[cellId];
+            if (cellId >= Cells.Length || cellId < 0)
+                return null;
+            else
+                return Cells[cellId];
         }
         public ICell GetCell(int x, int y)
         {
@@ -149,10 +156,10 @@ namespace Rogue.Server.World.Maps
         {
             ICell[] cells = new ICell[4];
 
-            cells[0] = grid.GetCell(RelativePosition.X + 1, RelativePosition.Y);
-            cells[1] = grid.GetCell(RelativePosition.X - 1, RelativePosition.Y);
-            cells[2] = grid.GetCell(RelativePosition.X, RelativePosition.Y + 1);
-            cells[3] = grid.GetCell(RelativePosition.X, RelativePosition.Y - 1);
+            cells[0] = grid.GetCell(Id + grid.GridSize.Y);
+            cells[1] = grid.GetCell(Id - grid.GridSize.Y);
+            cells[2] = grid.GetCell(Id + 1);
+            cells[3] = grid.GetCell(Id - 1);
 
             return cells.Where(x => x != null).ToArray();
         }

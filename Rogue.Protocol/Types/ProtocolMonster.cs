@@ -21,7 +21,8 @@ namespace Rogue.Protocol.Types
         }
 
         public ProtocolMonster(string name, int entityId, Vector2 position, Point size,
-            Stats stats, StateAnimations[] animations) : base(name, entityId, position, size, stats, animations)
+            Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolEntityAura aura)
+            : base(name, entityId, position, size, stats, animations, idleAnimation, movementAnimation, aura)
         {
 
         }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
+using Rogue.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Pathfinding
+namespace Rogue.Core.Pathfinding
 {
     public class AStar
     {

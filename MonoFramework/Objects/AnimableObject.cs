@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoFramework.Animations;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Sprites;
+using Rogue.Core.Animations;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Sprites;
 
-namespace MonoFramework.Objects
+namespace Rogue.Core.Objects
 {
     public class AnimableObject : ColorableObject
     {

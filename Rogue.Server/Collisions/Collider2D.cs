@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework;
-using MonoFramework.Collisions;
+using Rogue.Core;
+using Rogue.Core.Collisions;
 using Rogue.Server.World;
 using Rogue.Server.World.Entities;
 using Rogue.Server.World.Maps;

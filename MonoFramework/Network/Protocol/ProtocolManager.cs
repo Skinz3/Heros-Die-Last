@@ -1,5 +1,5 @@
 ﻿using LiteNetLib.Utils;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Network.Protocol
+namespace Rogue.Core.Network.Protocol
 {
     public class ProtocolManager
     {

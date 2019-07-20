@@ -21,7 +21,7 @@ namespace Rogue.Server.World.Entities
             get;
             private set;
         }
-        public MonoFramework.Collisions.DirectionEnum Direction
+        public Rogue.Core.Collisions.DirectionEnum Direction
         {
             get;
             set;
@@ -44,8 +44,11 @@ namespace Rogue.Server.World.Entities
             set;
         }
 
-        
-
+        protected ProtocolEntityAura Aura
+        {
+            get;
+            private set;
+        }
         public Vector2 GetCellPosition(MapCell cell)
         {
             return cell.GetCenterPosition(Size.X, Size.Y);
@@ -55,19 +58,24 @@ namespace Rogue.Server.World.Entities
             this.Collider = CreateCollider();
             this.Stats = stats;
         }
-        public void Dash(Vector2 position, float speed, int distance)
+        public void Dash(Vector2 position, float speed, int distance, string animation)
         {
             AddScript(new DashScript(position, speed, distance));
-            MapInstance.Send(new DashMessage(Id, speed, Direction, distance));
+            MapInstance.Send(new DashMessage(Id, speed, Direction, distance, animation));
+        }
+        public void DefineAura(Color color, float radius, float sharpness)
+        {
+            this.Aura = new ProtocolEntityAura(color, radius, sharpness);
+            MapInstance.Send(new DefineEntityAuraMessage(Id, Aura));
         }
         public override void Update(long deltaTime)
         {
             Collider.Update();
             base.Update(deltaTime);
         }
-        public void SendPosition()
+        public void SendPosition(float mr)
         {
-            this.MapInstance.Send(new EntityDispositionMessage(Id, Position, Direction), Id, SendOptions.Sequenced);
+            this.MapInstance.Send(new EntityDispositionMessage(Id, Position, Direction, mr), Id, SendOptions.Sequenced);
         }
         public void InflictDamage(Entity source, int value)
         {

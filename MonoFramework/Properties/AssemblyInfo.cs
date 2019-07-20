@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MonoFramework")]
-[assembly: AssemblyProduct("MonoFramework")]
+[assembly: AssemblyTitle("Rogue.Core")]
+[assembly: AssemblyProduct("Rogue.Core")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]

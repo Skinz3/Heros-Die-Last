@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.DesignPattern;
-using MonoFramework.Objects;
+using Rogue.Core.DesignPattern;
+using Rogue.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,12 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Sprites
+namespace Rogue.Core.Sprites
 {
     /// <summary>
     /// Représente un fichier de texture en 2D. (png,jpg,bmp,gif...)
     /// </summary>
-    public class Sprite : ICellElement
+    public class Sprite : ILayerElement
     {
         /// <summary>
         /// La texture a elle été chargée?
@@ -116,7 +116,8 @@ namespace MonoFramework.Sprites
             Texture = Texture2D.FromStream(Debug.GraphicsDevice, stream);
             stream.Dispose();
         }
-        public void Draw(Rectangle rect, Color color, float rotation = 0.0f)
+        [InDeveloppement(InDeveloppementState.TODO, "origin is not used")]
+        public void Draw(Rectangle rect, Color color, float rotation = 0.0f, Vector2 origin = new Vector2())
         {
             if (rotation == 0)
             {

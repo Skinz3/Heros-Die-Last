@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Objects;
-using MonoFramework.Objects.Abstract;
-using MonoFramework.Scenes;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.Abstract;
+using Rogue.Core.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Collisions
+namespace Rogue.Core.Collisions
 {
     public abstract class Collider2D
     {

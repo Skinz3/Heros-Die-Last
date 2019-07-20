@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoFramework.Collisions;
-using MonoFramework.Input;
-using MonoFramework.Objects;
-using MonoFramework.Scenes;
+using Rogue.Core.Collisions;
+using Rogue.Core.Input;
+using Rogue.Core.Objects;
+using Rogue.Core.Scenes;
 using Rogue.Animations;
 using Rogue.Collisions;
 using Rogue.Inputs;
@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rogue.Core.DesignPattern;
 
 namespace Rogue.Objects.Entities
 {
@@ -30,7 +31,7 @@ namespace Rogue.Objects.Entities
             get;
             private set;
         }
-        protected Animator Animator
+        public Animator Animator
         {
             get;
             private set;
@@ -74,7 +75,17 @@ namespace Rogue.Objects.Entities
                 return true;
             }
         }
-
+        protected GCircle Aura
+        {
+            get;
+            private set;
+        }
+        [InDeveloppement]
+        private EntityInformations EntityInformations
+        {
+            get;
+            set;
+        }
         public void InflictDamage(Entity source, int amount)
         {
 
@@ -88,7 +99,15 @@ namespace Rogue.Objects.Entities
         }
 
 
-
+        public void DefineAura(Color color, float radius, float sharpness)
+        {
+            Aura = new GCircle(new Vector2(), radius, color, sharpness);
+            Aura.Initialize();
+        }
+        public void RemoveAura()
+        {
+            Aura = null;
+        }
         protected virtual void OnDead(Entity source)
         {
 
@@ -98,11 +117,17 @@ namespace Rogue.Objects.Entities
         {
             this.Collider = CreateCollider();
             this.Stats = entity.Stats;
-            this.MovementEngine = new MovementEngine(Collider, this, 2.5f);
-            this.Animator = new Animator(entity.Animations);
+            this.MovementEngine = new MovementEngine(Collider, this, entity.Stats.Speed);
+            this.Animator = new Animator(entity.Animations, entity.IdleAnimation, entity.MovementAnimation);
+            this.Animator.CurrentAnimation = "moving";
+
+            if (entity.Aura != null)
+            {
+                DefineAura(entity.Aura.Color, entity.Aura.Radius, entity.Aura.Sharpness);
+            }
         }
 
-        public virtual void OnPositionReceived(Vector2 position, DirectionEnum direction)
+        public virtual void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
             if (EntityInterpolationScript.UseInterpolation)
             {
@@ -112,6 +137,7 @@ namespace Rogue.Objects.Entities
             {
                 if (!Dashing)
                 {
+                     Animator.SetMovementAnimation();
                     Position = position;
                     MovementEngine.Direction = direction;
                 }
@@ -123,15 +149,21 @@ namespace Rogue.Objects.Entities
         public override void OnDraw(GameTime time)
         {
             Animator.Draw(time, this);
+
+            if (Aura != null)
+            {
+                Aura.Draw(time);
+            }
+            EntityInformations.Draw(time);
         }
-        public void Dash(float speed, int distance, DirectionEnum direction)
+        public void Dash(float speed, int distance, DirectionEnum direction, string animation)
         {
             if (Dashing)
             {
                 RemoveScript(GetScript<DashScript>());
             }
 
-            this.AddScript(new DashScript(speed, distance, direction));
+            this.AddScript(new DashScript(speed, distance, direction, animation));
         }
 
         public Vector2 GetCellPosition(GCell cell)
@@ -141,7 +173,8 @@ namespace Rogue.Objects.Entities
 
         public override void OnInitialize()
         {
-            AddChild(new EntityInformations());
+            EntityInformations = new EntityInformations(this);
+            EntityInformations.Initialize();
         }
         public override void Dispose()
         {
@@ -164,9 +197,13 @@ namespace Rogue.Objects.Entities
         public override void Update(GameTime time)
         {
             base.Update(time);
-
+            EntityInformations.Update(time);
             Collider.Update();
 
+            if (Aura != null)
+            {
+                Aura.Position = this.Center - new Vector2(Aura.Radius / 2, Aura.Radius / 2);
+            }
             if (Controlable)
                 MovementEngine.UpdateInputs(time);
             Animator.Update(time, this);

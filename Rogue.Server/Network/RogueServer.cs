@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Network;
-using MonoFramework.Utils;
+using Rogue.Core.Network;
+using Rogue.Core.Utils;
 
 namespace Rogue.Server.Network
 {

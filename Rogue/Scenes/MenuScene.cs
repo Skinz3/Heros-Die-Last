@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Rogue.Objects;
 using Rogue.Scenes;
-using Rogue.MapEditor;
 using Rogue.Network;
 using Rogue.Protocol.Messages.Client;
 using System;
@@ -9,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Scenes;
-using MonoFramework.Objects;
-using MonoFramework.Objects.UI;
-using MonoFramework.Objects.Abstract;
+using Rogue.Core.Scenes;
+using Rogue.Core.Objects;
+using Rogue.Core.Objects.UI;
+using Rogue.Core.Objects.Abstract;
 
 namespace Rogue.Scenes
 {

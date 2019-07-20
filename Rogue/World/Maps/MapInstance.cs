@@ -1,14 +1,14 @@
 ﻿using Rogue.Objects;
 using Rogue.Objects.Entities;
 using Rogue.Scenes;
-using MonoFramework.Utils;
+using Rogue.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Scenes;
-using MonoFramework.Objects;
+using Rogue.Core.Scenes;
+using Rogue.Core.Objects;
 using Rogue.World.Entities.Projectiles;
 
 namespace Rogue.World.Maps

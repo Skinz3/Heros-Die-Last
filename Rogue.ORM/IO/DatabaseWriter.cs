@@ -8,7 +8,7 @@ using System.IO;
 using Rogue;
 using Rogue.ORM.Interfaces;
 using Rogue.ORM.Attributes;
-using MonoFramework;
+using Rogue.Core;
 
 namespace Rogue.ORM.IO
 {

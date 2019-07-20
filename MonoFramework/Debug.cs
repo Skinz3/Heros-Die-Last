@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoFramework.Scenes;
+using Rogue.Core.Scenes;
 using System;
 using System.Collections.Generic;
 
-namespace MonoFramework
+namespace Rogue.Core
 {
     public class Debug
     {

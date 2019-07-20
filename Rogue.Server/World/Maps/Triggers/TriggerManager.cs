@@ -1,4 +1,6 @@
-﻿using Rogue.Protocol.Enums;
+﻿using Rogue.Core.DesignPattern;
+using Rogue.Core.Objects;
+using Rogue.Protocol.Enums;
 using Rogue.Server.Records;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,8 @@ namespace Rogue.Server.World.Maps.Triggers
 {
     class TriggerManager
     {
-        public static Trigger GetTrigger(MapInstance mapInstance, MapObjectRecord record)
+        [InDeveloppement]
+        public static Trigger GetTrigger(MapInstance mapInstance, MapInteractiveRecord record)
         {
             switch (record.TriggerType)
             {
@@ -18,10 +21,10 @@ namespace Rogue.Server.World.Maps.Triggers
                     return new LockTrigger(mapInstance, record);
                 case TriggerTypeEnum.Teleport:
                     return new TeleportTrigger(mapInstance, record);
-                case TriggerTypeEnum.Chest:
-                    return new ChestTrigger(mapInstance, record);
-                case TriggerTypeEnum.Spikes:
-                    return new SpikesTrigger(mapInstance, record);
+               case TriggerTypeEnum.Chest:
+                    return new ChestTrigger(mapInstance, record); 
+             /*   case TriggerTypeEnum.Spikes:
+                    return new SpikesTrigger(mapInstance, record); */
             }
 
             return null;

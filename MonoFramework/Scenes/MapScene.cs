@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoFramework.IO.Maps;
-using MonoFramework.Objects;
+using Rogue.Core.IO.Maps;
+using Rogue.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Scenes
+namespace Rogue.Core.Scenes
 {
     public abstract class MapScene : Scene
     {
@@ -26,7 +26,7 @@ namespace MonoFramework.Scenes
         {
             MapTemplate = new MapTemplate();
             MapTemplate.Load(path);
-            Map = new GMap(new Point(MapTemplate.Width, MapTemplate.Height));
+            Map = new GMap(new Point(MapTemplate.Width, MapTemplate.Height), true);
             Map.Initialize();
             Map.Load(MapTemplate);
             OnMapLoaded();
@@ -37,9 +37,12 @@ namespace MonoFramework.Scenes
         {
             Map.Update(gameTime);
             base.Update(gameTime);
+
         }
         protected override void DrawSceneObjects(GameTime gameTime)
         {
+
+
             Debug.SpriteBatch.Begin(SpriteSortMode.Immediate,
                        BlendState.AlphaBlend, SamplerState.PointClamp,
                        null,
@@ -56,7 +59,12 @@ namespace MonoFramework.Scenes
                     gameObject.Draw(gameTime);
                 }
             }
+
+            Map.DrawLights(gameTime);
+
             Debug.SpriteBatch.End();
+
+
         }
     }
 }

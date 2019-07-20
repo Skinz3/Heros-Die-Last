@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoFramework.Input
+namespace Rogue.Core.Input
 {
     public class MouseManager
     {
@@ -23,41 +23,42 @@ namespace MonoFramework.Input
         public static event Action OnRightButtonPressed;
         public static event Action OnMiddleButtonPressed;
 
+        public static MouseState State;
+
         public static void Update()
         {
-            var state = Mouse.GetState();
+            State =  Mouse.GetState();
 
-
-            if (state.MiddleButton == ButtonState.Pressed && !MiddleButtonPressed)
+            if (State.MiddleButton == ButtonState.Pressed && !MiddleButtonPressed)
             {
                 MiddleButtonPressed = true;
                 OnMiddleButtonDown?.Invoke();
             }
-            else if (state.RightButton == ButtonState.Pressed && !RightButtonPressed)
+            else if (State.RightButton == ButtonState.Pressed && !RightButtonPressed)
             {
                 RightButtonPressed = true;
                 OnRightButtonDown?.Invoke();
 
             }
-            else if (state.RightButton == ButtonState.Released && RightButtonPressed)
+            else if (State.RightButton == ButtonState.Released && RightButtonPressed)
             {
                 RightButtonPressed = false;
                 OnRightButtonPressed?.Invoke();
             }
 
 
-            if (state.MiddleButton == ButtonState.Released && MiddleButtonPressed)
+            if (State.MiddleButton == ButtonState.Released && MiddleButtonPressed)
             {
                 MiddleButtonPressed = false;
                 OnMiddleButtonPressed?.Invoke();
             }
-            else if (state.LeftButton == ButtonState.Pressed && !LeftButtonPressed)
+            else if (State.LeftButton == ButtonState.Pressed && !LeftButtonPressed)
             {
                 LeftButtonPressed = true;
                 OnLeftButtonDown?.Invoke();
 
             }
-            else if (state.LeftButton == ButtonState.Released && LeftButtonPressed)
+            else if (State.LeftButton == ButtonState.Released && LeftButtonPressed)
             {
                 LeftButtonPressed = false;
                 OnLeftButtonPressed?.Invoke();

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoFramework.Objects;
+using Rogue.Core.Objects;
 
-namespace MonoFramework.Pathfinding
+namespace Rogue.Core.Pathfinding
 {
     public class Node : INode
     {
