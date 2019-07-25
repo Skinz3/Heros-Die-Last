@@ -24,14 +24,30 @@ namespace Rogue
 
         public Game1()
         {
-            KeyboardManager.OnKeyPressed += OnKeyPressed;
-        }
+            Configuration.Initialize();
 
+            KeyboardManager.OnKeyPressed += OnKeyPressed;
+
+            if (Configuration.Self.FullScreen)
+            {
+                GraphicsDeviceManager.PreferredBackBufferWidth = 1920;
+                GraphicsDeviceManager.PreferredBackBufferHeight = 1080;
+                this.GraphicsDeviceManager.IsFullScreen = true;
+            }
+        }
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+
+        }
         protected override void LoadContent()
         {
             base.LoadContent();
             AnimationManager.Initialize();
             SceneManager.LoadScene(new LoginScene());
+
+
 
         }
         protected override void Dispose(bool disposing)
@@ -55,7 +71,7 @@ namespace Rogue
         {
             frameCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-         //   Console.Title = "Rogue FPS: " + Math.Round(frameCounter.AverageFramesPerSecond);
+            Console.Title = "Rogue FPS: " + Math.Round(frameCounter.AverageFramesPerSecond);
 
 
             ClientHost.Client?.PollEvents();

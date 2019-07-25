@@ -94,6 +94,8 @@ namespace Rogue.Handlers
         [MessageHandler]
         public static void HandleGameEntitiesMessage(GameEntitiesMessage message, RogueClient client)
         {
+            EntityInterpolationScript.PositionUpdateFrameCount = message.positionUpdateFrameCount;
+
             MapInstance instance = new MapInstance();
 
             foreach (var protocolEntity in message.entities)

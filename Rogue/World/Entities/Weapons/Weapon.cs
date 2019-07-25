@@ -40,7 +40,7 @@ namespace Rogue.World.Entities.Weapons
         }
         public void OnDraw(GameTime time)
         {
-            var dir = Player.MovementEngine.Direction.Restrict4Direction();
+            var dir = Player.MovementEngine.Direction.Restrict4DirectionRL();
 
             int offsetY = 0;
 

@@ -16,6 +16,8 @@ namespace Rogue.Scripts
 {
     public class EntityInterpolationScript : IScript
     {
+        public static int PositionUpdateFrameCount = 1;
+
         private MovableEntity Target
         {
             get;
@@ -76,6 +78,8 @@ namespace Rogue.Scripts
                 return NextPosition.Position.HasValue && (NextPosition.Position.Value != Target.Position || NextPosition.Direction != Target.MovementEngine.Direction);
             }
         }
+
+
         public void Initialize(GameObject gameObject)
         {
             this.Target = (MovableEntity)gameObject;
@@ -122,7 +126,7 @@ namespace Rogue.Scripts
             }
             if (InterpolationRequired)
             {
-                CurrentTime += (TotalTime / MainPlayerScript.PositionUpdateFrameCount);
+                CurrentTime += (TotalTime / PositionUpdateFrameCount);
 
                 if (float.IsNaN(CurrentRatio))
                 {

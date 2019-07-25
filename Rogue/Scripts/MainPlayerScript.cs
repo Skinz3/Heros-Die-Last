@@ -16,8 +16,6 @@ namespace Rogue.Scripts
 {
     public class MainPlayerScript : IScript
     {
-        public static int PositionUpdateFrameCount = 1;
-
         private Player Player
         {
             get;
@@ -48,7 +46,7 @@ namespace Rogue.Scripts
 
         public void SendOnNextFrame()
         {
-            CurrentPositionUpdateFrameCount = PositionUpdateFrameCount;
+            CurrentPositionUpdateFrameCount = EntityInterpolationScript.PositionUpdateFrameCount;
         }
         public void Update(GameTime time)
         {
@@ -59,7 +57,7 @@ namespace Rogue.Scripts
                 return;
             }
 
-            if (CurrentPositionUpdateFrameCount >= PositionUpdateFrameCount)
+            if (CurrentPositionUpdateFrameCount >= EntityInterpolationScript.PositionUpdateFrameCount)
             {
                 CurrentPositionUpdateFrameCount = 0;
                 ClientHost.Client.Send(new EntityDispositionRequestMessage(Player.Position, Player.MovementEngine.Direction, Player.MouseRotation));

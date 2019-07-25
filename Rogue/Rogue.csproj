@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rogue</RootNamespace>
     <AssemblyName>Rogue</AssemblyName>
@@ -66,6 +66,7 @@
     <Compile Include="Auth\Account.cs" />
     <Compile Include="Collisions\ProjectileCollider2D.cs" />
     <Compile Include="Collisions\WonderDotCollider.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Frames\ClientFrame.cs" />
     <Compile Include="Frames\AuthentificationFrame.cs" />
     <Compile Include="Frames\HubFrame.cs" />
@@ -118,6 +119,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="YAXLib, Version=2.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MonoFramework\bin\DesktopGL\AnyCPU\Debug\YAXLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />

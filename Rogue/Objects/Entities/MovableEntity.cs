@@ -117,16 +117,8 @@ namespace Rogue.Objects.Entities
         [InDeveloppement]
         public virtual void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
+            Console.WriteLine("Receive pos"); 
             GetScript<EntityInterpolationScript>().OnPositionReceived(position, direction);
-            return;
-
-            if (!Dashing)
-            {
-                Animator.SetMovementAnimation();
-                Position = position;
-                MovementEngine.Direction = direction;
-            }
-
 
         }
         public abstract Collider2D CreateCollider();
@@ -169,6 +161,7 @@ namespace Rogue.Objects.Entities
             if (UseInterpolation)
             {
                 AddScript(new EntityInterpolationScript());
+                GetScript<EntityInterpolationScript>().Restore(Position, MovementEngine.Direction);
             }
             Animator.Initialize();
         }

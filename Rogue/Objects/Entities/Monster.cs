@@ -26,7 +26,7 @@ namespace Rogue.Objects.Entities
         public override void OnInitialize()
         {
             Animator.SetIdleAnimation();
-            DefineAura(new Color(Color.Purple, 80), 200, 0.05f);
+            DefineAura(new Color(Color.CornflowerBlue, 80), 200, 0.05f);
             base.OnInitialize();
         }
 

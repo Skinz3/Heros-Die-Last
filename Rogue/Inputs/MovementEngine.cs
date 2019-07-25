@@ -5,6 +5,7 @@ using Rogue.Core.Collisions;
 using Rogue.Core.DesignPattern;
 using Rogue.Core.Geometry;
 using Rogue.Core.Input;
+using Rogue.Core.Objects;
 using Rogue.Core.Objects.Abstract;
 using Rogue.Core.Scenes;
 using Rogue.Objects.Entities;
@@ -42,6 +43,11 @@ namespace Rogue.Inputs
             get;
             set; // private?
         }
+        public Vector2 InputDirection
+        {
+            get;
+            set;
+        }
         public MovementEngine(Collider2D collider, MovableEntity target, float speed)
         {
             this.Collider = collider;
@@ -58,12 +64,12 @@ namespace Rogue.Inputs
 
             DirectionEnum oldDirection = Direction;
 
-            Direction = input.GetDirectionNormalized();
+            InputDirection = input;
 
-            var a = (SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(MouseManager.State.Position).ToVector2() - Target.Center);
-            a.Normalize();
+            var mouseRotationInput = (SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(MouseManager.State.Position).ToVector2() - Target.Center);
+            mouseRotationInput.Normalize();
 
-            Direction = a.GetDirection();
+            Direction = mouseRotationInput.GetDirection();
 
             if (Direction == (DirectionEnum.Right | DirectionEnum.Left) || Direction == (DirectionEnum.Up | DirectionEnum.Down))
             {
@@ -74,12 +80,13 @@ namespace Rogue.Inputs
                 OnDirectionChanged?.Invoke(oldDirection, Direction);
             }
 
-            AnimationController.OnMoveUpdated(input, Target);
 
             if (Direction == DirectionEnum.None)
             {
                 Direction = oldDirection; // we can setup animation here?
             }
+
+            AnimationController.OnMoveUpdated(input, Target);
 
             if (input != new Vector2(0, 0))
             {
@@ -87,15 +94,32 @@ namespace Rogue.Inputs
                 input = input * new Vector2(Speed);
 
                 var newPosition = Target.Position + input;
-                if (Collider.CanMove(newPosition, Direction) == null)
+
+                var collide = Collider.CanMove(newPosition, Direction);
+
+                CellSlide(collide);
+
+                if (collide == null)
                 {
                     Target.Position = newPosition;
                 }
                 /*  else
-                  {
-                       On ne peut pas bouger ! 
-                  } */
+                 {
+                      On ne peut pas bouger ! 
+                 } */
             }
+
+        }
+        private void CellSlide(GameObject collider)
+        {
+            if (!(collider is GCell))
+            {
+                return;
+            }
+
+            var cell = collider as GCell;
+
+            Target.Position += GeometryExtensions.GetCellSlidingVector(Target.Center, SceneManager.GetCurrentScene<MapScene>().Map, cell, InputDirection) * Speed;
 
         }
         [InDeveloppement(InDeveloppementState.THINK_ABOUT_IT, "(btw bad spelling DevEloppment), Configure key, architecture problem with networking?")]

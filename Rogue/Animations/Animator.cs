@@ -45,7 +45,7 @@ namespace Rogue.Animations
         }
         public void Update(GameTime time, MovableEntity entity)
         {
-            DirectionEnum direction = entity.MovementEngine.Direction.Restrict4Direction();
+            DirectionEnum direction = entity.MovementEngine.Direction.Restrict4DirectionRL();
 
             if (Animations.ContainsKey(CurrentAnimation))
             {
@@ -70,7 +70,7 @@ namespace Rogue.Animations
 
         public void Draw(GameTime time, MovableEntity entity)
         {
-            DirectionEnum direction = entity.MovementEngine.Direction.Restrict4Direction();
+            DirectionEnum direction = entity.MovementEngine.Direction.Restrict4DirectionRL();
 
             if (Animations.ContainsKey(CurrentAnimation))
             {

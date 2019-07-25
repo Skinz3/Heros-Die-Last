@@ -57,7 +57,7 @@ namespace Rogue.Network
         }
         public static void Connect()
         {
-            ClientHost.Client.Connect("34.77.67.110", 555);
+            ClientHost.Client.Connect(Configuration.Self.ServerIp, Configuration.Self.ServerPort);
         }
 
         private static void OnConnectionClosed(AbstractClient obj)

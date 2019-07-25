@@ -88,7 +88,9 @@ namespace Rogue.Objects
                 AddScript(new CameraControlScript());
                 AddScript(new MainPlayerScript());
             }
+          
             base.OnInitializeComplete();
+
         }
 
         public override void OnDraw(GameTime time)

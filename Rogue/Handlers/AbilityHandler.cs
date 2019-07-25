@@ -38,7 +38,6 @@ namespace Rogue.Handlers
         {
             var owner = client.Player.MapInstance.GetEntity<MovableEntity>(message.ownerId);
 
-          //  ProjectilesManager
             var sPosition = message.startPosition;
 
             sPosition = new Vector2(sPosition.X - message.size / 2, sPosition.Y - message.size / 2);

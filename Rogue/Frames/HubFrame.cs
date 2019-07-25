@@ -9,6 +9,7 @@ using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Core.Scenes;
+using LiteNetLib;
 
 namespace Rogue.Frames
 {
@@ -63,7 +64,7 @@ namespace Rogue.Frames
         protected override void OnFrameLoaded()
         {
             base.OnFrameLoaded();
-            ClientHost.Client.Send(new GameEntitiesRequestMessage());
+            ClientHost.Client.Send(new GameEntitiesRequestMessage(), SendOptions.ReliableUnordered);
         }
     }
 }
