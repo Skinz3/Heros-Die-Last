@@ -3,17 +3,16 @@ using Rogue.Core;
 using Rogue.Core.Geometry;
 using Rogue.Core.Objects.Abstract;
 using Rogue.Core.Scenes;
-using Rogue.Network;
-using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;
-using Rogue.World.Projectiles;
+using Rogue.Server.World.Entities;
+using Rogue.Server.World.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rogue.Collisions
+namespace Rogue.Server.Collisions
 {
     public class ProjectileCollider2D
     {
@@ -31,7 +30,7 @@ namespace Rogue.Collisions
         {
             this.Projectile = projectile;
         }
-        public void UpdateMovements(GameTime time)
+        public void UpdateMovements(long deltaTime)
         {
             var oldCan = this.CanMove;
 
@@ -43,9 +42,30 @@ namespace Rogue.Collisions
 
             //var rect = new Rectangle(futurePosition.ToPoint(), Projectile.Size);
 
+            if (Projectile.CollisionMask.HasFlag(CollisionMask.ENTITIES))
+            {
+                var entities = Projectile.MapInstance.GetEntities<MovableEntity>();
+                foreach (var entity in entities)
+                {
+                    if (entity != Projectile.Owner)
+                    {
+                        if (GeometryExtensions.CircleRectangleCollide(futureCenter, (Projectile.SizeF / 2), entity.Collider.EntityHitBox))
+                        {
+                            CanMove = false;
+                            Projectile.OnCollide(entity, CollisionMask.ENTITIES);
+                            if (!Projectile.CrossEntities)
+                            {
+                                Projectile.WaitingForDispose = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             if (Projectile.CollisionMask.HasFlag(CollisionMask.WALL))
             {
-                foreach (var wall in Projectile.Map.Cells)
+                foreach (var wall in Projectile.MapInstance.Record.Grid.GetCells()) 
                 {
                     if (!wall.Walkable && GeometryExtensions.CircleRectangleCollide(futureCenter, (Projectile.SizeF / 2), wall.Rectangle))
                     {
@@ -59,7 +79,7 @@ namespace Rogue.Collisions
 
                         if (Projectile.DestroyOnWalls)
                         {
-                            ClientHost.Client.Player.MapInstance.RemoveProjectile(Projectile.Id);
+                            Projectile.WaitingForDispose = true;
                             break;
                         }
                     }

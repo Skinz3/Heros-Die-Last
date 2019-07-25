@@ -1,4 +1,5 @@
 ﻿using LiteNetLib.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Rogue.Core.Network.Protocol;
 using System;
@@ -23,22 +24,27 @@ namespace Rogue.Protocol.Messages.Client
 
         public Keys key;
 
+        public Point mousePosition;
+
         public KeyInputMessage()
         {
 
         }
-        public KeyInputMessage(Keys key)
+        public KeyInputMessage(Keys key, Point mousePosition)
         {
             this.key = key;
+            this.mousePosition = mousePosition;
         }
         public override void Deserialize(LittleEndianReader reader) // permet de convertir les objets binaire en paramètres
         {
             this.key = (Keys)reader.GetInt();
+            this.mousePosition = reader.GetPoint();
         }
 
         public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put((int)key);
+            writer.Put(mousePosition);
         }
     }
 }

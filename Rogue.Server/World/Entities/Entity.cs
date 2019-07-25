@@ -31,12 +31,7 @@ namespace Rogue.Server.World.Entities
             get;
             protected set;
         }
-        public bool WaitingForDispose
-        {
-            get;
-            set;
-        }
-
+       
         public Entity(Vector2 position, Point size) : base(position, size)
         {
             this.Scripts = new List<IScript>();
@@ -55,13 +50,13 @@ namespace Rogue.Server.World.Entities
         {
             return Scripts.OfType<T>().FirstOrDefault();
         }
-        public virtual void DefineMapInstance(MapInstance instance)
+
+        public override void DefineMapInstance(MapInstance instance)
         {
             this.MapInstance = instance;
             this.MapInstance.AddEntity(this);
         }
-
-        public void LeaveMapInstance()
+        public override void LeaveMapInstance()
         {
             if (MapInstance != null)
             {

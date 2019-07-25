@@ -165,7 +165,7 @@ namespace Rogue.Server.World.Entities.Scripts
         {
             var targetCell = Target.GetCell();
 
-            if (targetCell == null)
+            if (targetCell == null || Target.GetMapInstance() != Entity.MapInstance)
             {
                 StopMove();
                 return;

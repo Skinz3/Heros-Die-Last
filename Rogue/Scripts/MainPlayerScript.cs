@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Rogue.Core;
 using Rogue.Core.Cameras;
 using Rogue.Core.Collisions;
+using Rogue.Core.DesignPattern;
 using Rogue.Core.Geometry;
 using Rogue.Core.Objects;
 using Rogue.Core.Objects.Abstract;

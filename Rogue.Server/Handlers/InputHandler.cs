@@ -16,13 +16,13 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleKeyInputMessage(KeyInputMessage message, RogueClient client)
         {
-            if (message.key == Keys.LeftShift)
+            if (message.key == Keys.E)
             {
-                client.Player.Inventory.UseItem(client.Player.Position,2);
+                client.Player.Inventory.UseItem(message.mousePosition.ToVector2(),2);
             }
             if (message.key == Keys.A)
             {
-                client.Player.Inventory.UseItem(client.Player.Position, 3);
+                client.Player.Inventory.UseItem(message.mousePosition.ToVector2(), 3);
             }
         }
         [MessageHandler]
@@ -47,8 +47,6 @@ namespace Rogue.Server.Handlers
                 {
                     return;
                 }
-                if (cell != null)
-                    Console.WriteLine(cell.Id);
             }
 
             client.Player.Position = message.playerPosition;

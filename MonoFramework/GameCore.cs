@@ -41,7 +41,7 @@ namespace Rogue.Core
 
             /* GraphicsDeviceManager.PreferredBackBufferWidth = 1920;
              GraphicsDeviceManager.PreferredBackBufferHeight = 1080;
-             this.GraphicsDeviceManager.IsFullScreen = true; */
+             this.GraphicsDeviceManager.IsFullScreen = true;*/
         }
 
         protected override void Initialize()

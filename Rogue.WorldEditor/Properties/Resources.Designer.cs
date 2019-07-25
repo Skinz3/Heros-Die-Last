@@ -19,7 +19,7 @@ namespace Rogue.WorldEditor.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,7 +61,11 @@ namespace Rogue.WorldEditor.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Bienvenu dans l&apos;aide..
+        ///   Recherche une chaîne localisée semblable à Press Left Shift + Right Click on a cell to edit content
+        ///Press G to display/hide grid
+        ///Press C to edit collider
+        ///Space to change layer
+        ///T to focus/open tile selection.
         /// </summary>
         internal static string help {
             get {

@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Auth\AccountManager.cs" />
     <Compile Include="Collisions\Collider2D.cs" />
+    <Compile Include="Collisions\ProjectileCollider2D.cs" />
     <Compile Include="Collisions\WonderDotCollider.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Frames\AuthentificationFrame.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="World\Entities\Monster.cs" />
     <Compile Include="World\Entities\MovableEntity.cs" />
     <Compile Include="World\Entities\Player.cs" />
-    <Compile Include="World\Entities\Projectiles\Projectile.cs" />
+    <Compile Include="World\Projectiles\Projectile.cs" />
     <Compile Include="World\Entities\RecordableEntity.cs" />
     <Compile Include="World\Entities\Scripts\AIMovementScript.cs" />
     <Compile Include="World\Entities\Scripts\DashScript.cs" />
@@ -94,7 +95,7 @@
     <Compile Include="World\Items\Models\Heal.cs" />
     <Compile Include="World\Items\Models\Dash.cs" />
     <Compile Include="World\Items\Models\SnipePistol.cs" />
-    <Compile Include="World\Items\Models\Sword.cs" />
+    <Compile Include="World\Items\Models\ReflectionPistol.cs" />
     <Compile Include="World\Maps\MapGrid.cs" />
     <Compile Include="World\Maps\MapInstance.cs" />
     <Compile Include="World\Maps\MapsManager.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="World\Maps\Triggers\TeleportTrigger.cs" />
     <Compile Include="World\Maps\Triggers\Trigger.cs" />
     <Compile Include="World\Maps\Triggers\TriggerManager.cs" />
+    <Compile Include="World\Projectiles\ReflectionProjectile.cs" />
     <Compile Include="World\ServerObject.cs" />
   </ItemGroup>
   <ItemGroup>

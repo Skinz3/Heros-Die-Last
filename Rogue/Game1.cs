@@ -11,6 +11,7 @@ using Rogue.Core.Input;
 using Rogue.Core.Scenes;
 using Rogue.Animations;
 using Rogue.Core.Animations;
+using Rogue.Core.Utils;
 
 namespace Rogue
 {
@@ -19,6 +20,8 @@ namespace Rogue
     /// </summary>
     public class Game1 : GameCore
     {
+        FrameCounter frameCounter = new FrameCounter();
+
         public Game1()
         {
             KeyboardManager.OnKeyPressed += OnKeyPressed;
@@ -48,9 +51,13 @@ namespace Rogue
                 }
             }
         }
-
         protected override void Update(GameTime gameTime)
         {
+            frameCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+         //   Console.Title = "Rogue FPS: " + Math.Round(frameCounter.AverageFramesPerSecond);
+
+
             ClientHost.Client?.PollEvents();
             base.Update(gameTime);
         }

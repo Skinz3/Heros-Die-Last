@@ -91,7 +91,7 @@ namespace Rogue.Core.Objects.Abstract
         {
             OnUpdate(time);
 
-            if (Scripts.Count > 0)
+            if (!Disposed && Scripts.Count > 0)
             {
                 if (!Disposed)
                     foreach (var script in Scripts.ToArray())

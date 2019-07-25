@@ -25,6 +25,12 @@ namespace Rogue.Core.Objects.Abstract
             get;
             set;
         }
+        protected GCircle Aura
+        {
+            get;
+            private set;
+        }
+
         public ColorableObject(Vector2 position, Point size, Color color, float rotation = 0) : base(position, size, rotation)
         {
             this.Color = color;
@@ -34,6 +40,15 @@ namespace Rogue.Core.Objects.Abstract
         {
             this.Gradiant = new ColorGradiant(this, startColor, endColor,speed);
         }
+        public void DefineAura(Color color, float radius, float sharpness)
+        {
+            Aura = new GCircle(new Vector2(), radius, color, sharpness);
+            Aura.Initialize();
+        }
+        public void RemoveAura()
+        {
+            Aura = null;
+        }
         public void SetTransparency(float value)
         {
             if (value > 1)
@@ -41,6 +56,24 @@ namespace Rogue.Core.Objects.Abstract
             if (value < 0)
                 value = 0;
             this.Color = new Color(Color, value);
+        }
+        public override void Draw(GameTime time)
+        {
+            base.Draw(time);
+
+            if (Aura != null)
+            {
+                Aura.Draw(time);
+            }
+        }
+        public override void Update(GameTime time)
+        {
+            if (Aura != null)
+            {
+                Aura.Position = this.Center - new Vector2(Aura.Radius / 2, Aura.Radius / 2);
+            }
+
+            base.Update(time);
         }
         public override void OnUpdate(GameTime time)
         {

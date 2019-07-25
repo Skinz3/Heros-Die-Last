@@ -10,26 +10,24 @@ using Rogue.Objects.Entities;
 using Rogue.Protocol.Enums;
 using Rogue.Scenes;
 using Rogue.World.Maps;
+using Rogue.Core.Animations;
+using Rogue.Core;
+using Rogue.Core.Geometry;
 
-namespace Rogue.World.Entities.Projectiles
+namespace Rogue.World.Projectiles
 {
     public abstract class Projectile : ColorableObject
     {
-        public const float PROJECTILE_SPRITE_ROTATON_OFFSET = 45.0f;
-
-        protected abstract string SpriteName
+        protected string AnimationName
         {
             get;
+            set;
         }
 
-        public abstract float Speed
+        public float Speed
         {
             get;
-        }
-
-        protected abstract float Offset
-        {
-            get;
+            private set;
         }
 
         public Vector2 Direction
@@ -44,7 +42,7 @@ namespace Rogue.World.Entities.Projectiles
                 return SceneManager.GetCurrentScene<MapScene>().Map;
             }
         }
-        private Sprite Sprite
+        private Animation Animation
         {
             get;
             set;
@@ -65,10 +63,6 @@ namespace Rogue.World.Entities.Projectiles
             get;
         }
 
-        public abstract bool CrossEntities
-        {
-            get;
-        }
         public abstract bool DestroyOnWalls
         {
             get;
@@ -78,37 +72,58 @@ namespace Rogue.World.Entities.Projectiles
             get;
             private set;
         }
+        public int SizeF
+        {
+            get;
+            private set;
+        }
         protected void UpdateRotation()
         {
-            var angle = Math.Abs(MathHelper.ToDegrees((float)Math.Atan2(Direction.X, Direction.Y)) - 180); // Value between -180 and 180 transformed to 0 to 360
-            angle += PROJECTILE_SPRITE_ROTATON_OFFSET; // Due to sprite orientation
-            Rotation = angle;
+            Rotation = Direction.GetAngle();
         }
-        protected Projectile(int id, Vector2 position, Point size, Color color, Vector2 direction, MovableEntity owner) : base(position, size, color)
+        protected Projectile(int id, Vector2 position, int size, float speed, Color color, Vector2 direction, MovableEntity owner, string animationName) : base(position, new Point(size, size), color)
         {
             this.Direction = direction;
+            this.SizeF = size;
             this.Owner = owner;
+            this.Speed = speed;
             this.Id = id;
+            this.AnimationName = animationName;
         }
 
         public override void OnInitialize()
         {
-            this.Sprite = SpriteManager.GetSprite(SpriteName);
+            this.Animation = AnimationManager.GetAnimation(AnimationName);
             this.Collider = new ProjectileCollider2D(this);
-            this.Position += Direction * Offset;
             this.UpdateRotation();
         }
 
         public override void OnUpdate(GameTime time)
         {
+            Animation.Update(time);
             Collider.UpdateMovements(time);
-        }
 
+        }
+       
         public override void OnDraw(GameTime time)
         {
-            Sprite.Draw(Rectangle, Color, Rotation);
-        }
+            var rectangle = new Rectangle(Rectangle.Location, Rectangle.Size);
 
-        public abstract void OnCollide(GameObject obj, CollisionMask mask);
+            rectangle.X += Rectangle.Size.X / 2; // due to rotation origin fk this system?...
+            rectangle.Y += Rectangle.Size.Y / 2;
+
+            Animation.Draw(rectangle, Color, Rotation, new Vector2(Animation.TheoricalDimensions.X / 2, Animation.TheoricalDimensions.Y / 2));
+        }
+        public override void Draw(GameTime time)
+        {
+            base.Draw(time);
+        }
+        /// <summary>
+        /// bool = did we continue to check collisions?
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="mask"></param>
+        /// <returns></returns>
+        public abstract bool OnCollide(PositionableObject obj, CollisionMask mask);
     }
 }

@@ -28,12 +28,12 @@ namespace Rogue.World.Entities.Weapons
             get;
             set;
         }
-        private Dictionary<DirectionEnum,Animation> WeaponAnimations
+        private Dictionary<DirectionEnum, Animation> WeaponAnimations
         {
             get;
             set;
         }
-        public Weapon(string animationName,Player owner)
+        public Weapon(string animationName, Player owner)
         {
             this.WeaponAnimations = AnimationManager.GetAnimations(animationName);
             this.Player = owner;
@@ -48,8 +48,7 @@ namespace Rogue.World.Entities.Weapons
             {
                 offsetY = -15;
             }
-            Console.WriteLine(Player.MouseRotation);
-            WeaponAnimations[dir].Draw(new Rectangle((int)Player.Center.X, (int)Player.Center.Y + offsetY, 26, 26), Color.White, Player.MouseRotation, new Vector2(4, 13));
+            WeaponAnimations[dir].Draw(new Rectangle((int)Player.Center.X, (int)Player.Center.Y + offsetY, 26, 26), Color.White, MathHelper.ToDegrees(Player.MouseRotation), new Vector2(4, 13));
 
         }
     }

@@ -20,7 +20,6 @@ using Rogue.Objects;
 using Rogue.Objects.UI;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
-using Rogue.World.Entities.Projectiles;
 
 namespace Rogue.Scenes
 {
@@ -42,10 +41,10 @@ namespace Rogue.Scenes
             {
                 return;
             }
-            if (obj == Keys.LeftShift || obj == Keys.A)
-            {
-                ClientHost.Client.Send(new KeyInputMessage(obj));
-            }
+
+            var targetPoint = Map.TranslateToScenePosition(MouseManager.State.Position);
+
+            ClientHost.Client.Send(new KeyInputMessage(obj, targetPoint));
         }
 
         public void Information(string message, Color color)

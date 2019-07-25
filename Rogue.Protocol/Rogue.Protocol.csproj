@@ -51,6 +51,7 @@
     <Compile Include="Enums\FrameEnum.cs" />
     <Compile Include="Enums\ItemTypeEnum.cs" />
     <Compile Include="Enums\MapTriggerType.cs" />
+    <Compile Include="Enums\ProjectileTypeEnum.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Messages\Client\ClickMessage.cs" />
     <Compile Include="Messages\Client\FrameLoadedMessage.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Messages\Server\InventoryUpdateQuantityMessage.cs" />
     <Compile Include="Messages\Server\ItemLootChestMessage.cs" />
     <Compile Include="Messages\Server\NotifyItemCooldownMessage.cs" />
+    <Compile Include="Messages\Server\ProjectileCreateMessage.cs" />
     <Compile Include="Messages\Server\RemoveEntityMessage.cs" />
     <Compile Include="Messages\Server\AuthentificationFailedMessage.cs" />
     <Compile Include="Messages\Client\AuthentificationRequestMessage.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="Messages\Server\EntityDispositionMessage.cs" />
     <Compile Include="Messages\Server\LoadFrameMessage.cs" />
     <Compile Include="Messages\Server\RemoveLayerElementMessage.cs" />
+    <Compile Include="Messages\Server\RemoveProjectileMessage.cs" />
     <Compile Include="Messages\Server\ShowEntityMessage.cs" />
     <Compile Include="Messages\Client\TeleportRequestMessage.cs" />
     <Compile Include="Messages\Server\TeleportSameMapMessage.cs" />

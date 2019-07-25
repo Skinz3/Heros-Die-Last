@@ -42,9 +42,19 @@ namespace Rogue.Server.World
                 return GetMapInstance() != null;
             }
         }
+        public bool WaitingForDispose
+        {
+            get;
+            set;
+        }
+
         public abstract MapInstance GetMapInstance();
 
         public abstract MapCell GetCell();
+
+        public abstract void DefineMapInstance(MapInstance instance);
+
+        public abstract void LeaveMapInstance();
 
         public MapCell GetAdjacentFreeCell()
         {

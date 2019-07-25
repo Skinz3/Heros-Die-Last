@@ -15,6 +15,102 @@ namespace Rogue.Core.Geometry
 {
     public static class GeometryExtensions
     {
+
+        public static bool CircleRectangleCollide(Vector2 center, float radius,
+        Rectangle rectangle)
+        {
+            float xVal = center.X;
+            if (xVal < rectangle.Left) xVal = rectangle.Left;
+            if (xVal > rectangle.Right) xVal = rectangle.Right;
+
+            float yVal = center.Y;
+            if (yVal < rectangle.Top) yVal = rectangle.Top;
+            if (yVal > rectangle.Bottom) yVal = rectangle.Bottom;
+
+            Vector2 direction = new Vector2(center.X - xVal, center.Y - yVal);
+            float distance = direction.Length();
+
+            if ((distance > 0) && (distance < radius))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static Vector2 GetVector2(this float angle)
+        {
+            return new Vector2((float)Math.Cos(angle), (float)-Math.Sin(angle));
+        }
+        public static float GetAngle(this Vector2 normalized)
+        {
+            return MathHelper.ToDegrees((float)Math.Atan2(-normalized.X, normalized.Y));
+        }
+
+        public static Vector2 ReflectVector(Vector2 direction, Vector2 center, Vector2 targetCenter)
+        {
+            var objDir = (targetCenter - center);
+
+            objDir.Normalize();
+
+            var oldDirection = direction;
+
+            direction = new Vector2(-direction.X, -direction.Y);
+
+            if (oldDirection.X > 0 && oldDirection.Y > 0)
+            {
+                if (objDir.X > 0.5f) // such cancer x)))
+                {
+                    direction = new Vector2(direction.X, -direction.Y);
+                }
+                else
+                {
+                    direction = new Vector2(-direction.X, direction.Y);
+                }
+            }
+
+            if (oldDirection.X < 0 && oldDirection.Y > 0)
+            {
+
+                if (objDir.Y > 0.5f) // such cancer x)))
+                {
+                    direction = new Vector2(-direction.X, direction.Y);
+
+                }
+                else
+                {
+                    direction = new Vector2(direction.X, -direction.Y);
+                }
+            }
+            if (oldDirection.X < 0 && oldDirection.Y < 0)
+            {
+                if (objDir.X > -0.5f) // such cancer x)))
+                {
+                    direction = new Vector2(-direction.X, direction.Y);
+
+                }
+                else
+                {
+                    direction = new Vector2(direction.X, -direction.Y);
+                }
+            }
+            if (oldDirection.X > 0 && oldDirection.Y < 0)
+            {
+                if (objDir.Y < -0.5f) // such cancer x)))
+                {
+                    direction = new Vector2(-direction.X, direction.Y);
+
+                }
+                else
+                {
+                    direction = new Vector2(direction.X, -direction.Y);
+                }
+            }
+            return direction;
+        }
+
         public static float GetMouseRotation(this Vector2 relativeTo)
         {
             var vector = (SceneManager.GetCurrentScene<MapScene>().Map.TranslateToScenePosition(MouseManager.State.Position).ToVector2() - relativeTo);

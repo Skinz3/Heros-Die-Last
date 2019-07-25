@@ -40,7 +40,7 @@ namespace Rogue.Server.World.Maps.Triggers
 
         private void LootItem(Player player)
         {
-            var targetItem = ItemRecord.Items.Random();
+            var targetItem = ItemRecord.Items.Random(); //ItemRecord.Items.Find(x => x.Id == 104); 
             var quantity = new AsyncRandom().Next(1, 200);
             player.Inventory.AddItem(targetItem.Id, quantity);
             player.MapInstance.Send(new ItemLootChestMessage(targetItem.Id, targetItem.Icon, InteractiveElement.CellId, quantity));

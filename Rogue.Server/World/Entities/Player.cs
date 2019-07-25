@@ -58,6 +58,11 @@ namespace Rogue.Server.World.Entities
             get;
             set;
         }
+        private float MouseRotation
+        {
+            get;
+            set;
+        }
         public override string Name => Account.CharacterName;
 
         public Player(RogueClient client, EntityRecord record, Vector2 position) : base(record, position)
@@ -65,6 +70,7 @@ namespace Rogue.Server.World.Entities
             this.Client = client;
             this.Account = client.Account;
             this.Inventory = new Inventory(this);
+            this.MouseRotation = 0f;
         }
 
         private void TeleportOnMap(MapRecord targetMap)
@@ -126,14 +132,9 @@ namespace Rogue.Server.World.Entities
 
             Position = position;
             Direction = direction;
+            MouseRotation = mouseRotation;
 
-            SendPosition(mouseRotation);
-
-            if (CurrentCell != null && CurrentCell.Id == 286)
-            {
-                //   TeleportSameMap(40);
-            }
-
+            SendPosition();
         }
         public override ProtocolEntity GetProtocolObject()
         {
@@ -144,8 +145,6 @@ namespace Rogue.Server.World.Entities
         {
             Inventory.Update(deltaTime);
         }
-
-
         public override MapInstance GetMapInstance()
         {
             return MapInstance;
@@ -165,6 +164,11 @@ namespace Rogue.Server.World.Entities
         {
             WeaponAnimation = animationName;
             MapInstance.Send(new DefinePlayerWeaponMessage(Id, "item103"));
+        }
+
+        public override void SendPosition()
+        {
+            this.MapInstance?.Send(new EntityDispositionMessage(Id, Position, Direction, MouseRotation), Id, SendOptions.Unreliable);
         }
     }
 }

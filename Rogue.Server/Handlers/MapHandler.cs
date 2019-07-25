@@ -32,7 +32,7 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleEntityDispositionRequestMessage(EntityDispositionRequestMessage message, RogueClient client)
         {
-            client.Player.OnReceivePosition(message.position, message.direction,message.mouseRotation);
+            client.Player?.OnReceivePosition(message.position, message.direction,message.mouseRotation);
         }
     }
 }

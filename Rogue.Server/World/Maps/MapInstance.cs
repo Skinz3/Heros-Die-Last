@@ -16,8 +16,8 @@ using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Rogue.Server.World.Maps.Triggers;
 using Rogue.Core.Collisions;
-using Rogue.Server.World.Entities.Projectiles;
 using Rogue.Core.Objects;
+using Rogue.Server.World.Projectiles;
 
 namespace Rogue.Server.World.Maps
 {
@@ -33,6 +33,9 @@ namespace Rogue.Server.World.Maps
 
         public event Action<Entity> OnEntityJoin;
         public event Action<Entity> OnEntityLeave;
+
+        public event Action<Projectile> OnProjectileAdded;
+        public event Action<Projectile> OnProjectileRemoved;
 
         protected Dictionary<int, Entity> Entities = new Dictionary<int, Entity>();
         protected Dictionary<int, Projectile> Projectiles = new Dictionary<int, Projectile>();
@@ -155,7 +158,7 @@ namespace Rogue.Server.World.Maps
 
             if (deltaTime > 0)
             {
-                Console.Title = "Rogue Server FPS :" + (int)(deltaTime * (60 / REFRESH_RATE));
+                Console.Title = "Rogue Server FPS :" + (int)(deltaTime * (REFRESH_RATE));
 
                 Update(deltaTime);
                 Stopwatch = Stopwatch.StartNew();
@@ -205,6 +208,15 @@ namespace Rogue.Server.World.Maps
                     RemoveEntity(entity.Value);
                 }
             }
+            foreach (var projectile in Projectiles.ToArray())
+            {
+                projectile.Value.OnUpdate(deltaTime);
+
+                if (projectile.Value.WaitingForDispose)
+                {
+                    RemoveProjectile(projectile.Key);
+                }
+            }
 
 
         }
@@ -219,6 +231,28 @@ namespace Rogue.Server.World.Maps
         public bool Contains(Entity entity)
         {
             return Entities.ContainsKey(entity.Id);
+        }
+
+        public void RemoveProjectile(int id)
+        {
+            if (Projectiles.ContainsKey(id))
+            {
+                var projectile = Projectiles[id];
+                projectile.Dispose();
+                Projectiles.Remove(id);
+                Send(new RemoveProjectileMessage(id));
+                OnProjectileRemoved?.Invoke(projectile);
+
+            }
+            else
+            {
+                logger.Write("Unable to remove projectile, unknown projectile...", MessageState.WARNING);
+            }
+        }
+        public void AddProjectile(Projectile projectile)
+        {
+            Projectiles.Add(projectile.Id, projectile);
+            OnProjectileAdded?.Invoke(projectile);
         }
 
         public void Send(Message message, SendOptions sendOptions = SendOptions.ReliableOrdered)
@@ -262,8 +296,7 @@ namespace Rogue.Server.World.Maps
         }
         public GameEntitiesMessage GetGameEntitiesMessage()
         {
-            return new GameEntitiesMessage(GetProtocolEntities(),
-                Configuration.Self.PositionUpdateFrameCount, Configuration.Self.UseInterpolation);
+            return new GameEntitiesMessage(GetProtocolEntities());
         }
         /// <summary>
         /// add a entity? Entity.DefineMapInstance(x)

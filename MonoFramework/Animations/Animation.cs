@@ -61,6 +61,13 @@ namespace Rogue.Core.Animations
         }
         public event Action OnEnded;
 
+        public Point TheoricalDimensions
+        {
+            get
+            {
+                return Sprites[0].Texture.Bounds.Size;
+            }
+        }
         public Animation(string[] spriteNames, float delay, bool loop = true, bool flipVertical = false, bool flipHorizontal = false)
         {
             this.SpritesNames = spriteNames;
@@ -122,7 +129,7 @@ namespace Rogue.Core.Animations
         public void Draw(Rectangle rectangle, Color color, float rotation = 0, Vector2 origin = new Vector2())
         {
             if (Sprites.Length > 0)
-                Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, rectangle, null, color, rotation, origin, SpriteEffects.None, 0f);
+                Debug.SpriteBatch.Draw(Sprites[CurrentIndex].Texture, rectangle, null, color, MathHelper.ToRadians(rotation), origin, SpriteEffects.None, 0f);
         }
 
         public Animation Clone()

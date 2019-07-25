@@ -22,7 +22,7 @@ namespace Rogue.Server.Handlers
         {
             var record = EntityRecord.GetEntity("Blue");
             client.DefinePlayer(new Player(client, record, new Vector2()));
-            client.Player.Teleport("Map de test 1");
+            client.Player.Teleport("donjon");
            // client.Player.Teleport("big");
         }
     }

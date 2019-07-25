@@ -3,6 +3,7 @@ using Rogue.Core.Objects;
 using Rogue.Core.Scenes;
 using Rogue.Server.World.Entities;
 using Rogue.Server.World.Maps;
+using Rogue.Server.World.Projectiles;
 using Rogue.ServerView.Objects;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace Rogue.ServerView.Scenes
             get;
             set;
         }
+        private Dictionary<Projectile, ProjectileRepresentation> ProjectilesRepresentations
+        {
+            get;
+            set;
+        }
         private MapInstance TargetInstance
         {
             get;
@@ -33,6 +39,7 @@ namespace Rogue.ServerView.Scenes
         public View()
         {
             this.Representations = new Dictionary<Entity, EntityRepresentation>();
+            this.ProjectilesRepresentations = new Dictionary<Projectile, ProjectileRepresentation>();
         }
         public override void OnDispose()
         {
@@ -60,7 +67,8 @@ namespace Rogue.ServerView.Scenes
                     TargetInstance = obj.Value[0];
                     TargetInstance.OnEntityJoin += TargetInstance_OnEntityJoin;
                     TargetInstance.OnEntityLeave += TargetInstance_OnEntityLeave;
-
+                    TargetInstance.OnProjectileAdded += TargetInstance_OnProjectileAdded;
+                    TargetInstance.OnProjectileRemoved += TargetInstance_OnProjectileRemoved;
                     var template = TargetInstance.Record.Template;
 
                     var rep = new MapRepresentation(template);
@@ -90,6 +98,20 @@ namespace Rogue.ServerView.Scenes
                 }
             }
         }
+
+        private void TargetInstance_OnProjectileRemoved(Projectile obj)
+        {
+            RemoveObject(ProjectilesRepresentations[obj]);
+        }
+
+        private void TargetInstance_OnProjectileAdded(Projectile obj)
+        {
+            var rep = new ProjectileRepresentation(obj, new Color(Color.CornflowerBlue, 80f));
+            rep.Initialize();
+            ProjectilesRepresentations.Add(obj, rep);
+            AddObject(rep, LayerEnum.Second);
+        }
+
         private void TargetInstance_OnEntityLeave(Entity obj)
         {
             RemoveObject(Representations[obj]);

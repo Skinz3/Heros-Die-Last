@@ -27,7 +27,7 @@ namespace Rogue.Objects.UI
         }
         public override void OnInitialize()
         {
-            SetText(Entity.Name, new Color(Color.White, 0.9f), RectangleOrigin.CenterTop, 1);
+           SetText(Entity.Name, new Color(Color.White, 0.9f), RectangleOrigin.CenterTop, 1);
         }
 
         public override void OnDraw(GameTime time)
@@ -68,7 +68,7 @@ namespace Rogue.Objects.UI
             var rect = Entity.Collider.EntityHitBox;
             rect.Location -= new Point(0, rect.Height / 2);
             this.Align(rect, RectangleOrigin.CenterTop);
-            Text.Position.Y -= 10 / 2;
+            //Text.Position.Y -= 10 / 2;
         }
 
         public override void OnDispose()

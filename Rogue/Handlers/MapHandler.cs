@@ -31,31 +31,6 @@ namespace Rogue.Handlers
     class MapHandler
     {
         [MessageHandler]
-        public static void HandleDefinePlayerWeaponMessage(DefinePlayerWeaponMessage message, RogueClient client)
-        {
-            var entity = client.Player?.MapInstance?.GetEntity<Player>(message.targetId);
-            entity.DefineWeapon(message.animationName);
-        }
-        [MessageHandler]
-        public static void HandleDefineEntityAuraMessage(DefineEntityAuraMessage message, RogueClient client)
-        {
-            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.targetId);
-            entity.DefineAura(message.aura.Color, message.aura.Radius, message.aura.Sharpness);
-        }
-        [MessageHandler]
-        public static void HandleHitscanHitMessage(HitscanHitMessage message, RogueClient client)
-        {
-
-            var entity = client.Player?.MapInstance?.GetEntity<Player>(message.sourceId);
-            entity.Animator.CurrentAnimation = "item103";
-            var dir = (message.targetPoint - entity.Center);
-            dir.Normalize();
-            var target = entity.Center + dir * 1000;
-            var line = new HitScanShot(entity.Center, target, Color.LightBlue * 0.8f, 3f);
-            line.Initialize();
-            SceneManager.CurrentScene.AddObject(line, LayerEnum.First);
-        }
-        [MessageHandler]
         public static void HandleAIMoveMessage(AIMoveMessage message, RogueClient client)
         {
             var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.entityId);
@@ -65,17 +40,6 @@ namespace Rogue.Handlers
             if (entity != null)
             {
                 entity.GetScript<AIMovementScript>().Move(target);
-            }
-        }
-        [InDeveloppement]
-        [MessageHandler]
-        public static void HandleInflictDamageMessage(InflictDamageMessage message, RogueClient client)
-        {
-            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.targetId);
-
-            if (entity != null)
-            {
-                entity.InflictDamage(client.Player, message.amount);
             }
         }
         [MessageHandler]
@@ -130,9 +94,6 @@ namespace Rogue.Handlers
         [MessageHandler]
         public static void HandleGameEntitiesMessage(GameEntitiesMessage message, RogueClient client)
         {
-            EntityInterpolationScript.UseInterpolation = message.useInterpolation;
-            MainPlayerScript.PositionUpdateFrameCount = message.positionUpdateFrameCount;
-
             MapInstance instance = new MapInstance();
 
             foreach (var protocolEntity in message.entities)

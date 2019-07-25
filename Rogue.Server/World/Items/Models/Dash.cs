@@ -20,7 +20,7 @@ namespace Rogue.Server.World.Items.Models
 
         public override void OnAcquired()
         {
-            Owner.DefineAura(new Color(Color.DarkOrange, 80), 200F, 0.05f);
+            Owner.DefineAura(new Color(Color.DarkOrange, 80), 150F, 0.02f);
         }
 
         protected override bool OnUse(Vector2 position)

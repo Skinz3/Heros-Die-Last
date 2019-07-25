@@ -53,6 +53,10 @@ namespace Rogue.Server.World.Maps
         {
             return Cells.Where(x => x.Rectangle.Intersects(intersectRectangle)).ToArray();
         }
+        public MapCell[] GetCells()
+        {
+            return Cells;
+        }
         public MapCell RandomWalkableCell()
         {
             return Cells.Where(x => x.Walkable).Random();
@@ -183,14 +187,22 @@ namespace Rogue.Server.World.Maps
             return Rectangle.Intersects(new Rectangle(point, new Point(1)));
         }
 
+        public override MapCell GetCell()
+        {
+            return this;
+        }
         public override MapInstance GetMapInstance()
         {
             throw new NotImplementedException();
         }
-
-        public override MapCell GetCell()
+        public override void DefineMapInstance(MapInstance instance)
         {
-            return this;
+            throw new NotImplementedException();
+        }
+
+        public override void LeaveMapInstance()
+        {
+            throw new NotImplementedException();
         }
     }
 }

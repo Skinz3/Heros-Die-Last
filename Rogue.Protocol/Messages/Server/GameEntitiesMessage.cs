@@ -14,10 +14,6 @@ namespace Rogue.Protocol.Messages.Server
 
         public ProtocolEntity[] entities;
 
-        public int positionUpdateFrameCount;
-
-        public bool useInterpolation;
-
         public override ushort MessageId
         {
             get
@@ -30,11 +26,9 @@ namespace Rogue.Protocol.Messages.Server
         {
 
         }
-        public GameEntitiesMessage(ProtocolEntity[] entities, int positionUpdateFrameCount, bool useInterpolation)
+        public GameEntitiesMessage(ProtocolEntity[] entities)
         {
             this.entities = entities;
-            this.positionUpdateFrameCount = positionUpdateFrameCount;
-            this.useInterpolation = useInterpolation;
         }
         public override void Deserialize(LittleEndianReader reader)
         {
@@ -46,8 +40,6 @@ namespace Rogue.Protocol.Messages.Server
                 entities[i].Deserialize(reader);
             }
 
-            this.positionUpdateFrameCount = reader.GetInt();
-            this.useInterpolation = reader.GetBool();
         }
         public ProtocolEntity GetMainPlayer(int accountId)
         {
@@ -61,9 +53,6 @@ namespace Rogue.Protocol.Messages.Server
                 writer.Put(entity.TypeIdProp);
                 entity.Serialize(writer);
             }
-
-            writer.Put(positionUpdateFrameCount);
-            writer.Put(useInterpolation);
         }
     }
 }

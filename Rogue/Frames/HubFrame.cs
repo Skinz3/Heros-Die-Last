@@ -47,6 +47,8 @@ namespace Rogue.Frames
             HitscanHitMessage.Id,
             DefineEntityAuraMessage.Id,
             DefinePlayerWeaponMessage.Id,
+            ProjectileCreateMessage.Id,
+            RemoveProjectileMessage.Id,
         };
 
 

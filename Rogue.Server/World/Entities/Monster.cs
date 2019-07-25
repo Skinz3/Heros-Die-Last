@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LiteNetLib;
 using Microsoft.Xna.Framework;
 using Rogue.Core.Objects;
 using Rogue.Core.Pathfinding;
@@ -69,6 +70,10 @@ namespace Rogue.Server.World.Entities
 
         ICell targetCell;
 
+        public override void SendPosition()
+        {
+            this.MapInstance.Send(new EntityDispositionMessage(Id, Position, Direction, 0f), Id, SendOptions.Unreliable);
+        }
         private void MoveRandomly()
         {
             if (GetCell() == targetCell)

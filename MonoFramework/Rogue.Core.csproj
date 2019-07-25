@@ -85,6 +85,7 @@
     <Compile Include="Time\HighResolutionTimer.cs" />
     <Compile Include="Time\TaskTimer.cs" />
     <Compile Include="Utils\AsyncRandom.cs" />
+    <Compile Include="Utils\FrameCounter.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="GameCore.cs" />
     <Compile Include="Input\KeyboardManager.cs" />

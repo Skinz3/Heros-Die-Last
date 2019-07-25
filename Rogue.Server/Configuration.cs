@@ -34,16 +34,6 @@ namespace Rogue.Server
             get;
             set;
         }
-        public int PositionUpdateFrameCount
-        {
-            get;
-            set;
-        }
-        public bool UseInterpolation
-        {
-            get;
-            set;
-        }
         public bool DisplayProtocol
         {
             get;
@@ -108,13 +98,11 @@ namespace Rogue.Server
             return new Configuration()
             {
                 Port = 555,
-                PositionUpdateFrameCount = 5,
                 DisplayProtocol = true,
                 MySQLHost = "127.0.0.1",
                 MySQLUser = "root",
                 MySQLPassword = string.Empty,
                 DatabaseName = "rogue",
-                UseInterpolation = true,
             };
         }
     }

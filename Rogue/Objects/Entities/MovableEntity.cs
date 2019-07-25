@@ -75,11 +75,7 @@ namespace Rogue.Objects.Entities
                 return true;
             }
         }
-        protected GCircle Aura
-        {
-            get;
-            private set;
-        }
+     
         [InDeveloppement]
         private EntityInformations EntityInformations
         {
@@ -99,15 +95,7 @@ namespace Rogue.Objects.Entities
         }
 
 
-        public void DefineAura(Color color, float radius, float sharpness)
-        {
-            Aura = new GCircle(new Vector2(), radius, color, sharpness);
-            Aura.Initialize();
-        }
-        public void RemoveAura()
-        {
-            Aura = null;
-        }
+      
         protected virtual void OnDead(Entity source)
         {
 
@@ -126,22 +114,19 @@ namespace Rogue.Objects.Entities
                 DefineAura(entity.Aura.Color, entity.Aura.Radius, entity.Aura.Sharpness);
             }
         }
-
+        [InDeveloppement]
         public virtual void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
-            if (EntityInterpolationScript.UseInterpolation)
+            GetScript<EntityInterpolationScript>().OnPositionReceived(position, direction);
+            return;
+
+            if (!Dashing)
             {
-                GetScript<EntityInterpolationScript>().OnPositionReceived(position, direction);
+                Animator.SetMovementAnimation();
+                Position = position;
+                MovementEngine.Direction = direction;
             }
-            else
-            {
-                if (!Dashing)
-                {
-                     Animator.SetMovementAnimation();
-                    Position = position;
-                    MovementEngine.Direction = direction;
-                }
-            }
+
 
         }
         public abstract Collider2D CreateCollider();
@@ -150,11 +135,9 @@ namespace Rogue.Objects.Entities
         {
             Animator.Draw(time, this);
 
-            if (Aura != null)
-            {
-                Aura.Draw(time);
-            }
+          
             EntityInformations.Draw(time);
+ 
         }
         public void Dash(float speed, int distance, DirectionEnum direction, string animation)
         {
@@ -200,10 +183,7 @@ namespace Rogue.Objects.Entities
             EntityInformations.Update(time);
             Collider.Update();
 
-            if (Aura != null)
-            {
-                Aura.Position = this.Center - new Vector2(Aura.Radius / 2, Aura.Radius / 2);
-            }
+          
             if (Controlable)
                 MovementEngine.UpdateInputs(time);
             Animator.Update(time, this);

@@ -56,7 +56,7 @@ namespace Rogue.Objects
 
         public override bool Controlable => IsMainPlayer;
 
-        public override bool UseInterpolation => !IsMainPlayer;
+        public override bool UseInterpolation => true;
 
         private Weapon Weapon
         {
@@ -75,7 +75,7 @@ namespace Rogue.Objects
             {
                 DefineWeapon(protocolPlayer.WeaponAnimation);
             }
-            
+
         }
         public override void OnInitialize()
         {
@@ -93,7 +93,7 @@ namespace Rogue.Objects
 
         public override void OnDraw(GameTime time)
         {
-            if (Weapon != null)
+            if (Weapon != null && State == EntityStateEnum.MOVING)
             {
                 if (Weapon.OverCharacter)
                 {
@@ -110,6 +110,7 @@ namespace Rogue.Objects
             {
                 base.OnDraw(time);
             }
+
         }
 
         public override Collider2D CreateCollider()

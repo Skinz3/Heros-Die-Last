@@ -73,10 +73,7 @@ namespace Rogue.Server.World.Entities
             Collider.Update();
             base.Update(deltaTime);
         }
-        public void SendPosition(float mr)
-        {
-            this.MapInstance.Send(new EntityDispositionMessage(Id, Position, Direction, mr), Id, SendOptions.Sequenced);
-        }
+        public abstract void SendPosition();
         public void InflictDamage(Entity source, int value)
         {
             Stats.LifePoints -= value;

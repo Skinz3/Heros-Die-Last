@@ -16,8 +16,6 @@ namespace Rogue.Scripts
 {
     public class EntityInterpolationScript : IScript
     {
-        public static bool UseInterpolation;
-
         private MovableEntity Target
         {
             get;
@@ -115,17 +113,6 @@ namespace Rogue.Scripts
             CurrentTime = 0; // Le compteur de temps repart a 0
             PreviousPosition = NextPosition; // La position précédente devient l'ancienne.
             NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
-
-
-            /*  var pos = message.position - entity.Position;
-
-              if (entity.Position != message.position)
-              {
-                  pos *= new Microsoft.Xna.Framework.Vector2(10);
-                  pos.Normalize();
-                  entity.Position = message.position;
-                  ((MovableEntity)entity).MovementEngine.Direction = pos.GetDirection();
-              } */
         }
         public void Update(GameTime time)
         {
