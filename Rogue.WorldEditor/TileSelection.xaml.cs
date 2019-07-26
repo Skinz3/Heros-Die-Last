@@ -25,7 +25,7 @@ namespace Rogue.WorldEditor
         public const int TILE_PER_LINE = 10;
 
         public const string TILE_EXTENSION = ".png";
-        public const string TILES_PATH = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Content\Tiles";
+        public const string TILES_PATH = @"C:\Users\franc\source\repos\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Content\Tiles";
 
         public bool IsTileSelected
         {

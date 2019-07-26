@@ -25,8 +25,8 @@ namespace Rogue.WorldEditor
     /// </summary>
     public partial class AddAnimation : Window
     {
-        public const string ANIMATIONS_PATH = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Animations";
-        public const string SPRITE_PATH = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Content";
+        public const string ANIMATIONS_PATH = @"C:\Users\franc\source\repos\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Animations";
+        public const string SPRITE_PATH = @"C:\Users\franc\source\repos\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Content";
 
         private WpfCell Cell
         {
