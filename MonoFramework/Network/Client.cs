@@ -12,6 +12,8 @@ namespace Rogue.Core.Network
 {
     public abstract class Client : AbstractClient
     {
+        public const string SERVER_KEY = "ask3948r9SGcd";
+
         private EventBasedNetListener Listener
         {
             get;
@@ -42,7 +44,7 @@ namespace Rogue.Core.Network
         public Client(Frame baseFrame)
         {
             Listener = new EventBasedNetListener();
-            NetManager = new NetManager(Listener, "coucou");
+            NetManager = new NetManager(Listener, SERVER_KEY);
             LoadFrame(baseFrame);
             Connecting = false;
         }
@@ -55,7 +57,7 @@ namespace Rogue.Core.Network
         {
             Target = target;
             Listener = new EventBasedNetListener();
-            NetManager = new NetManager(Listener, "coucou");
+            NetManager = new NetManager(Listener, SERVER_KEY);
             LoadFrame(baseFrame);
         }
         public void Send(Message message, SendOptions method = SendOptions.ReliableOrdered)

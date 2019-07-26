@@ -15,7 +15,53 @@ namespace Rogue.Core.Geometry
 {
     public static class GeometryExtensions
     {
+        public static Vector2 GetCellSlidingVector(Vector2 entityCenter, IGrid grid, ICell cell, Vector2 inputDirection)
+        {
+            var cellCenter = cell.Center;
+            var directionVector = cellCenter - entityCenter;
+            directionVector.Normalize();
 
+            Console.WriteLine(inputDirection);
+            if ((inputDirection.Y == -1 && inputDirection.X == 0) || (inputDirection.Y == 1 && inputDirection.X == 0))
+            {
+                if (entityCenter.X > cellCenter.X)
+                {
+                    if (cell.GetAdjacentCell(grid, DirectionEnum.Right).Walkable)
+                    {
+                        return new Vector2(1, 0);
+                    }
+
+                }
+                else
+                {
+                    var c1 = cell.GetAdjacentCell(grid, DirectionEnum.Left);
+
+                    if (c1.Walkable)
+                    {
+                        return new Vector2(-1, 0);
+                    }
+                }
+            }
+            else if ((inputDirection.Y == 0 && inputDirection.X == 1) || (inputDirection.Y == 0 && inputDirection.X == -1))
+            {
+                if (entityCenter.Y > cellCenter.Y)
+                {
+                    if (cell.GetAdjacentCell(grid, DirectionEnum.Down).Walkable)
+                    {
+                        return new Vector2(0, 1);
+                    }
+
+                }
+                else
+                {
+                    if (cell.GetAdjacentCell(grid, DirectionEnum.Up).Walkable)
+                    {
+                        return new Vector2(0, -1);
+                    }
+                }
+            }
+            return new Vector2();
+        }
         public static bool CircleRectangleCollide(Vector2 center, float radius,
         Rectangle rectangle)
         {
@@ -117,7 +163,7 @@ namespace Rogue.Core.Geometry
             vector.Normalize();
             return (float)Math.Atan2(vector.X, -vector.Y);
         }
-        public static DirectionEnum Restrict4Direction(this DirectionEnum direction)
+        public static DirectionEnum Restrict4DirectionRL(this DirectionEnum direction)
         {
             switch (direction)
             {
@@ -131,6 +177,23 @@ namespace Rogue.Core.Geometry
                     return DirectionEnum.Right;
                 case DirectionEnum.Left | DirectionEnum.Down:
                     return DirectionEnum.Left;
+            }
+            return direction;
+        }
+        public static DirectionEnum Restrict4DirectionUD(this DirectionEnum direction)
+        {
+            switch (direction)
+            {
+                case DirectionEnum.None:
+                    break;
+                case DirectionEnum.Right | DirectionEnum.Up:
+                    return DirectionEnum.Up;
+                case DirectionEnum.Left | DirectionEnum.Up:
+                    return DirectionEnum.Up;
+                case DirectionEnum.Right | DirectionEnum.Down:
+                    return DirectionEnum.Down;
+                case DirectionEnum.Left | DirectionEnum.Down:
+                    return DirectionEnum.Down;
             }
             return direction;
         }

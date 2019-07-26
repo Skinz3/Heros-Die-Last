@@ -33,8 +33,11 @@ namespace Rogue.Server.World.Items.Models
 
             foreach (var target in results)
             {
-                var distance = Owner.GetDistance(target);
-                target.InflictDamage(Owner, 800);
+                if (target != Owner)
+                {
+                    var distance = Owner.GetDistance(target);
+                    target.InflictDamage(Owner, 800);
+                }
             }
 
             return true;

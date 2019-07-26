@@ -27,7 +27,7 @@ namespace Rogue.Server.World.Items.Models
         {
             if (!Owner.Dashing)
             {
-                Owner.Dash(position, 10f, 500, "item282");
+                Owner.Dash(position, 15f, 300, "item282");
                 return true;
             }
             else

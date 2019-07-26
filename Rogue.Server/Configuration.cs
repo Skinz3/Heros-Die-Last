@@ -59,6 +59,11 @@ namespace Rogue.Server
             get;
             set;
         }
+        public int PositionUpdateFrameCount
+        {
+            get;
+            set;
+        }
 
         [StartupInvoke("Configuration", StartupInvokePriority.Primitive)]
         public static void Initialize()
@@ -103,6 +108,7 @@ namespace Rogue.Server
                 MySQLUser = "root",
                 MySQLPassword = string.Empty,
                 DatabaseName = "rogue",
+                PositionUpdateFrameCount = 1,
             };
         }
     }

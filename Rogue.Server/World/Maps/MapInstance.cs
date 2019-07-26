@@ -296,7 +296,7 @@ namespace Rogue.Server.World.Maps
         }
         public GameEntitiesMessage GetGameEntitiesMessage()
         {
-            return new GameEntitiesMessage(GetProtocolEntities());
+            return new GameEntitiesMessage(GetProtocolEntities(),Configuration.Self.PositionUpdateFrameCount);
         }
         /// <summary>
         /// add a entity? Entity.DefineMapInstance(x)

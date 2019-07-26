@@ -58,7 +58,7 @@ namespace Rogue.Core.Network
         public void Start(int port)
         {
             this.EventListener = new EventBasedNetListener();
-            this.NetManager = new NetManager(EventListener, 200, "coucou");
+            this.NetManager = new NetManager(EventListener, 200, Client.SERVER_KEY);
             EndPoint = new IPEndPoint(IPAddress.Any, port);
 
             NetManager.UnsyncedEvents = true;

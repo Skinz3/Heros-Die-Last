@@ -156,17 +156,7 @@ namespace Rogue.Server.World.Maps
         {
             return new Vector2(Rectangle.Center.X - width / 2, Rectangle.Center.Y - height / 2);
         }
-        public ICell[] GetAdjacentCells(MapGrid grid)
-        {
-            ICell[] cells = new ICell[4];
 
-            cells[0] = grid.GetCell(Id + grid.GridSize.Y);
-            cells[1] = grid.GetCell(Id - grid.GridSize.Y);
-            cells[2] = grid.GetCell(Id + 1);
-            cells[3] = grid.GetCell(Id - 1);
-
-            return cells.Where(x => x != null).ToArray();
-        }
         public ICell[] GetNextCells(MapGrid grid, DirectionEnum direction, int length)
         {
             List<ICell> cells = new List<ICell>();
@@ -181,6 +171,40 @@ namespace Rogue.Server.World.Maps
                 cells.Add(grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
             }
             return cells.ToArray();
+        }
+        public ICell GetAdjacentCell(IGrid grid, DirectionEnum direction)
+        {
+            switch (direction)
+            {
+                case DirectionEnum.Right:
+                    return grid.GetCell(Id + grid.GridSize.Y);
+                case DirectionEnum.Left:
+                    return grid.GetCell(Id - grid.GridSize.Y);
+                case DirectionEnum.Up:
+                    return grid.GetCell(Id - 1);
+                case DirectionEnum.Down:
+                    return grid.GetCell(Id + 1);
+                case DirectionEnum.Right | DirectionEnum.Up:
+                    return GetAdjacentCell(grid, DirectionEnum.Right)?.GetAdjacentCell(grid, DirectionEnum.Up);
+                case DirectionEnum.Right | DirectionEnum.Down:
+                    return GetAdjacentCell(grid, DirectionEnum.Right)?.GetAdjacentCell(grid, DirectionEnum.Down);
+                case DirectionEnum.Left | DirectionEnum.Up:
+                    return GetAdjacentCell(grid, DirectionEnum.Left)?.GetAdjacentCell(grid, DirectionEnum.Up);
+                case DirectionEnum.Left | DirectionEnum.Down:
+                    return GetAdjacentCell(grid, DirectionEnum.Left)?.GetAdjacentCell(grid, DirectionEnum.Down);
+            }
+            throw new Exception("unable to find adjacent cell.");
+        }
+        public ICell[] GetAdjacentCells(IGrid grid)
+        {
+            ICell[] cells = new ICell[4];
+
+            cells[0] = GetAdjacentCell(grid, DirectionEnum.Right);
+            cells[1] = GetAdjacentCell(grid, DirectionEnum.Left);
+            cells[2] = GetAdjacentCell(grid, DirectionEnum.Up);
+            cells[3] = GetAdjacentCell(grid, DirectionEnum.Down);
+
+            return cells.Where(x => x != null).ToArray();
         }
         public bool IntersectsPoint(Point point)
         {
@@ -204,5 +228,7 @@ namespace Rogue.Server.World.Maps
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

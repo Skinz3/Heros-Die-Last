@@ -1,4 +1,5 @@
-﻿using Rogue.Core.Network.Protocol;
+﻿using LiteNetLib;
+using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Client;
 using Rogue.Protocol.Messages.Server;
@@ -16,11 +17,11 @@ namespace Rogue.Server.Handlers
 {
     class MapHandler
     {
-        
+
         [MessageHandler]
         public static void HandleGameEntitiesRequestMessage(GameEntitiesRequestMessage message, RogueClient client)
         {
-            client.Send(client.Player.MapInstance.GetGameEntitiesMessage());
+            client.Send(client.Player.MapInstance.GetGameEntitiesMessage(), SendOptions.ReliableUnordered);
         }
         [MessageHandler]
         public static void HandleGameEntityOkRequestMessage(GameEntityOKRequestMessage message, RogueClient client)
@@ -32,7 +33,7 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleEntityDispositionRequestMessage(EntityDispositionRequestMessage message, RogueClient client)
         {
-            client.Player?.OnReceivePosition(message.position, message.direction,message.mouseRotation);
+            client.Player?.OnReceivePosition(message.position, message.direction, message.mouseRotation);
         }
     }
 }
