@@ -65,7 +65,7 @@ namespace Rogue.Core.Objects
             set;
         }
 
-        ICell GetAdjacentCell(IGrid grid, DirectionEnum direction);
+        ICell GetAdjacentCell(DirectionEnum direction);
     }
     /// <summary>
     /// Représente une grille en 2D , elle est utilisé pour afficher une carte.
@@ -194,7 +194,7 @@ namespace Rogue.Core.Objects
 
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
-                    Cells[id] = new GCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Layer, Thickness);
+                    Cells[id] = new GCell(this, new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize, Color, Layer, Thickness);
                     Cells[id].IgnoreMouseEvents = this.IgnoreMouseEvents;
 
                     if (this.IgnoreMouseEvents == false)
@@ -217,7 +217,7 @@ namespace Rogue.Core.Objects
             }
             foreach (var cell in Cells)
             {
-                cell.Adjacents = cell.GetAdjacentCells(this);
+                cell.Adjacents = cell.GetAdjacentCells();
             }
         }
         public override void OnInitializeComplete()
@@ -368,6 +368,11 @@ namespace Rogue.Core.Objects
             get;
             set;
         }
+        private IGrid Grid
+        {
+            get;
+            set;
+        }
         public Dictionary<LayerEnum, T> GetElements<T>() where T : ILayerElement
         {
             return Sprites.Where(x => x.Value is T).ToDictionary(x => x.Key, x => (T)x.Value);
@@ -383,8 +388,9 @@ namespace Rogue.Core.Objects
             else
                 return default(T);
         }
-        public GCell(Vector2 position, Point relativePosition, int id, int size, Color color, LayerEnum layer, int thickness) : base(position, new Point((int)size, (int)size), color)
+        public GCell(IGrid grid, Vector2 position, Point relativePosition, int id, int size, Color color, LayerEnum layer, int thickness) : base(position, new Point((int)size, (int)size), color)
         {
+            this.Grid = grid;
             this.Id = id;
             this.CellSize = size;
             this.RelativePosition = relativePosition;
@@ -518,37 +524,37 @@ namespace Rogue.Core.Objects
                 }
             }
         }
-        public ICell GetAdjacentCell(IGrid grid, DirectionEnum direction)
+        public ICell GetAdjacentCell(DirectionEnum direction)
         {
             switch (direction)
             {
                 case DirectionEnum.Right:
-                    return grid.GetCell(Id + grid.GridSize.Y);
+                    return Grid.GetCell(Id + Grid.GridSize.Y);
                 case DirectionEnum.Left:
-                    return grid.GetCell(Id - grid.GridSize.Y);
+                    return Grid.GetCell(Id - Grid.GridSize.Y);
                 case DirectionEnum.Up:
-                    return grid.GetCell(Id - 1);
+                    return Grid.GetCell(Id - 1);
                 case DirectionEnum.Down:
-                    return grid.GetCell(Id + 1);
+                    return Grid.GetCell(Id + 1);
                 case DirectionEnum.Right | DirectionEnum.Up:
-                    return GetAdjacentCell(grid, DirectionEnum.Right)?.GetAdjacentCell(grid, DirectionEnum.Up);
+                    return GetAdjacentCell(DirectionEnum.Right)?.GetAdjacentCell(DirectionEnum.Up);
                 case DirectionEnum.Right | DirectionEnum.Down:
-                    return GetAdjacentCell(grid, DirectionEnum.Right)?.GetAdjacentCell(grid, DirectionEnum.Down);
+                    return GetAdjacentCell(DirectionEnum.Right)?.GetAdjacentCell(DirectionEnum.Down);
                 case DirectionEnum.Left | DirectionEnum.Up:
-                    return GetAdjacentCell(grid, DirectionEnum.Left)?.GetAdjacentCell(grid, DirectionEnum.Up);
+                    return GetAdjacentCell(DirectionEnum.Left)?.GetAdjacentCell(DirectionEnum.Up);
                 case DirectionEnum.Left | DirectionEnum.Down:
-                    return GetAdjacentCell(grid, DirectionEnum.Left)?.GetAdjacentCell(grid, DirectionEnum.Down);
+                    return GetAdjacentCell(DirectionEnum.Left)?.GetAdjacentCell(DirectionEnum.Down);
             }
             throw new Exception("unable to find adjacent cell.");
         }
-        public ICell[] GetAdjacentCells(GGrid grid)
+        public ICell[] GetAdjacentCells()
         {
             ICell[] cells = new ICell[4];
 
-            cells[0] = GetAdjacentCell(grid, DirectionEnum.Right);
-            cells[1] = GetAdjacentCell(grid, DirectionEnum.Left);
-            cells[2] = GetAdjacentCell(grid, DirectionEnum.Up);
-            cells[3] = GetAdjacentCell(grid, DirectionEnum.Down);
+            cells[0] = GetAdjacentCell(DirectionEnum.Right);
+            cells[1] = GetAdjacentCell(DirectionEnum.Left);
+            cells[2] = GetAdjacentCell(DirectionEnum.Up);
+            cells[3] = GetAdjacentCell(DirectionEnum.Down);
 
             return cells.Where(x => x != null).ToArray();
         }

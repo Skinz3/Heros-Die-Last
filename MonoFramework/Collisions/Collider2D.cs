@@ -92,7 +92,6 @@ namespace Rogue.Core.Collisions
         /// :p
         public GameObject CanMove(Vector2 newPosition, DirectionEnum direction, bool collidesEntity = true)
         {
-
             var newHitBox = CalculateMovementHitBox(newPosition);
 
             CurrentCells = (GCell[])Map.GetCells(newHitBox);

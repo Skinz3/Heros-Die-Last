@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Rogue.Core.Network.Protocol;
 using Rogue.Protocol.Enums;
+using Rogue.Protocol.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,11 +39,13 @@ namespace Rogue.Protocol.Messages.Server
 
         public int size;
 
+        public ProtocolAura aura;
+
         public ProjectileCreateMessage()
         {
 
         }
-        public ProjectileCreateMessage(int projectileId, ProjectileTypeEnum type, int ownerId, Vector2 startPosition, float speed, string animationName, Vector2 direction, int size)
+        public ProjectileCreateMessage(int projectileId, ProjectileTypeEnum type, int ownerId, Vector2 startPosition, float speed, string animationName, Vector2 direction, int size, ProtocolAura aura = null)
         {
             this.projectileId = projectileId;
             this.ownerId = ownerId;
@@ -52,6 +55,7 @@ namespace Rogue.Protocol.Messages.Server
             this.animationName = animationName;
             this.direction = direction;
             this.size = size;
+            this.aura = aura;
         }
 
         public override void Deserialize(LittleEndianReader reader)
@@ -64,6 +68,12 @@ namespace Rogue.Protocol.Messages.Server
             this.animationName = reader.GetString();
             this.direction = reader.GetVector2();
             this.size = reader.GetInt();
+
+            if (reader.GetBool())
+            {
+                this.aura = new ProtocolAura();
+                this.aura.Deserialize(reader);
+            }
         }
         public override void Serialize(LittleEndianWriter writer)
         {
@@ -75,6 +85,13 @@ namespace Rogue.Protocol.Messages.Server
             writer.Put(animationName);
             writer.Put(direction);
             writer.Put(size);
+
+            writer.Put(aura != null);
+
+            if (aura != null)
+            {
+                aura.Serialize(writer);
+            }
         }
     }
 }

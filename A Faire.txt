@@ -6,3 +6,8 @@ Lightnings map templates
 Aura joueur, fade out?
 Faire glisser le joueur, collisions
 bien gérer l'aura coté serveur (stoquer un objet, envoyer dans movableEntityProtocol)
+
+
+Deux joueurs arrivent sur la meme case impossible
+
+Interpolate rotation

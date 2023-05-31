@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Rogue.Core.Geometry;
+using Rogue.Core.Lightning;
 using Rogue.Core.Objects;
 using Rogue.Core.Scenes;
 using Rogue.Objects.Entities;
@@ -20,9 +21,7 @@ namespace Rogue.Objects.UI
 
         public const float Y_OFFSET_INCREMENT = -1;
 
-        public const float SCALE_CONSTANT = 200f;
-
-        public const float MINIMUM_SCALE = 1.5f;
+        public const float SCALE = 2f;
 
         private float CurrentTranparency
         {
@@ -44,18 +43,16 @@ namespace Rogue.Objects.UI
             get;
             set;
         }
-        public DamageText(MovableEntity target, int amount) : base(new Vector2(), SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(), (-amount).ToString(), TEXT_COLOR, 1f)
+        public DamageText(MovableEntity target, int amount) : base(new Vector2(), SceneManager.CurrentScene.TextRenderer.GetDefaultSpriteFont(), amount.ToString(), TEXT_COLOR, 1f)
         {
             this.Amount = amount;
             this.Target = target;
 
-            float scale = 1f * (Math.Abs(Amount) / SCALE_CONSTANT);
-            scale = scale < MINIMUM_SCALE ? MINIMUM_SCALE : scale;
+            this.Scale = SCALE;
 
-            this.Scale = scale;
+            this.DefineGradiant(new Color(Color.Red, 120), Color.Transparent, 2);
 
-            if (Amount < 0)
-                Color = Color.LightGreen;
+
 
         }
         public override void Update(GameTime time)
@@ -65,7 +62,6 @@ namespace Rogue.Objects.UI
                 SceneManager.CurrentScene.RemoveObject(this);
                 return;
             }
-            this.Color = Color * COLOR_TRANSPARENCY_MULTIPLIER;
 
             this.Align(Target.Rectangle, RectangleOrigin.Center);
             this.Position.Y += YOffset;

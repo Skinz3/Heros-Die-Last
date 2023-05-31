@@ -90,13 +90,13 @@ namespace Rogue.Scripts
             PreviousPosition = default(EntityPositionExtended);
         }
 
-        public void Restore(Vector2 position, DirectionEnum direction)
+        public void Restore(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
-            NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
+            NextPosition = new EntityPositionExtended(position, direction, mouseRotation, DateTime.Now);
             PreviousPosition = NextPosition;
         }
 
-        public void OnPositionReceived(Vector2 position, DirectionEnum direction)
+        public void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
             if (Target.Dashing)
             {
@@ -104,19 +104,20 @@ namespace Rogue.Scripts
             }
             if (NextPosition.Position == null) // tout première position reçue. (Previous est donc indéfinie)
             {
-                NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
+                NextPosition = new EntityPositionExtended(position, direction, mouseRotation, DateTime.Now);
             }
 
             var input = position - NextPosition.Position.Value;
             AnimationController.OnMoveUpdated(input, Target);
 
 
-            this.Target.MovementEngine.Direction = direction;// (position - Target.Position).GetDirection();
-
+            this.Target.MovementEngine.Direction = NextPosition.Direction;
             this.Target.Position = NextPosition.Position.Value; // Quoi qu'il arrive avec l'interpolation, l'entitée est téléportée au point d'arrivée
+            this.Target.MouseRotation = NextPosition.MouseRotation;
+
             CurrentTime = 0; // Le compteur de temps repart a 0
             PreviousPosition = NextPosition; // La position précédente devient l'ancienne.
-            NextPosition = new EntityPositionExtended(position, direction, DateTime.Now);
+            NextPosition = new EntityPositionExtended(position, direction, mouseRotation, DateTime.Now);
         }
         public void Update(GameTime time)
         {
@@ -169,12 +170,15 @@ namespace Rogue.Scripts
         /// 
         public DirectionEnum Direction;
 
+        public float MouseRotation;
+
         public DateTime Time;
 
-        public EntityPositionExtended(Vector2 position, DirectionEnum direction, DateTime time)
+        public EntityPositionExtended(Vector2 position, DirectionEnum direction, float mouseRotation, DateTime time)
         {
             this.Position = position;
             this.Direction = direction;
+            this.MouseRotation = mouseRotation;
             this.Time = time;
         }
 

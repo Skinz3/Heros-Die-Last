@@ -155,7 +155,7 @@ namespace Rogue.Core.Scenes
         }
         protected virtual void DrawUI(GameTime gameTime)
         {
-            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null,
+            Debug.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                null, null, null);
 
             foreach (var gameObject in UIGameObjects)
@@ -191,6 +191,7 @@ namespace Rogue.Core.Scenes
         [InDeveloppement]
         public virtual void Draw(GameTime gameTime)
         {
+
             Debug.GraphicsDevice.Clear(ClearColor);
             DrawSceneObjects(gameTime);
             DrawUI(gameTime);

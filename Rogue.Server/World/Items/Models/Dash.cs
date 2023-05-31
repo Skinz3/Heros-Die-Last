@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Rogue.Core.Geometry;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
@@ -27,7 +28,9 @@ namespace Rogue.Server.World.Items.Models
         {
             if (!Owner.Dashing)
             {
-                Owner.Dash(position, 15f, 300, "item282");
+                var direction = position - Owner.Center;
+                direction.Normalize();
+                Owner.Dash(direction, 15f, 300, "item282");
                 return true;
             }
             else

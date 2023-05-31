@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Rogue.Core.Collisions;
+using Rogue.Core.Geometry;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Server.Records;
 using Rogue.Server.World.Entities;
@@ -27,8 +29,17 @@ namespace Rogue.Server.World.Items.Models
             var direction = position - Owner.Center;
             direction.Normalize();
 
-            var startPos = Owner.Center - new Vector2(25 / 2, 25 / 2);
-            ReflectionProjectile projectile = new ReflectionProjectile(Owner.MapInstance.GetNextEntityId(), startPos, 25, 10f, direction, Owner, "fireBlue", 3000f);
+            int size = 25;
+
+            var startPos = Owner.Center - new Vector2(size / 2f, size / 2f);
+
+            ReflectionProjectile projectile = new ReflectionProjectile(Owner.MapInstance.GetNextEntityId(), startPos, size, 10f, direction, Owner, "fireBlue", 3000f);
+
+            if (projectile.Validate() == false)
+            {
+                projectile.Dispose();
+                return false;
+            }
             projectile.DefineMapInstance(Owner.MapInstance);
             Owner.MapInstance.Send(projectile.GetProjectileCreateMessage());
             return true;

@@ -179,8 +179,8 @@ namespace Rogue.Core.Objects.Abstract
         {
             Text?.Update(time);
 
-            if (TextOrigin != RectangleOrigin.None)
-                Text?.Align(Rectangle, TextOrigin);
+           if (TextOrigin != RectangleOrigin.None)
+                 Text?.Align(Rectangle, TextOrigin); 
 
             if (!IgnoreMouseEvents)
             {

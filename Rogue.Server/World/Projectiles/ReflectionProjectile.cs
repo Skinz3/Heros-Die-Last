@@ -46,8 +46,7 @@ namespace Rogue.Server.World.Projectiles
                 {
                     var movableEntity = (MovableEntity)obj;
 
-                    if (BoundsCount > 0) // put this in an action
-                        movableEntity.InflictDamage(Owner, (int)((BoundsCount + 1) * 800));
+                    movableEntity.InflictDamage(Owner, (int)((BoundsCount + 1) * 100));
                     return false;
                 }
             }

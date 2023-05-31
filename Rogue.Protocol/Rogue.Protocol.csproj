@@ -61,6 +61,8 @@
     <Compile Include="Messages\Server\AIMoveMessage.cs" />
     <Compile Include="Messages\Server\DashMessage.cs" />
     <Compile Include="Messages\Client\EntityDispositionRequestMessage.cs" />
+    <Compile Include="Messages\Server\DebugClearHighlightCellsMessage.cs" />
+    <Compile Include="Messages\Server\DebugHighlightCellMessage.cs" />
     <Compile Include="Messages\Server\DefineEntityAuraMessage.cs" />
     <Compile Include="Messages\Server\DefinePlayerWeaponMessage.cs" />
     <Compile Include="Messages\Server\GameEntitiesMessage.cs" />
@@ -86,7 +88,7 @@
     <Compile Include="Messages\Server\TeleportSameMapMessage.cs" />
     <Compile Include="Messages\Server\AddLayerElementMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Types\ProtocolEntityAura.cs" />
+    <Compile Include="Types\ProtocolAura.cs" />
     <Compile Include="Types\ProtocolMapLight.cs" />
     <Compile Include="Types\ProtocolLayerElement.cs" />
     <Compile Include="Types\IProtocolable.cs" />

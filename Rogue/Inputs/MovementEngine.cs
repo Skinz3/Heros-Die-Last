@@ -55,7 +55,7 @@ namespace Rogue.Inputs
             this.Speed = speed;
             this.Direction = DirectionEnum.Down;
         }
-        public void Move(Vector2 input)
+        public void Move(Vector2 input, GameTime time)
         {
             if (!Target.CanMove)
             {
@@ -95,7 +95,7 @@ namespace Rogue.Inputs
 
                 var newPosition = Target.Position + input;
 
-                var collide = Collider.CanMove(newPosition, Direction);
+                var collide = Collider.CanMove(newPosition, Direction, false);
 
                 CellSlide(collide);
 
@@ -119,7 +119,7 @@ namespace Rogue.Inputs
 
             var cell = collider as GCell;
 
-            Target.Position += GeometryExtensions.GetCellSlidingVector(Target.Center, SceneManager.GetCurrentScene<MapScene>().Map, cell, InputDirection) * Speed;
+            Target.Position += GeometryExtensions.GetCellSlidingVector(Target.Center, cell, InputDirection) * Speed;
 
         }
         [InDeveloppement(InDeveloppementState.THINK_ABOUT_IT, "(btw bad spelling DevEloppment), Configure key, architecture problem with networking?")]
@@ -143,7 +143,7 @@ namespace Rogue.Inputs
             {
                 input.X -= 1;
             }
-            Move(input);
+            Move(input, time);
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleKeyInputMessage(KeyInputMessage message, RogueClient client)
         {
+            client.Player.Position = message.playerPosition;
+
             if (message.key == Keys.E)
             {
                 client.Player.Inventory.UseItem(message.mousePosition.ToVector2(),2);

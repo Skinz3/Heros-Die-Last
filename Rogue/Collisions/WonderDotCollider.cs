@@ -32,7 +32,7 @@ namespace Rogue.Collisions
         {
             return new Rectangle(position.ToPoint(), GameObject.Size)
                 .Divide(3, 3, RectangleOrigin.Center)
-                .Divide(1, 2, RectangleOrigin.CenterBottom) // 1,2  or 1,1
+                .Divide(1, 2, RectangleOrigin.CenterBottom) // 1,2  or 1,1       1,2 ---> hair do not collide (not geometry perfect)
                 .Scale(0.7f, 0.7f, RectangleOrigin.CenterBottom);
         }
 

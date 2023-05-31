@@ -2,6 +2,7 @@
 using Rogue.Core.Collisions;
 using Rogue.Core.DesignPattern;
 using Rogue.Core.Geometry;
+using Rogue.Core.Objects.Abstract;
 using Rogue.Core.Utils;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Server;
@@ -21,7 +22,12 @@ namespace Rogue.Server.World.Entities.Scripts
             get;
             set;
         }
-        private Vector2 TargetPosition
+        public Vector2 TargetPosition
+        {
+            get;
+            private set;
+        }
+        private Vector2 Direction
         {
             get;
             set;
@@ -71,32 +77,42 @@ namespace Rogue.Server.World.Entities.Scripts
             get;
             set;
         }
-        public DashScript(Vector2 targetPosition, float dashSpeed, int distance)
+        private Action OnDashEnd
         {
-            this.TargetPosition = targetPosition;
+            get;
+            set;
+        }
+        private Action<Entity> OnCollideEntity
+        {
+            get;
+            set;
+        }
+        public DashScript(Vector2 direction, float dashSpeed, int distance, Action<Entity> onCollideEntity, Action onDashEnd)
+        {
+            this.Direction = direction;
             this.DashSpeed = dashSpeed;
             this.Distance = distance;
             this.Collides = new List<Entity>();
+            this.OnDashEnd = onDashEnd;
+            this.OnCollideEntity = onCollideEntity;
         }
 
         public void Initialize(Entity target)
         {
             this.Target = (MovableEntity)target;
-            this.InitialPosition = Target.Rectangle.Center.ToVector2();
+            this.InitialPosition = Target.Center;
             this.Target.State = EntityStateEnum.DASHING;
-            //  this.Target.Color = new Color(Color.MediumVioletRed, 0.2f);
-            //    this.Target.Direction = (TargetPosition - InitialPosition).GetDirection();
-            this.TargetPosition = InitialPosition + (Target.Direction.GetInputVector() * Distance);
-
+            this.TargetPosition = InitialPosition + (Direction * Distance);
         }
         private void OnEnd()
         {
             Target.RemoveScript(this);
             Target.State = EntityStateEnum.MOVING;
+            OnDashEnd?.Invoke();
         }
         public void Update(long deltaTime)
         {
-            Time += MapInstance.REFRESH_RATE / deltaTime;
+            Time += deltaTime / MapInstance.REFRESH_RATE;
 
             var distance = (TargetPosition - InitialPosition).Length();
 
@@ -113,12 +129,12 @@ namespace Rogue.Server.World.Entities.Scripts
                 {
                     Target.Position = newPosition;
 
-                    var target = Target.Collider.CollideEntity(newPosition) as MovableEntity;
+                    var target = Target.Collider.CollideEntity(newPosition) as Entity;
 
                     if (target != null && !Collides.Contains(target))
                     {
                         Collides.Add(target);
-                        target.InflictDamage(Target, (int)(Ratio * 1500));
+                        OnCollideEntity?.Invoke(target);
                     }
                 }
                 else

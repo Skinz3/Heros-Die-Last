@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rogue.Core.Objects
 {
-    public class GText : PositionableObject
+    public class GText : ColorableObject
     {
         public SpriteFont SpriteFont
         {
@@ -32,8 +32,6 @@ namespace Rogue.Core.Objects
             }
         }
 
-        public Color Color;
-
         private float m_scale;
 
         public float Scale
@@ -44,7 +42,7 @@ namespace Rogue.Core.Objects
             }
             set
             {
-               
+
                 m_scale = value;
 
                 if (Text != null)
@@ -56,11 +54,11 @@ namespace Rogue.Core.Objects
         {
             this.Size = SpriteFont.MeasureString(Text).ToPoint() * new Vector2(Scale, Scale).ToPoint();
         }
-        public GText(Vector2 position, SpriteFont font, string text, Color color, float scale) : base(position, new Point(50, 50))
+        public GText(Vector2 position, SpriteFont font, string text, Color color, float scale) : base(position, new Point(), color)
         {
             this.SpriteFont = font;
-            this.Scale = scale;
             this.Text = text;
+            this.Scale = scale;
             this.Color = color;
         }
 
@@ -72,20 +70,22 @@ namespace Rogue.Core.Objects
 
         public override void OnUpdate(GameTime time)
         {
-
-        }
-        public override void OnInitializeComplete()
-        {
-
+            base.OnUpdate(time);
         }
 
         public override void OnInitialize()
         {
+           
+        }
+
+        public override void OnInitializeComplete()
+        {
+           
         }
 
         public override void OnDispose()
         {
-
+           
         }
     }
 }

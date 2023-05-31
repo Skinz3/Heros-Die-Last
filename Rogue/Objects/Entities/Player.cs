@@ -45,11 +45,7 @@ namespace Rogue.Objects
             get;
             set;
         }
-        public float MouseRotation
-        {
-            get;
-            set;
-        }
+
         public bool HoldingWeapon => Weapon != null;
 
         public override bool CanMove => IsMainPlayer && !Dashing && !Aiming;
@@ -58,6 +54,11 @@ namespace Rogue.Objects
 
         public override bool UseInterpolation => true;
 
+        private Statistics Statistics
+        {
+            get;
+            set;
+        }
         private Weapon Weapon
         {
             get;
@@ -67,6 +68,7 @@ namespace Rogue.Objects
         {
             this.Weapon = new Weapon(animationName, this);
         }
+        [InDeveloppement(InDeveloppementState.TODO,"statistics")]
         public Player(ProtocolPlayer protocolPlayer) : base(protocolPlayer)
         {
             this.IsMainPlayer = ClientHost.Client.Account.Id == Id;
@@ -76,6 +78,7 @@ namespace Rogue.Objects
                 DefineWeapon(protocolPlayer.WeaponAnimation);
             }
 
+           // this.Statistics = new Statistics(this);
         }
         public override void OnInitialize()
         {
@@ -88,11 +91,14 @@ namespace Rogue.Objects
                 AddScript(new CameraControlScript());
                 AddScript(new MainPlayerScript());
             }
-          
+
             base.OnInitializeComplete();
 
         }
-
+        protected override void OnDead(Entity source)
+        {
+            base.OnDead(source);
+        }
         public override void OnDraw(GameTime time)
         {
             if (Weapon != null && State == EntityStateEnum.MOVING)
@@ -121,7 +127,6 @@ namespace Rogue.Objects
         }
         public override void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
-            MouseRotation = mouseRotation;
             base.OnPositionReceived(position, direction, mouseRotation);
         }
         public override void OnUpdate(GameTime time)
@@ -131,6 +136,12 @@ namespace Rogue.Objects
                 MouseRotation = Center.GetMouseRotation();
             }
             base.OnUpdate(time);
+
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
         }
         public override void OnDispose()
         {

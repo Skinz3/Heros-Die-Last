@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Rogue.Core.Network;
 using Rogue.Core.Utils;
 using Rogue.Core.Network.Protocol;
+using Rogue.Core.DesignPattern;
 
 namespace Rogue.Server.Network
 {
@@ -67,17 +68,18 @@ namespace Rogue.Server.Network
                 Player = null;
             }
         }
+        [InDeveloppement(InDeveloppementState.THINK_ABOUT_IT, "Really important part of network")]
         protected override bool OnMessageReceived(Message message)
         {
             if (Player != null && Player.MapInstance != null)
             {
-                Player.MapInstance.Invoke(new Action(() =>
+                Player.MapInstance.Sync(new Action(() => // Sync network with server Clock
                 {
                     base.OnMessageReceived(message);
 
                 }));
 
-                return true; // ?
+                return true; // ... ? stop thread, waiting update() ?
             }
             else
             {

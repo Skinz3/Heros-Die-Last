@@ -50,6 +50,8 @@ namespace Rogue.Frames
             DefinePlayerWeaponMessage.Id,
             ProjectileCreateMessage.Id,
             RemoveProjectileMessage.Id,
+            DebugHighlightCellMessage.Id,
+            DebugClearHighlightCellsMessage.Id,
         };
 
 

@@ -25,7 +25,7 @@ namespace Rogue.Scripts
             get;
             set;
         }
-        private Vector2 TargetPosition
+        private Vector2 EndPosition
         {
             get;
             set;
@@ -70,38 +70,32 @@ namespace Rogue.Scripts
                 return SceneManager.GetCurrentScene<MapScene>().Map;
             }
         }
-        private DirectionEnum Direction
-        {
-            get;
-            set;
-        }
         private string Animation
         {
             get;
             set;
         }
-        public DashScript(float dashSpeed, int distance, DirectionEnum direction, string animation)
+        public DashScript(float dashSpeed, Vector2 endPosition, string animation)
         {
             this.DashSpeed = dashSpeed;
-            this.Distance = distance;
-            this.Direction = direction;
+            this.EndPosition = endPosition;
             this.Animation = animation;
         }
 
         public void Initialize(GameObject target)
         {
             this.Target = (MovableEntity)target;
-            this.InitialPosition = Target.Rectangle.Center.ToVector2();
+            this.InitialPosition = Target.Center;
             this.Target.State = EntityStateEnum.DASHING;
-            //  this.Target.MovementEngine.Direction = Direction;// (TargetPosition - InitialPosition).GetDirection();
-            this.TargetPosition = InitialPosition + (Target.MovementEngine.Direction.GetInputVector() * Distance);
+
+            this.Target.MovementEngine.Direction = (EndPosition - InitialPosition).GetDirection();
 
             this.Target.Animator.CurrentAnimation = this.Animation;
 
         }
         private void OnEnd()
         {
-            Target.GetScript<EntityInterpolationScript>()?.Restore(Target.Position, Direction);
+            Target.GetScript<EntityInterpolationScript>()?.Restore(Target.Position, Target.MovementEngine.Direction, Target.MouseRotation);
             Target.RemoveScript(this);
             Target.State = EntityStateEnum.MOVING;
             AnimationController.OnDashEnd(Target);
@@ -110,7 +104,7 @@ namespace Rogue.Scripts
         {
             Time += Debug.TargetElapsedTime.Milliseconds / time.ElapsedGameTime.Milliseconds;
 
-            var distance = (TargetPosition - InitialPosition).Length();
+            var distance = (EndPosition - InitialPosition).Length();
 
             Ratio = (DashSpeed * Time) / distance;
 
@@ -120,7 +114,7 @@ namespace Rogue.Scripts
             }
             else
             {
-                var newPosition = Vector2.Lerp(InitialPosition, TargetPosition, Ratio) - (Target.Rectangle.Size / new Point(2)).ToVector2();
+                var newPosition = Vector2.Lerp(InitialPosition, EndPosition, Ratio) - (Target.Rectangle.Size / new Point(2)).ToVector2();
                 if (Target.Collider.CanMove(newPosition, Target.MovementEngine.Direction, false) == null)
                 {
                     Target.Position = newPosition;

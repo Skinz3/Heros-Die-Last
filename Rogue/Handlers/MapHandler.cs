@@ -42,16 +42,7 @@ namespace Rogue.Handlers
                 entity.GetScript<AIMovementScript>().Move(target);
             }
         }
-        [MessageHandler]
-        public static void HandleDashMessage(DashMessage message, RogueClient client)
-        {
-            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.entityId);
-
-            if (entity != null)
-            {
-                entity.Dash(message.speed, message.distance, message.direction, message.animation);
-            }
-        }
+      
         [MessageHandler]
         public static void HandleTeleportSameMapMessage(TeleportSameMapMessage message, RogueClient client)
         {
@@ -72,7 +63,7 @@ namespace Rogue.Handlers
         [MessageHandler]
         public static void HandleEntityDispositionMessage(EntityDispositionMessage message, RogueClient client)
         {
-            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.entityId);
+            var entity = client.Player?.MapInstance?.GetEntity<Player>(message.entityId);
 
             if (entity != null)
             {

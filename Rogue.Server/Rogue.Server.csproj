@@ -80,6 +80,7 @@
     <Compile Include="Records\EntityRecord.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="Utils\StartupManager.cs" />
+    <Compile Include="World\Entities\Buffs\Buff.cs" />
     <Compile Include="World\Entities\Entity.cs" />
     <Compile Include="World\Entities\Monster.cs" />
     <Compile Include="World\Entities\MovableEntity.cs" />

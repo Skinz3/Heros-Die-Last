@@ -54,8 +54,8 @@ namespace Rogue.Objects.UI
 
             rect.X += thick;
             rect.Y += thick;
-            //new Color(255 * 2, 92 * 2, 207 * 2)
-            Debug.FillRectangle(rect, new Color(255 * 2, 92 * 2, 207 * 2));
+
+            Debug.FillRectangle(rect, new Color(Color.Red,80f));
         }
 
         public override void OnInitializeComplete()

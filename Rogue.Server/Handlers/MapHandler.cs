@@ -26,9 +26,8 @@ namespace Rogue.Server.Handlers
         [MessageHandler]
         public static void HandleGameEntityOkRequestMessage(GameEntityOKRequestMessage message, RogueClient client)
         {
-            client.Player.Teleporting = false;
             client.GetFrame<ServerFrame>().OnEntitiesOK();
-
+            client.Player.Teleporting = false;
         }
         [MessageHandler]
         public static void HandleEntityDispositionRequestMessage(EntityDispositionRequestMessage message, RogueClient client)

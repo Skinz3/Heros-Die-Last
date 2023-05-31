@@ -24,11 +24,11 @@ namespace Rogue.Protocol.Messages.Server
 
         public int entityId;
 
+        public Vector2 startPosition;
+
+        public Vector2 endPosition;
+
         public float speed;
-
-        public int distance;
-
-        public DirectionEnum direction;
 
         public string animation;
 
@@ -36,29 +36,29 @@ namespace Rogue.Protocol.Messages.Server
         {
 
         }
-        public DashMessage(int entityId, float speed, DirectionEnum direction, int distance, string animation)
+        public DashMessage(int entityId, Vector2 startPosition, Vector2 endPosition, float speed, string animation)
         {
             this.entityId = entityId;
-            this.direction = direction;
+            this.startPosition = startPosition;
+            this.endPosition = endPosition;
             this.speed = speed;
-            this.distance = distance;
             this.animation = animation;
         }
         public override void Deserialize(LittleEndianReader reader)
         {
             this.entityId = reader.GetInt();
+            this.startPosition = reader.GetVector2();
+            this.endPosition = reader.GetVector2();
             this.speed = reader.GetFloat();
-            this.distance = reader.GetInt();
-            this.direction = (DirectionEnum)reader.GetByte();
             this.animation = reader.GetString();
         }
 
         public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put(entityId);
+            writer.Put(startPosition);
+            writer.Put(endPosition);
             writer.Put(speed);
-            writer.Put(distance);
-            writer.Put((byte)direction);
             writer.Put(animation);
         }
     }

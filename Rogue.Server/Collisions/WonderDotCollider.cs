@@ -27,7 +27,7 @@ namespace Rogue.Server.Collisions
         {
             return new Rectangle(position.ToPoint(), GameObject.Size)
                 .Divide(3, 3, RectangleOrigin.Center)
-                .Divide(1, 1, RectangleOrigin.CenterBottom) // 1,2
+                .Divide(1, 2, RectangleOrigin.CenterBottom) // 1,2
                 .Scale(0.7f, 0.7f, RectangleOrigin.CenterBottom);
         }
 

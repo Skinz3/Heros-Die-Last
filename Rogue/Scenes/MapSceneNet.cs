@@ -44,7 +44,7 @@ namespace Rogue.Scenes
 
             var targetPoint = Map.TranslateToScenePosition(MouseManager.State.Position);
 
-            ClientHost.Client.Send(new KeyInputMessage(obj, targetPoint));
+            ClientHost.Client.Send(new KeyInputMessage(obj, targetPoint, ClientHost.Client.Player.Position));
         }
 
         public void Information(string message, Color color)

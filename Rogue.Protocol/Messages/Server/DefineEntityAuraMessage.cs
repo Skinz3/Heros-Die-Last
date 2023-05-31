@@ -24,13 +24,13 @@ namespace Rogue.Protocol.Messages.Server
 
         public int targetId;
 
-        public ProtocolEntityAura aura;
+        public ProtocolAura aura;
 
         public DefineEntityAuraMessage()
         {
 
         }
-        public DefineEntityAuraMessage(int targetId, ProtocolEntityAura aura)
+        public DefineEntityAuraMessage(int targetId, ProtocolAura aura)
         {
             this.targetId = targetId;
             this.aura = aura;
@@ -39,7 +39,7 @@ namespace Rogue.Protocol.Messages.Server
         public override void Deserialize(LittleEndianReader reader)
         {
             this.targetId = reader.GetInt();
-            this.aura = new ProtocolEntityAura();
+            this.aura = new ProtocolAura();
             this.aura.Deserialize(reader);
         }
         public override void Serialize(LittleEndianWriter writer)

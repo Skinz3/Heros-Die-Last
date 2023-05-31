@@ -25,6 +25,7 @@ namespace Rogue.WorldEditor
         public MainWindow()
         {
             Self = this;
+            Configuration.Initialize();
             InitializeComponent();
         }
 

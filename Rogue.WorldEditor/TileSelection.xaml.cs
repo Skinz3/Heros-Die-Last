@@ -25,7 +25,6 @@ namespace Rogue.WorldEditor
         public const int TILE_PER_LINE = 10;
 
         public const string TILE_EXTENSION = ".png";
-        public const string TILES_PATH = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Content\Tiles";
 
         public bool IsTileSelected
         {
@@ -38,11 +37,19 @@ namespace Rogue.WorldEditor
         {
             InitializeComponent();
             RenderOptions.SetBitmapScalingMode(selectedTile, BitmapScalingMode.NearestNeighbor);
-            Render();
+
+            Render(Configuration.GetTilesPath());
+
+            foreach (var directory in Directory.GetDirectories(Configuration.GetTilesPath()))
+            {
+                string dirName = directory.Split('\\').Last();  // bof
+                folderSelection.Items.Add(dirName);
+            }
         }
-        private void Render()
+        private void Render(string path)
         {
-            var files = Directory.GetFiles(TILES_PATH);
+            canvas.Children.Clear();
+            var files = Directory.GetFiles(path);
 
             double lineCount = Math.Ceiling(files.Length / (double)TILE_PER_LINE);
 
@@ -105,6 +112,11 @@ namespace Rogue.WorldEditor
             selectedTile.Fill = imageBrush;
             selectedTile.Uid = rect.Uid;
             tilename.Content = "Tilename: " + System.IO.Path.GetFileNameWithoutExtension(rect.Uid);
+        }
+
+        private void FolderSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Render(System.IO.Path.Combine(Configuration.GetTilesPath(), folderSelection.SelectedItem.ToString()));
         }
     }
 }

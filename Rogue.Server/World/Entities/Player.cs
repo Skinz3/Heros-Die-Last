@@ -72,7 +72,11 @@ namespace Rogue.Server.World.Entities
             this.Inventory = new Inventory(this);
             this.MouseRotation = 0f;
         }
-
+        protected override void OnDead(Entity source)
+        {
+            Stats.LifePoints = Stats.MaxLifePoints;
+            Teleport("donjon");
+        }
         private void TeleportOnMap(MapRecord targetMap)
         {
             TeleportOnMap(targetMap, targetMap.RandomSpawnPosition(Record.Width, Record.Height));
@@ -129,6 +133,10 @@ namespace Rogue.Server.World.Entities
             {
                 return;
             }
+            if (Dashing)
+            {
+                return;
+            }
 
             Position = position;
             Direction = direction;
@@ -168,7 +176,7 @@ namespace Rogue.Server.World.Entities
 
         public override void SendPosition()
         {
-            this.MapInstance?.Send(new EntityDispositionMessage(Id, Position, Direction, MouseRotation), Id, SendOptions.Unreliable);
+            this.MapInstance?.Send(new EntityDispositionMessage(Id, Position, Direction, MouseRotation), Id, SendOptions.ReliableOrdered);
         }
     }
 }

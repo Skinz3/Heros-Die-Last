@@ -1,5 +1,6 @@
 ﻿using LiteNetLib;
 using Microsoft.Xna.Framework;
+using Rogue.Core.Utils;
 using Rogue.Protocol.Enums;
 using Rogue.Protocol.Messages.Server;
 using Rogue.Protocol.Types;
@@ -16,6 +17,8 @@ namespace Rogue.Server.World.Entities
 {
     public abstract class MovableEntity : Entity
     {
+        static Logger logger = new Logger();
+
         public Stats Stats
         {
             get;
@@ -44,7 +47,7 @@ namespace Rogue.Server.World.Entities
             set;
         }
 
-        protected ProtocolEntityAura Aura
+        protected ProtocolAura Aura
         {
             get;
             private set;
@@ -58,14 +61,19 @@ namespace Rogue.Server.World.Entities
             this.Collider = CreateCollider();
             this.Stats = stats;
         }
-        public void Dash(Vector2 position, float speed, int distance, string animation)
+        public void Dash(Vector2 direction, float speed, int distance, string animation, Action<Entity> onCollideEntity = null, Action onDashEnd = null)
         {
-            AddScript(new DashScript(position, speed, distance));
-            MapInstance.Send(new DashMessage(Id, speed, Direction, distance, animation));
+            if (Dashing)
+            {
+                logger.Write("Entity is already dashing...", MessageState.ERROR);
+            }
+            var script = new DashScript(direction, speed, distance, onCollideEntity, onDashEnd);
+            AddScript(script);
+            MapInstance.Send(new DashMessage(Id, Position, script.TargetPosition, speed, animation));
         }
         public void DefineAura(Color color, float radius, float sharpness)
         {
-            this.Aura = new ProtocolEntityAura(color, radius, sharpness);
+            this.Aura = new ProtocolAura(color, radius, sharpness);
             MapInstance.Send(new DefineEntityAuraMessage(Id, Aura));
         }
         public override void Update(long deltaTime)

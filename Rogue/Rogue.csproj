@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CBF4DF92-5629-41A5-9A38-91D4A7D6CAD5}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rogue</RootNamespace>
     <AssemblyName>Rogue</AssemblyName>
@@ -75,6 +75,7 @@
     <Compile Include="Handlers\AbilityHandler.cs" />
     <Compile Include="Handlers\AuthentificationHandler.cs" />
     <Compile Include="Handlers\CosmecticsHandler.cs" />
+    <Compile Include="Handlers\DebugHandler.cs" />
     <Compile Include="Handlers\FramesHandler.cs" />
     <Compile Include="Handlers\InventoryHandler.cs" />
     <Compile Include="Handlers\MapHandler.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Objects\UI\EntityInformations.cs" />
     <Compile Include="Objects\UI\InformationText.cs" />
     <Compile Include="Objects\UI\Inventory.cs" />
+    <Compile Include="Objects\UI\Statistics.cs" />
     <Compile Include="Scenes\LoginScene.cs" />
     <Compile Include="Scenes\MapSceneNet.cs" />
     <Compile Include="Scenes\MenuScene.cs" />

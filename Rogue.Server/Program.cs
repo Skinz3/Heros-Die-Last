@@ -76,7 +76,7 @@ namespace Rogue.Server
         }
 
         [InDeveloppement(InDeveloppementState.TEMPORARY)]
-        [StartupInvoke("Synchronize Map", StartupInvokePriority.Primitive)]
+      //  [StartupInvoke("Synchronize Map", StartupInvokePriority.Primitive)]
         public static void SynchronizeMaps()
         {
             if (Debugger.IsAttached)

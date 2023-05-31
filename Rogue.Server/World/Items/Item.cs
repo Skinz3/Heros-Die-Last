@@ -66,9 +66,14 @@ namespace Rogue.Server.World.Items
         {
             if (Cooldown == 0)
             {
-                NotifyCooldown();
-                Cooldown = Record.Cooldown;
-                return OnUse(position);
+                bool used = OnUse(position);
+
+                if (used)
+                {
+                    NotifyCooldown();
+                    Cooldown = Record.Cooldown;
+                }
+                return used;
             }
             else
             {

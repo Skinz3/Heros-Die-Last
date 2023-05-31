@@ -75,7 +75,11 @@ namespace Rogue.Objects.Entities
                 return true;
             }
         }
-     
+        public float MouseRotation
+        {
+            get;
+            set;
+        }
         [InDeveloppement]
         private EntityInformations EntityInformations
         {
@@ -95,7 +99,7 @@ namespace Rogue.Objects.Entities
         }
 
 
-      
+
         protected virtual void OnDead(Entity source)
         {
 
@@ -107,18 +111,28 @@ namespace Rogue.Objects.Entities
             this.Stats = entity.Stats;
             this.MovementEngine = new MovementEngine(Collider, this, entity.Stats.Speed);
             this.Animator = new Animator(entity.Animations, entity.IdleAnimation, entity.MovementAnimation);
-            this.Animator.CurrentAnimation = "moving";
-
+            this.Animator.CurrentAnimation = "";
             if (entity.Aura != null)
             {
                 DefineAura(entity.Aura.Color, entity.Aura.Radius, entity.Aura.Sharpness);
             }
         }
-        [InDeveloppement]
         public virtual void OnPositionReceived(Vector2 position, DirectionEnum direction, float mouseRotation)
         {
-            Console.WriteLine("Receive pos"); 
-            GetScript<EntityInterpolationScript>().OnPositionReceived(position, direction);
+            if (EntityInterpolationScript.PositionUpdateFrameCount > 1)
+            {
+                GetScript<EntityInterpolationScript>().OnPositionReceived(position, direction, mouseRotation);
+            }
+            else
+            {
+                var input = (Position - position);
+
+                Position = position;
+                this.MovementEngine.Direction = direction;
+                this.MouseRotation = mouseRotation;
+
+                AnimationController.OnMoveUpdated(input, this);
+            }
 
         }
         public abstract Collider2D CreateCollider();
@@ -127,18 +141,13 @@ namespace Rogue.Objects.Entities
         {
             Animator.Draw(time, this);
 
-          
-            EntityInformations.Draw(time);
- 
-        }
-        public void Dash(float speed, int distance, DirectionEnum direction, string animation)
-        {
-            if (Dashing)
-            {
-                RemoveScript(GetScript<DashScript>());
-            }
 
-            this.AddScript(new DashScript(speed, distance, direction, animation));
+            EntityInformations.Draw(time);
+
+        }
+        public void Dash(float speed, Vector2 endPosition, string animation)
+        {
+            this.AddScript(new DashScript(speed, endPosition, animation));
         }
 
         public Vector2 GetCellPosition(GCell cell)
@@ -161,7 +170,7 @@ namespace Rogue.Objects.Entities
             if (UseInterpolation)
             {
                 AddScript(new EntityInterpolationScript());
-                GetScript<EntityInterpolationScript>().Restore(Position, MovementEngine.Direction);
+                GetScript<EntityInterpolationScript>().Restore(Position, MovementEngine.Direction, MouseRotation);
             }
             Animator.Initialize();
         }
@@ -176,7 +185,7 @@ namespace Rogue.Objects.Entities
             EntityInformations.Update(time);
             Collider.Update();
 
-          
+
             if (Controlable)
                 MovementEngine.UpdateInputs(time);
             Animator.Update(time, this);

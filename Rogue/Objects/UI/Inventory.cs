@@ -16,7 +16,7 @@ namespace Rogue.Objects.UI
     {
         public const byte SLOTS = 4;
 
-        public const int SIZE_MULTIPLIER = 4;
+        public const int SIZE_MULTIPLIER = 5;
 
         public const string SPRITE_NAME = "inventory";
 
@@ -39,7 +39,7 @@ namespace Rogue.Objects.UI
         {
             this.Sprite = SpriteManager.GetSprite(SPRITE_NAME);
             Size = Sprite.Texture.Bounds.Size * new Point(SIZE_MULTIPLIER);
-            this.Position = new Vector2((Debug.ScreenSize.X / 2) - Size.X / 2, 700);
+            this.Position = new Vector2((Debug.ScreenSize.X / 2) - Size.X / 2, 950);
             this.Items = new Item[SLOTS];
             GenerateSlots();
         }
@@ -85,7 +85,7 @@ namespace Rogue.Objects.UI
                     if (Items[i].CooldownCurrent > 0)
                     {
                         int height = (int)((Items[i].CooldownCurrent / Items[i].CooldownTotal) * rectangle.Height);
-                        rectangle = new Rectangle(rectangle.X , rectangle.Y+(rectangle.Height-height), rectangle.Width, height);
+                        rectangle = new Rectangle(rectangle.X, rectangle.Y + (rectangle.Height - height), rectangle.Width, height);
                         Debug.FillRectangle(rectangle, new Color(Color.Black, 120));
                     }
                 }

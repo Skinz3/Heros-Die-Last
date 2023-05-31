@@ -53,6 +53,10 @@ namespace Rogue.Server.World.Maps
         {
             return Cells.Where(x => x.Rectangle.Intersects(intersectRectangle)).ToArray();
         }
+        public MapCell[] GetCells(Predicate<MapCell> predicate)
+        {
+            return Array.FindAll(Cells, predicate);
+        }
         public MapCell[] GetCells()
         {
             return Cells;
@@ -85,7 +89,7 @@ namespace Rogue.Server.World.Maps
 
                 for (float y = Position.Y; y < Position.Y + GridSize.Y * CellSize; y += CellSize)
                 {
-                    Cells[id] = new MapCell(new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize);
+                    Cells[id] = new MapCell(this, new Vector2(x, y), new Point(relativeX, relativeY), id, CellSize);
                     Cells[id].Walkable = Template.Cells[id].Walkable;
                     id++;
                     relativeY++;
@@ -97,7 +101,7 @@ namespace Rogue.Server.World.Maps
 
             foreach (var cell in Cells)
             {
-                cell.Adjacents = cell.GetAdjacentCells(this);
+                cell.Adjacents = cell.GetAdjacentCells();
             }
 
         }
@@ -120,6 +124,10 @@ namespace Rogue.Server.World.Maps
         public ICell GetCell(Vector2 intersectPoint)
         {
             return Cells.FirstOrDefault(x => x.IntersectsPoint(intersectPoint.ToPoint()));
+        }
+        public MapCell GetCell(Func<MapCell, bool> predicate)
+        {
+            return Cells.FirstOrDefault(predicate);
         }
 
 
@@ -146,9 +154,14 @@ namespace Rogue.Server.World.Maps
             get;
             set;
         }
-
-        public MapCell(Vector2 position, Point relativePosition, int id, int size) : base(position, new Point(size, size))
+        private IGrid Grid
         {
+            get;
+            set;
+        }
+        public MapCell(IGrid grid, Vector2 position, Point relativePosition, int id, int size) : base(position, new Point(size, size))
+        {
+            this.Grid = grid;
             this.RelativePosition = relativePosition;
             this.Id = id;
         }
@@ -157,7 +170,7 @@ namespace Rogue.Server.World.Maps
             return new Vector2(Rectangle.Center.X - width / 2, Rectangle.Center.Y - height / 2);
         }
 
-        public ICell[] GetNextCells(MapGrid grid, DirectionEnum direction, int length)
+        public ICell[] GetNextCells(DirectionEnum direction, int length)
         {
             List<ICell> cells = new List<ICell>();
 
@@ -168,47 +181,55 @@ namespace Rogue.Server.World.Maps
 
             for (int i = 1; i < length + 1; i++)
             {
-                cells.Add(grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
+                cells.Add(Grid.GetCell(RelativePosition.X + vector.X * i, RelativePosition.Y + vector.Y * i));
             }
             return cells.ToArray();
         }
-        public ICell GetAdjacentCell(IGrid grid, DirectionEnum direction)
+        public ICell GetAdjacentCell(DirectionEnum direction)
         {
             switch (direction)
             {
                 case DirectionEnum.Right:
-                    return grid.GetCell(Id + grid.GridSize.Y);
+                    return Grid.GetCell(Id + Grid.GridSize.Y);
                 case DirectionEnum.Left:
-                    return grid.GetCell(Id - grid.GridSize.Y);
+                    return Grid.GetCell(Id - Grid.GridSize.Y);
                 case DirectionEnum.Up:
-                    return grid.GetCell(Id - 1);
+                    return Grid.GetCell(Id - 1);
                 case DirectionEnum.Down:
-                    return grid.GetCell(Id + 1);
+                    return Grid.GetCell(Id + 1);
                 case DirectionEnum.Right | DirectionEnum.Up:
-                    return GetAdjacentCell(grid, DirectionEnum.Right)?.GetAdjacentCell(grid, DirectionEnum.Up);
+                    return GetAdjacentCell(DirectionEnum.Right)?.GetAdjacentCell(DirectionEnum.Up);
                 case DirectionEnum.Right | DirectionEnum.Down:
-                    return GetAdjacentCell(grid, DirectionEnum.Right)?.GetAdjacentCell(grid, DirectionEnum.Down);
+                    return GetAdjacentCell(DirectionEnum.Right)?.GetAdjacentCell(DirectionEnum.Down);
                 case DirectionEnum.Left | DirectionEnum.Up:
-                    return GetAdjacentCell(grid, DirectionEnum.Left)?.GetAdjacentCell(grid, DirectionEnum.Up);
+                    return GetAdjacentCell(DirectionEnum.Left)?.GetAdjacentCell(DirectionEnum.Up);
                 case DirectionEnum.Left | DirectionEnum.Down:
-                    return GetAdjacentCell(grid, DirectionEnum.Left)?.GetAdjacentCell(grid, DirectionEnum.Down);
+                    return GetAdjacentCell(DirectionEnum.Left)?.GetAdjacentCell(DirectionEnum.Down);
             }
             throw new Exception("unable to find adjacent cell.");
         }
-        public ICell[] GetAdjacentCells(IGrid grid)
+        public ICell[] GetAdjacentCells()
         {
             ICell[] cells = new ICell[4];
 
-            cells[0] = GetAdjacentCell(grid, DirectionEnum.Right);
-            cells[1] = GetAdjacentCell(grid, DirectionEnum.Left);
-            cells[2] = GetAdjacentCell(grid, DirectionEnum.Up);
-            cells[3] = GetAdjacentCell(grid, DirectionEnum.Down);
+            cells[0] = GetAdjacentCell(DirectionEnum.Right);
+            cells[1] = GetAdjacentCell(DirectionEnum.Left);
+            cells[2] = GetAdjacentCell(DirectionEnum.Up);
+            cells[3] = GetAdjacentCell(DirectionEnum.Down);
 
             return cells.Where(x => x != null).ToArray();
         }
         public bool IntersectsPoint(Point point)
         {
             return Rectangle.Intersects(new Rectangle(point, new Point(1)));
+        }
+        public bool IntersectsRectangle(Rectangle rectangle)
+        {
+            return Rectangle.Intersects(rectangle);
+        }
+        public bool IntersectsCircle(Vector2 center, float radius)
+        {
+            return GeometryExtensions.CircleRectangleCollide(center, radius, Rectangle);
         }
 
         public override MapCell GetCell()

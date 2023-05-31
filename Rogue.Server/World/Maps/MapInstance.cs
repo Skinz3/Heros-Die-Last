@@ -123,7 +123,7 @@ namespace Rogue.Server.World.Maps
         public void RemoveMapElement(int cellId, LayerEnum layer, bool isCellWalkable)
         {
             var cell = Record.Grid.GetCell(cellId);
-            cell.Walkable = isCellWalkable;
+            cell.Walkable = isCellWalkable; // Dictionary<int,bool> walkableCellsOverride ---> in map instance
             Send(new RemoveLayerElementMessage(cell.Id, layer, isCellWalkable));
         }
         public void UpdateElementVisual(int cellId, LayerEnum layer, string visualData, MapObjectType type, bool walkable)
@@ -148,7 +148,11 @@ namespace Rogue.Server.World.Maps
             Timer.Elapsed += CallBack;
             Timer.Start();
         }
-        public void Invoke(Action action)
+        /// <summary>
+        /// This method permit to synchronize an action with MapInstance Clock. (networking for example :3) 
+        /// </summary>
+        /// <param name="action"></param>
+        public void Sync(Action action)
         {
             SynchronizedActions.Push(action);
         }
@@ -158,8 +162,6 @@ namespace Rogue.Server.World.Maps
 
             if (deltaTime > 0)
             {
-                Console.Title = "Rogue Server FPS :" + (int)(deltaTime * (REFRESH_RATE));
-
                 Update(deltaTime);
                 Stopwatch = Stopwatch.StartNew();
             }
@@ -233,7 +235,7 @@ namespace Rogue.Server.World.Maps
             return Entities.ContainsKey(entity.Id);
         }
 
-        public void RemoveProjectile(int id)
+        private void RemoveProjectile(int id)
         {
             if (Projectiles.ContainsKey(id))
             {
@@ -296,7 +298,7 @@ namespace Rogue.Server.World.Maps
         }
         public GameEntitiesMessage GetGameEntitiesMessage()
         {
-            return new GameEntitiesMessage(GetProtocolEntities(),Configuration.Self.PositionUpdateFrameCount);
+            return new GameEntitiesMessage(GetProtocolEntities(), Configuration.Self.PositionUpdateFrameCount);
         }
         /// <summary>
         /// add a entity? Entity.DefineMapInstance(x)

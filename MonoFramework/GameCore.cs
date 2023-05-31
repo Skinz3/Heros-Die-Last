@@ -35,9 +35,16 @@ namespace Rogue.Core
             Content.RootDirectory = "Content";
             SpriteManager.Initialize(@"/Content");
             SceneManager.Initialize(Assembly.GetEntryAssembly());
-            GraphicsDeviceManager.PreferredBackBufferWidth = 1000;  // largeur de la fenêtre
-            GraphicsDeviceManager.PreferredBackBufferHeight = 800; // hauteur de la fenêtre
-            this.IsMouseVisible = true;
+            GraphicsDeviceManager.PreferredBackBufferWidth = 1920;  // largeur de la fenêtre
+            GraphicsDeviceManager.PreferredBackBufferHeight = 1080; // hauteur de la fenêtre
+
+            GraphicsDeviceManager.PreferredBackBufferWidth = 1000;
+            GraphicsDeviceManager.PreferredBackBufferHeight = 800;
+
+            IsMouseVisible = true;
+
+            IsFixedTimeStep = true; // no 144hz, no 30 hz, we dont want to take deltaTime in consideration. its fixed update because server is running 60fps.
+
         }
 
         protected override void Initialize()
@@ -65,7 +72,6 @@ namespace Rogue.Core
         }
         protected override void Draw(GameTime gameTime)
         {
-
             SceneManager.Draw(gameTime);
             base.Draw(gameTime);
 

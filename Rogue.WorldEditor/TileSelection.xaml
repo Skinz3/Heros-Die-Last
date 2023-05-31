@@ -10,11 +10,10 @@
         <ScrollViewer HorizontalScrollBarVisibility="Visible" Margin="206,10,18,21">
             <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="401" Margin="53,21,0,0" VerticalAlignment="Top" Width="684"/>
         </ScrollViewer>
-
-        <Label Content="Selected Tile" HorizontalAlignment="Left" Margin="60,5,0,0" VerticalAlignment="Top"/>
         <Rectangle Name="selectedTile" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="160" Margin="10,31,0,0" Stroke="Black" VerticalAlignment="Top" Width="176"/>
-       
-        <Label Name="tilename" Content="Tilename: " HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top"/>
+
+        <Label Name="tilename" Content="Tilename: " HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+        <ListBox SelectionChanged="FolderSelection_SelectionChanged" x:Name="folderSelection" HorizontalAlignment="Left" Height="190" Margin="10,208,0,0" VerticalAlignment="Top" Width="176"/>
 
     </Grid>
 </Window>

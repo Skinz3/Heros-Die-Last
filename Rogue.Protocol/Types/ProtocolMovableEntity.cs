@@ -41,7 +41,7 @@ namespace Rogue.Protocol.Types
             get;
             set;
         }
-        public ProtocolEntityAura Aura
+        public ProtocolAura Aura
         {
             get;
             set;
@@ -51,7 +51,7 @@ namespace Rogue.Protocol.Types
         {
 
         }
-        public ProtocolMovableEntity(string name, int entityId, Vector2 position, Point size, Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolEntityAura aura) : base(name, entityId, position, size)
+        public ProtocolMovableEntity(string name, int entityId, Vector2 position, Point size, Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolAura aura) : base(name, entityId, position, size)
         {
             this.Stats = stats;
             this.Animations = animations;
@@ -77,7 +77,7 @@ namespace Rogue.Protocol.Types
 
             if (reader.GetBool())
             {
-                this.Aura = new ProtocolEntityAura();
+                this.Aura = new ProtocolAura();
                 this.Aura.Deserialize(reader);
             }
             base.Deserialize(reader);

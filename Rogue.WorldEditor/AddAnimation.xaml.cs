@@ -25,9 +25,6 @@ namespace Rogue.WorldEditor
     /// </summary>
     public partial class AddAnimation : Window
     {
-        public const string ANIMATIONS_PATH = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Animations";
-        public const string SPRITE_PATH = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Content";
-
         private WpfCell Cell
         {
             get;
@@ -56,10 +53,10 @@ namespace Rogue.WorldEditor
             set;
         }
 
-      
+
         public static string GetSpritePath(string spriteName)
         {
-            string[] files = Directory.GetFiles(SPRITE_PATH,
+            string[] files = Directory.GetFiles(Configuration.GetSpritesPath(),
             "*.*",
             SearchOption.AllDirectories);
 
@@ -74,7 +71,7 @@ namespace Rogue.WorldEditor
         {
             AnimationTemplate template = new AnimationTemplate();
 
-            if (template.Load(ANIMATIONS_PATH + "/" + name + ".anm"))
+            if (template.Load(Configuration.GetAnimationsPath() + "/" + name + ".anm"))
             {
                 return template.Elements[DirectionEnum.None];
             }

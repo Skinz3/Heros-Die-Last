@@ -122,9 +122,15 @@ namespace Rogue.Server.World.Projectiles
         {
             if (MapInstance != null)
             {
-                MapInstance.RemoveProjectile(this.Id);
+                this.WaitingForDispose = true;
                 MapInstance = null;
             }
+        }
+        public bool Validate()
+        {
+            var rect = new Rectangle((int)Position.X, (int)Position.Y, SizeF, SizeF);
+            var cells = Owner.MapInstance.Record.Grid.GetCells(rect);
+            return !cells.Any(x => x.Walkable == false);
         }
         public virtual ProjectileCreateMessage GetProjectileCreateMessage()
         {

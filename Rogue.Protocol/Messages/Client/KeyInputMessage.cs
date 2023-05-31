@@ -26,25 +26,31 @@ namespace Rogue.Protocol.Messages.Client
 
         public Point mousePosition;
 
+        public Vector2 playerPosition;
+
         public KeyInputMessage()
         {
 
         }
-        public KeyInputMessage(Keys key, Point mousePosition)
+        public KeyInputMessage(Keys key, Point mousePosition, Vector2 playerPosition)
         {
             this.key = key;
             this.mousePosition = mousePosition;
+            this.playerPosition = playerPosition;
         }
         public override void Deserialize(LittleEndianReader reader) // permet de convertir les objets binaire en paramètres
         {
             this.key = (Keys)reader.GetInt();
             this.mousePosition = reader.GetPoint();
+            this.playerPosition = reader.GetVector2();
+
         }
 
         public override void Serialize(LittleEndianWriter writer)
         {
             writer.Put((int)key);
             writer.Put(mousePosition);
+            writer.Put(playerPosition);
         }
     }
 }

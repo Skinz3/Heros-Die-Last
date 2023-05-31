@@ -15,18 +15,17 @@ namespace Rogue.Core.Geometry
 {
     public static class GeometryExtensions
     {
-        public static Vector2 GetCellSlidingVector(Vector2 entityCenter, IGrid grid, ICell cell, Vector2 inputDirection)
+        public static Vector2 GetCellSlidingVector(Vector2 entityCenter, ICell cell, Vector2 inputDirection)
         {
             var cellCenter = cell.Center;
             var directionVector = cellCenter - entityCenter;
             directionVector.Normalize();
 
-            Console.WriteLine(inputDirection);
             if ((inputDirection.Y == -1 && inputDirection.X == 0) || (inputDirection.Y == 1 && inputDirection.X == 0))
             {
                 if (entityCenter.X > cellCenter.X)
                 {
-                    if (cell.GetAdjacentCell(grid, DirectionEnum.Right).Walkable)
+                    if (cell.GetAdjacentCell(DirectionEnum.Right).Walkable)
                     {
                         return new Vector2(1, 0);
                     }
@@ -34,7 +33,7 @@ namespace Rogue.Core.Geometry
                 }
                 else
                 {
-                    var c1 = cell.GetAdjacentCell(grid, DirectionEnum.Left);
+                    var c1 = cell.GetAdjacentCell(DirectionEnum.Left);
 
                     if (c1.Walkable)
                     {
@@ -46,7 +45,7 @@ namespace Rogue.Core.Geometry
             {
                 if (entityCenter.Y > cellCenter.Y)
                 {
-                    if (cell.GetAdjacentCell(grid, DirectionEnum.Down).Walkable)
+                    if (cell.GetAdjacentCell(DirectionEnum.Down).Walkable)
                     {
                         return new Vector2(0, 1);
                     }
@@ -54,12 +53,13 @@ namespace Rogue.Core.Geometry
                 }
                 else
                 {
-                    if (cell.GetAdjacentCell(grid, DirectionEnum.Up).Walkable)
+                    if (cell.GetAdjacentCell(DirectionEnum.Up).Walkable)
                     {
                         return new Vector2(0, -1);
                     }
                 }
             }
+           
             return new Vector2();
         }
         public static bool CircleRectangleCollide(Vector2 center, float radius,
@@ -277,7 +277,7 @@ namespace Rogue.Core.Geometry
             rectangle.Y -= rectangle.Width;
             return rectangle;
         }
-        public static Vector2 NormalizeAbsolute(this Vector2 input)
+        public static Vector2 Normalize4D(this Vector2 input)
         {
             Vector2 result = new Vector2();
             if (input.X > 0)

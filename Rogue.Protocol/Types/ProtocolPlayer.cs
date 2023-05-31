@@ -28,7 +28,7 @@ namespace Rogue.Protocol.Types
         {
 
         }
-        public ProtocolPlayer(string name, int entityId, Vector2 position, Point size, Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolEntityAura aura, string weaponAnimation)
+        public ProtocolPlayer(string name, int entityId, Vector2 position, Point size, Stats stats, string[] animations, string idleAnimation, string movementAnimation, ProtocolAura aura, string weaponAnimation)
             : base(name, entityId, position, size, stats, animations, idleAnimation, movementAnimation, aura)
         {
             this.WeaponAnimation = weaponAnimation;

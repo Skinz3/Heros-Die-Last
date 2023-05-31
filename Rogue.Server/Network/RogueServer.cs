@@ -33,7 +33,7 @@ namespace Rogue.Server.Network
         protected override void OnClientConnected(NetEndPoint ip)
         {
             logger.Write("New client connected (" + ip + ")", MessageState.IMPORTANT_INFO);
-            Console.Title = ("Clients: " + Clients.Count());
+            Console.Title = ("Rogue.Server Clients: " + Clients.Count());
         }
         public override void OnClientDisconnected(RogueClient client, DisconnectInfo? disconnectInfo = null)
         {

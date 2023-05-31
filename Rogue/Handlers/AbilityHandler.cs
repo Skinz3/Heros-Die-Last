@@ -20,7 +20,7 @@ namespace Rogue.Handlers
     /// <summary>
     /// todo => projectile should be a type in protocol same as Entity
     /// Fix this startPos weird story
-    /// test it with network, synchronization problems should happen ?
+    /// test it with network, synchronization problems should happen ? ---> seems okay
     /// revoir la disposition des projectiles
     /// manière dont gérer les effets des projectiles.
     /// 
@@ -28,9 +28,9 @@ namespace Rogue.Handlers
     class AbilityHandler
     {
         [MessageHandler]
-        public static void HandleRemoveProjectileMessage(RemoveProjectileMessage message,RogueClient client)
+        public static void HandleRemoveProjectileMessage(RemoveProjectileMessage message, RogueClient client)
         {
-            client.Player.MapInstance.RemoveProjectile(message.id);
+            client.Player.MapInstance?.RemoveProjectile(message.id);
         }
         [InDeveloppement]
         [MessageHandler]
@@ -73,6 +73,19 @@ namespace Rogue.Handlers
                 entity.InflictDamage(client.Player, message.amount);
             }
         }
+
+        [MessageHandler]
+        public static void HandleDashMessage(DashMessage message, RogueClient client)
+        {
+            var entity = client.Player?.MapInstance?.GetEntity<MovableEntity>(message.entityId);
+
+            if (entity != null)
+            {
+                entity.Position = message.startPosition;
+                entity.Dash(message.speed, message.endPosition, message.animation);
+            }
+        }
+
 
     }
 }

@@ -21,7 +21,6 @@ namespace Rogue.Server.World.Entities
     {
         public Monster(EntityRecord record, Vector2 position) : base(record, position)
         {
-
         }
         public Monster(EntityRecord record, MapCell cell) : base(record, new Vector2())
         {
@@ -53,7 +52,6 @@ namespace Rogue.Server.World.Entities
         {
             return MapInstance;
         }
-
         public override ProtocolEntity GetProtocolObject()
         {
             return new ProtocolMonster(Name, Id, Position, Size, Stats, Record.Animations.ToArray(), Record.IdleAnimation, Record.MovementAnimation, Aura);
@@ -88,21 +86,20 @@ namespace Rogue.Server.World.Entities
         }
 
         bool d = false;
+
         public override void OnUpdate(long deltaTime)
         {
-
-            var entity = MapInstance.GetEntities<Player>().FirstOrDefault();
-
-            if (!d && entity != null && !GetScript<AIMovementScript>().Moving && this.Stats.LifePoints < Stats.MaxLifePoints)
+            var player = MapInstance.GetEntities<Player>().FirstOrDefault();
+        
+            if (!d && player != null && !GetScript<AIMovementScript>().Moving && this.Stats.LifePoints < Stats.MaxLifePoints)
             {
-                MoveOnTarget(entity);
+
+                MoveOnTarget(player);
                 d = true;
             }
 
-
-
         }
-
+ 
 
     }
 }

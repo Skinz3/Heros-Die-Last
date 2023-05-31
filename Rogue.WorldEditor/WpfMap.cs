@@ -80,7 +80,7 @@ namespace Rogue.WorldEditor
                     }
                     else
                     {
-                        string spritePath = System.IO.Path.Combine(TileSelection.TILES_PATH, sprite.VisualData + TileSelection.TILE_EXTENSION);
+                        string spritePath = System.IO.Path.Combine(Configuration.GetTilesPath(), sprite.VisualData + TileSelection.TILE_EXTENSION);
                         cell.Layers[sprite.Layer].SetSprite(spritePath, sprite.FlippedVertically, sprite.FlippedHorizontally);
                     }
                 }

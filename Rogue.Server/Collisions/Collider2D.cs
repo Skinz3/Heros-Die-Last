@@ -101,7 +101,7 @@ namespace Rogue.Server.Collisions
             {
                 List<MapCell> nextCells = new List<MapCell>();
 
-                var nextCell = cell.GetNextCells(Map, direction, 1)[0];
+                var nextCell = cell.GetNextCells(direction, 1)[0];
                 nextCells.Add((MapCell)nextCell);
 
                 var flags = direction.GetFlags(); // Dat fucking semi isometric view :3
@@ -110,7 +110,7 @@ namespace Rogue.Server.Collisions
                 {
                     foreach (DirectionEnum dir in flags)
                     {
-                        nextCells.Add((MapCell)cell.GetNextCells(Map, dir, 1)[0]);
+                        nextCells.Add((MapCell)cell.GetNextCells(dir, 1)[0]);
                     }
                 }
 

@@ -95,7 +95,7 @@ namespace Rogue.Server.World.Entities.Scripts
         {
             if (NextCell == null)
             {
-                CalculateNextCell();
+                RecalculatePath();
                 if (NextCell == null)
                 {
                     OnReach();
@@ -108,7 +108,7 @@ namespace Rogue.Server.World.Entities.Scripts
 
             if (nextCellCenter == entityCenter)
             {
-                CalculateNextCell();
+                RecalculatePath();
             }
             var direction = (nextCellCenter - entityCenter);
 
@@ -128,28 +128,28 @@ namespace Rogue.Server.World.Entities.Scripts
                 {
                     if (entityCenter.X + Speed >= nextCellCenter.X)
                     {
-                        CalculateNextCell();
+                        RecalculatePath();
                     }
                 }
                 else if (dir == DirectionEnum.Up)
                 {
                     if (entityCenter.Y - Speed <= nextCellCenter.Y)
                     {
-                        CalculateNextCell();
+                        RecalculatePath();
                     }
                 }
                 else if (dir == DirectionEnum.Down)
                 {
                     if (entityCenter.Y - Speed >= nextCellCenter.Y)
                     {
-                        CalculateNextCell();
+                        RecalculatePath();
                     }
                 }
                 else if (dir == DirectionEnum.Left)
                 {
                     if (entityCenter.X - Speed <= nextCellCenter.X)
                     {
-                        CalculateNextCell();
+                        RecalculatePath();
                     }
                 }
 
@@ -161,30 +161,36 @@ namespace Rogue.Server.World.Entities.Scripts
 
 
 
-        private void CalculateNextCell()
+        public void RecalculatePath()
         {
-            var targetCell = Target.GetCell();
+            if (Target != null)
+            {
+                var targetCell = Target.GetCell();
 
-            if (targetCell == null || Target.GetMapInstance() != Entity.MapInstance)
+                if (targetCell == null || Target.GetMapInstance() != Entity.MapInstance)
+                {
+                    StopMove();
+                    return;
+                }
+                AStar = new AStar(Entity.MapInstance.Record.Grid, Entity.GetCell().Id);
+                PutEntities();
+                Path = AStar.FindPath(targetCell.Id).ToList();
+
+                if (NextCell != null) // Target is not ICell (we can send once)
+                {
+                    Entity.MapInstance.Send(new AIMoveMessage(Entity.Id, Entity.Position, NextCell.Id));
+                }
+            }
+            else
             {
                 StopMove();
-                return;
             }
-            AStar = new AStar(Entity.MapInstance.Record.Grid, Entity.GetCell().Id);
-            PutEntities();
-            Path = AStar.FindPath(targetCell.Id).ToList();
-
-            if (NextCell != null) // Target is not ICell (we can send once)
-            {
-                Entity.MapInstance.Send(new AIMoveMessage(Entity.Id, Entity.Position, NextCell.Id));
-            }
-
         }
 
         public void Move(ServerObject target)
         {
             this.Target = target;
-            CalculateNextCell();
+            RecalculatePath();
 
         }
         public void StopMove()

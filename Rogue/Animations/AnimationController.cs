@@ -17,8 +17,6 @@ namespace Rogue.Animations
             if (input == new Vector2(0,0))
             {
                 entity.Animator.SetIdleAnimation();
-
-               
             }
             else
             {
