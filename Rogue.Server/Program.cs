@@ -75,27 +75,6 @@ namespace Rogue.Server
             manager.LoadTables();
         }
 
-        [InDeveloppement(InDeveloppementState.TEMPORARY)]
-      //  [StartupInvoke("Synchronize Map", StartupInvokePriority.Primitive)]
-        public static void SynchronizeMaps()
-        {
-            if (Debugger.IsAttached)
-            {
-                string path = @"C:\Users\Skinz\Desktop\Heros-Die-Last\Rogue\bin\DesktopGL\AnyCPU\Debug\Maps";
-
-                foreach (var file in Directory.GetFiles(Environment.CurrentDirectory + MapRecord.MAPS_DIRECTORY))
-                {
-                    File.Delete(file);
-                }
-
-                foreach (var file in Directory.GetFiles(path))
-                {
-                    var dest = Environment.CurrentDirectory + MapRecord.MAPS_DIRECTORY + Path.GetFileName(file);
-                    File.Copy(file, dest);
-                }
-            }
-        }
-
         [StartupInvoke("Server", StartupInvokePriority.Last)]
         public static void StartServer()
         {

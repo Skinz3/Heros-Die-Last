@@ -121,9 +121,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="YAXLib, Version=2.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MonoFramework\bin\DesktopGL\AnyCPU\Debug\YAXLib.dll</HintPath>
+    <Reference Include="YAXLib">
+      <HintPath>..\..\..\..\Downloads\YAXLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

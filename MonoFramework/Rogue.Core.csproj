@@ -123,7 +123,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="YAXLib">
-      <HintPath>..\bin\YAXLib.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\YAXLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
